@@ -8,13 +8,11 @@ import {
   formFields,
 } from '../'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { queryClient } from '@/utils/lib/react-query'
 
 export const useProfessionalForm = ({
-  professionalData,
-  refetch,
-  status,
-  router,
-  setOpen,
+  mutateAsync,
+  queryKeys,
 }: UseProfessionalFormProps) => {
   const professionalFormData = useForm<ProfessionalFormData>({
     resolver: zodResolver(professionalFormSchema),
@@ -41,15 +39,6 @@ export const useProfessionalForm = ({
     control,
     name: 'scheduleAvailability',
   })
-
-  if (
-    typeof status !== 'undefined' &&
-    typeof router !== 'undefined' &&
-    status === 'success'
-  ) {
-    // router.refresh()
-    // setOpen(false) //! TODO: Usar o router ou o setOpen?
-  }
 
   const documentInputValue = useWatch({
     name: 'document',
@@ -105,10 +94,31 @@ export const useProfessionalForm = ({
     scheduleAvailabilityUpdate(availabilityFieldIndex, availabilityField)
   }
 
-  function handleSubmitData(data: ProfessionalFormData) {
-    professionalData.current = data
-    console.log('data', data)
-    refetch()
+  async function handleSubmitData(data: ProfessionalFormData) {
+    try {
+      await mutateAsync(data)
+      // queryClient.invalidateQueries({
+      //   queryKey: [queryKeys],
+      //   // exact: true,
+      //   type: 'all',
+      // })
+
+      // queryClient.refetchQueries({
+      //   queryKey: ['read-professional'],
+      //   type: 'all',
+      // })
+
+      // queryClient.refetchQueries({
+      //   queryKey: queryKeys,
+      //   type: 'all',
+      // })
+
+      await queryClient.resetQueries({ queryKey: queryKeys })
+
+      // router.refresh()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return {

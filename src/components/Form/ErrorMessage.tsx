@@ -54,14 +54,6 @@ export const ErrorMessage = memo(function ErrorMessage({
     fieldError = errors[field]
   }
 
-  // if (field === 'scheduleAvailability') {
-  //   fieldError = errors[field]
-
-  //   if (!fieldError?.message) {
-  //     return null
-  //   }
-  // }
-
   if (!fieldError || !fieldError?.message) {
     return null
   }
@@ -72,7 +64,7 @@ export const ErrorMessage = memo(function ErrorMessage({
         <>
           <Popover.Button className="z-30">
             <ExclamationCircleIcon
-              className={` h-4 w-4  hover:text-red-400 ${open ? 'text-red-500 ' : 'text-red-700 animate-bounce'
+              className={`h-4 w-4 hover:text-red-400 ${open ? 'text-red-500 ' : 'text-red-700 animate-bounce'
                 }`}
               aria-hidden="true"
             />
@@ -88,7 +80,7 @@ export const ErrorMessage = memo(function ErrorMessage({
             leaveTo="opacity-0 translate-y-1"
           >
             <Popover.Panel className="absolute left-1/2 z-40 mt-5 flex -translate-x-1/2 ">
-              <div className="flex w-fit items-center text-center justify-center shrink rounded-xl bg-white p-2 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5">
+              <div className="flex w-fit items-center text-center justify-center shrink rounded-md bg-white p-2 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5">
                 <span className="text-xs whitespace-nowrap flex flex-row w-fit text-red-500">
                   {fieldError?.message?.toString()}
                 </span>
@@ -99,10 +91,4 @@ export const ErrorMessage = memo(function ErrorMessage({
       )}
     </Popover>
   )
-
-  // return (
-  //   <span className="text-xs text-red-500 whitespace-nowrap overflow-hidden truncate">
-  //     {fieldError?.message?.toString()}
-  //   </span>
-  // )
 })

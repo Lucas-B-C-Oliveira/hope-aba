@@ -23,7 +23,7 @@ export function Sidebar() {
   // console.log('sidebarIsOpen', sidebarIsOpen)
 
   return (
-    <aside
+    <div
       id="main-sidebar"
       className="lg:z-40 lg:flex lg:w-fit lg:flex-col h-screen"
     >
@@ -56,6 +56,6 @@ export function Sidebar() {
           </ul>
         </nav>
       </div>
-    </aside>
+    </div>
   )
 }

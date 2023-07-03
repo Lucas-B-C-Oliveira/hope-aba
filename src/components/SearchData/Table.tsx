@@ -7,22 +7,19 @@ import { v4 as uuidv4 } from 'uuid'
 import { Button } from '../Button'
 import { TrashIcon, PencilSquareIcon } from '@heroicons/react/20/solid'
 import { Modal } from '../Modal'
-import { ConfirmToRemoveDataModal } from '../Modals/ConfirmToRemoveDataModal'
 
 interface Props {
   queryKey: string
   endPoint: string
   editDataModal: ReactElement
-  textToConfirmToRemoveDataModal: string
-  titleToConfirmToRemoveDataModal: string
+  confirmRemoveDataModal: ReactElement
 }
 
 export const Table = memo(function Table({
   queryKey,
   endPoint,
   editDataModal,
-  textToConfirmToRemoveDataModal,
-  titleToConfirmToRemoveDataModal,
+  confirmRemoveDataModal,
 }: Props) {
   //! TODO: No futuro, tem que definir bem esse Table, se ele é genérico ou não, pq nesse caso, ele não está sendo genérico, está?
 
@@ -81,13 +78,16 @@ export const Table = memo(function Table({
                       <th
                         key={header.id}
                         scope="col"
-                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 "
                       >
                         {header.value}
                       </th>
                     ))}
 
-                  <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                  <th
+                    scope="col"
+                    className="relative py-3.5 pl-3 pr-4 sm:pr-6 w-5"
+                  >
                     <span className="sr-only">Edit</span>
                   </th>
                 </tr>
@@ -96,7 +96,7 @@ export const Table = memo(function Table({
                 {data?.data?.length > 0 &&
                   data?.data?.map((register: any) => (
                     <tr
-                      className="divide-x divide-gray-200 even:bg-gray-50"
+                      className="divide-x divide-gray-200 even:bg-gray-50 "
                       key={register.id}
                     >
                       <td scope="col" className="relative px-7 sm:w-12 sm:px-6">
@@ -113,13 +113,13 @@ export const Table = memo(function Table({
                         headers.map((header) => (
                           <td
                             key={header.id + register.id}
-                            className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
+                            className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 "
                           >
                             {register[header?.key]}
                           </td>
                         ))}
 
-                      <td className="relative items-center gap-3 flex flex-row w-5 whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
+                      <td className="relative items-center gap-3 flex flex-row  whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
                         <Modal.Container
                           openModalButton={
                             <Button>
@@ -127,10 +127,6 @@ export const Table = memo(function Table({
                               <PencilSquareIcon className="text-white h-5 w-5 " />
                             </Button>
                           }
-                          // childrenThatCanSetOpenModal={
-                          //   <editDataModal dataIdToUpdate={register?.id} />
-                          // }
-
                           childrenThatCanSetOpenModal={cloneElement(
                             editDataModal,
                             {
@@ -146,18 +142,12 @@ export const Table = memo(function Table({
                               <TrashIcon className="text-red-600 h-5 w-5 hover:text-red-500" />
                             </Button>
                           }
-                          //! TODO: No futuro seria bom colocar o botão para deletar, Dentro do RemoveProfessionalModal, ai o botão receberia os dados
-                          //! TODO: Pelo Provider do react-hook-forms? talvez? -> e o botão ativaria o mutation(), mas no futuro vc vai trocar
-                          //! TODO: Pelo swr
-                          childrenThatCanSetOpenModal={
-                            <ConfirmToRemoveDataModal
-                              endPoint={endPoint}
-                              mutationKey={queryKey}
-                              dataIdsToDelete={[register.id]}
-                              title={titleToConfirmToRemoveDataModal}
-                              text={textToConfirmToRemoveDataModal}
-                            />
-                          }
+                          childrenThatCanSetOpenModal={cloneElement(
+                            confirmRemoveDataModal,
+                            {
+                              endPoint: `${endPoint}/${register?.id}`,
+                            },
+                          )}
                         />
                       </td>
                     </tr>

@@ -1,6 +1,7 @@
 'use client'
 import { InputHTMLAttributes, memo } from 'react'
 import { useFormContext } from 'react-hook-form'
+import TimePicker from 'react-time-picker'
 import { twMerge } from 'tailwind-merge'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -9,7 +10,20 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 function getError(errors: any, name: string) {
   try {
-    const currentError = errors[name]
+    let currentError: any | undefined
+
+    if (name.length > 26) {
+      const parts = name.split('.')
+      const availabilityFieldIndex = parseInt(parts[1])
+      const hourRangesIndex = parseInt(parts[3])
+      const endOrStartStr = parts[4]
+      currentError =
+        errors?.scheduleAvailability[availabilityFieldIndex]?.day[
+        hourRangesIndex
+        ][endOrStartStr]
+    } else {
+      currentError = errors[name]
+    }
 
     if (currentError?.message) {
       return true
@@ -28,6 +42,17 @@ export const Input = memo(function Input(props: InputProps) {
 
   const currentError = getError(errors, props?.name)
 
+  // if (props.type === 'time') {
+  //   return (
+  //     <TimePicker
+  //     // className={twMerge(
+  //     //   props?.className,
+  //     //   `${currentError ? 'outline  outline-red-500 outline-1' : ''}`,
+  //     // )}
+  //     />
+  //   )
+  // }
+
   return (
     <input
       id={props.name}
@@ -40,13 +65,3 @@ export const Input = memo(function Input(props: InputProps) {
     />
   )
 })
-
-// rounded-lg
-//   bg-white
-//   px-3.5
-//   py-3
-//   text-sm text-gray-yellow-cc-750 font-medium
-//   shadow-inputs-checkouts-cc
-//   shadow-color-inputs-checkout-cc
-//   focus:outline-none focus:ring-2 focus:ring-gray-yellow-cc-600
-//   outline-none border-0

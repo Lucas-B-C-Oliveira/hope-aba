@@ -105,7 +105,12 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
   if (signInStatus === 'success') {
     const { token } = signInQueryData
     const value = `Bearer ${token}`
-    setCookie('accessToken', value)
+
+    const { exp } = tokenDecode(token)
+    const expDate = new Date(exp * 1000)
+    setCookie('accessToken', value, {
+      expires: expDate,
+    })
     getClinicsDataRefetch()
   }
 

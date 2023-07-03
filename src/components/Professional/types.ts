@@ -1,12 +1,7 @@
 import { z } from 'zod'
 import { professionalFormSchema } from './'
-import {
-  QueryObserverResult,
-  RefetchOptions,
-  RefetchQueryFilters,
-} from '@tanstack/react-query'
+import { UseMutateAsyncFunction } from '@tanstack/react-query'
 import { MutableRefObject, ReactElement } from 'react'
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context'
 import { TherapyData } from '@/types'
 
 export type ProfessionalFormData = z.infer<typeof professionalFormSchema>
@@ -21,9 +16,9 @@ export type DayNames =
   | 'saturday'
 
 export interface ProfessionalFormProps {
-  queryKey?: string
+  mutationKey?: string
+  queryKeys?: string[]
   endPoint?: string
-  setOpen?: (value: boolean) => void
   registerData?: ProfessionalFormData
   therapiesData?: TherapyData[]
   method?: 'POST' | 'PATCH'
@@ -63,11 +58,6 @@ export type FormFieldSettings = {
 }
 
 export interface UseProfessionalFormProps {
-  status: 'error' | 'success' | 'loading'
-  professionalData: MutableRefObject<ProfessionalFormData | undefined>
-  router: AppRouterInstance
-  refetch: <TPageData>(
-    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
-  ) => Promise<QueryObserverResult<any, unknown>>
-  setOpen: (value: boolean) => void
+  queryKeys?: string[]
+  mutateAsync: UseMutateAsyncFunction<any, unknown, void, unknown>
 }

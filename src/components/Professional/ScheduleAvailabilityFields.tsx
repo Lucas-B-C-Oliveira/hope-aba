@@ -1,9 +1,10 @@
 'use client'
 import { memo } from 'react'
 import { Form } from '../Form'
-import { PlusCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
+import { PlusIcon, MinusIcon, ClockIcon } from '@heroicons/react/24/outline'
 import { TEXT_INPUT_STYLE } from '.'
 import { v4 as uuidv4 } from 'uuid'
+import { DAY_CARD_CLASSNAME } from '@/style/consts'
 
 interface ScheduleAvailabilityFieldsProps {
   scheduleAvailabilityFields: any
@@ -33,7 +34,7 @@ export const ScheduleAvailabilityFields = memo(
           style={{
             display: 'grid',
             gridTemplateRows: 'repeat(3, auto)',
-            gridTemplateColumns: 'repeat(3, 222px)',
+            gridTemplateColumns: 'repeat(3, 207.5px)',
             gridAutoFlow: 'column',
             gridRowGap: '14px',
             gridColumnGap: '14px',
@@ -44,24 +45,34 @@ export const ScheduleAvailabilityFields = memo(
               const { day } = field
 
               return (
-                <div
-                  key={field.id}
-                  className="flex flex-col gap-1 border-2 rounded p-1 relative h-fit"
-                >
+                <div key={field.id} className={DAY_CARD_CLASSNAME}>
                   <div className="flex flex-row gap-2 w-full justify-center">
                     <h2 className="text-black">
                       {weekdayName[availabilityFieldIndex]}
                     </h2>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => addHourRanges(availabilityFieldIndex)}
-                    className="text-sky-600 font-semibold text-xs flex items-center gap-1 "
-                  >
-                    <PlusCircleIcon className="h-4 w-4" />
-                    Adicionar horário
-                  </button>
+                  <div className="flex flex-row gap-3 justify-center content-center items-center">
+                    <button
+                      type="button"
+                      onClick={() => addHourRanges(availabilityFieldIndex)}
+                      className="text-sky-500 items-center gap-1  border border-1 border-sky-500 rounded-full hover:text-sky-300 hover:border-sky-300 active:text-sky-200 active:border-sky-200"
+                    >
+                      <PlusIcon className="h-4 w-4" />
+                    </button>
+
+                    <ClockIcon className="h-5 w-5 text-gray-700" />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        removeHourRanges(availabilityFieldIndex, 0)
+                      }
+                      className="text-red-500 items-center gap-1  border border-1 border-red-500 rounded-full hover:text-red-300 hover:border-red-300 active:text-red-200 active:border-red-200"
+                    >
+                      <MinusIcon className="h-4 w-4" />
+                    </button>
+                  </div>
 
                   {day.map((_: any, hourRangesIndex: number) => {
                     const fieldNameStart = `scheduleAvailability.${availabilityFieldIndex}.day.${hourRangesIndex}.start`
@@ -69,12 +80,15 @@ export const ScheduleAvailabilityFields = memo(
 
                     return (
                       <Form.Field key={uuidv4()}>
-                        <Form.ErrorMessage
-                          field="scheduleAvailability"
-                          availabilityFieldIndex={availabilityFieldIndex}
-                          lastField="start"
-                          hourRangesIndex={hourRangesIndex}
-                        />
+                        <div className="absolute">
+                          <Form.ErrorMessage
+                            field="scheduleAvailability"
+                            availabilityFieldIndex={availabilityFieldIndex}
+                            lastField="start"
+                            hourRangesIndex={hourRangesIndex}
+                          />
+                        </div>
+
                         <div className="flex flex-row gap-1  items-center">
                           <div className="flex flex-col items-center">
                             <Form.Label
@@ -102,21 +116,6 @@ export const ScheduleAvailabilityFields = memo(
                               name={fieldNameEnd}
                               className={TEXT_INPUT_STYLE}
                             />
-                          </div>
-
-                          <div className=" flex h-full w-fit pt-4 items-center">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                removeHourRanges(
-                                  availabilityFieldIndex,
-                                  hourRangesIndex,
-                                )
-                              }
-                              className="text-red-500  w-5 h-5"
-                            >
-                              <XCircleIcon />
-                            </button>
                           </div>
                         </div>
                       </Form.Field>

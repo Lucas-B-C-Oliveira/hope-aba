@@ -1,4 +1,6 @@
 import { getCookie } from 'cookies-next'
+import { RequestInit } from 'next/dist/server/web/spec-extension/request'
+import { redirect } from 'next/navigation'
 
 export async function CSFetch<T = unknown>(
   input: RequestInfo | URL,
@@ -6,6 +8,10 @@ export async function CSFetch<T = unknown>(
 ) {
   const accessToken = getCookie('accessToken')
   const clinicsData = getCookie('clinicsData')
+
+  if (typeof accessToken === 'undefined') {
+    redirect('/')
+  }
 
   const defaultHeaders = {
     'Content-Type': 'application/json',
@@ -22,6 +28,12 @@ export async function CSFetch<T = unknown>(
     headers,
   })
 
-  const result = await data.json()
+  // console.log('data', data)
+
+  if (data?.statusText === 'No Content') {
+    return data
+  }
+
+  const result = await data?.json()
   return result as T
 }

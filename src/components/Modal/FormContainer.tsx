@@ -64,7 +64,6 @@ export const FormContainer = memo(function FormContainer({
                   if (formField?.options) {
                     return (
                       <Form.Field key={formField.key}>
-
                         <div className="flex flex-row gap-1 items-center">
                           <Form.Label htmlFor={formField.name}>
                             {formField.labelText}
@@ -72,9 +71,16 @@ export const FormContainer = memo(function FormContainer({
                           <Form.ErrorMessage field={formField.field} />
                         </div>
 
-                        <select
+                        <Form.Select
+                          name={formField?.name}
+                          className={formField?.className}
+                          options={formField?.options}
+                          placeholder={formField.placeholder}
+                        />
+
+                        {/* <select
                           {...register(formField?.name)}
-                          className={formField.className}
+                          
                         >
                           <option value="">{formField.placeholder}</option>
                           {formField?.options?.length > 0 &&
@@ -83,8 +89,7 @@ export const FormContainer = memo(function FormContainer({
                                 {data.value}
                               </option>
                             ))}
-                        </select>
-
+                        </select> */}
                       </Form.Field>
                     )
                   }

@@ -12,8 +12,9 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode
   icon?: ReactElement
   queryKeys?: string[]
-  mutationKey?: string
+  isMutationAction?: boolean
   isItToRefetchQuery?: boolean
+  mutationStatus?: 'error' | 'loading' | 'success' | 'idle'
 }
 
 export const Button = memo(function Button({
@@ -21,7 +22,8 @@ export const Button = memo(function Button({
   icon,
   queryKeys = [],
   isItToRefetchQuery = false,
-
+  isMutationAction = false,
+  mutationStatus,
   ...rest
 }: Props) {
   const queryResults = useQueries({
@@ -47,6 +49,9 @@ export const Button = memo(function Button({
     >
       {!isFetching && children}
       {isFetching && <span>Loading...</span>}
+      {isMutationAction && mutationStatus === 'loading' && (
+        <span>Loading...</span>
+      )}
       {icon &&
         cloneElement(icon, {
           className: '',

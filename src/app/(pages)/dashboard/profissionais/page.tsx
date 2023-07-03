@@ -5,8 +5,9 @@ import { SearchData } from '@/components/SearchData'
 import { TherapyData } from '@/types'
 import { SSFetch } from '@/utils/api/serverFetch'
 import { PlusIcon } from '@heroicons/react/24/solid'
-import { ArrowUpIcon, ArrowUpCircleIcon } from '@heroicons/react/24/outline'
+import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
 import { redirect } from 'next/navigation'
+import { ConfirmToRemoveDataModal } from '@/components/Modals/ConfirmToRemoveDataModal'
 
 type FetchTherapiesData = {
   data: TherapyData[]
@@ -17,30 +18,13 @@ type FetchTherapiesData = {
   }
 }
 
-// const therapiesName = [
-//   'Fonoterapia',
-//   'Aba',
-//   'AVDS',
-//   'Avaliação',
-//   'Intervenção em Música',
-//   'Musicoterapia',
-//   'Neuropsicologia',
-//   'Fisioterapia',
-//   'Avaliação Psicológica',
-//   'Psicomotricidade',
-//   // 'Psicoterapia',
-//   // 'Psicopedagogia',
-//   // 'Integração sensorial',
-//   // 'Psicomotricidade',
-// ]
-
 export default async function Professionals() {
   const END_POINT = 'professionals'
-  const DELETE_AND_READ_KEY = 'delete-and-read-professionals'
-  const QUERY_KEY_CREATE = 'create-professionals'
-  const QUERY_KEY_DELETE = DELETE_AND_READ_KEY
-  const QUERY_KEY_READ = DELETE_AND_READ_KEY
-  const QUERY_KEY_UPDATE = DELETE_AND_READ_KEY
+
+  const CREATE_PROFESSIONAL_KEY = 'create-professional'
+  const READ_PROFESSIONAL_KEY = 'read-professional'
+  const UPDATE_PROFESSIONAL_KEY = 'update-professional'
+  const DELETE_PROFESSIONAL_KEY = 'delete-professional'
 
   const response = await SSFetch<FetchTherapiesData | any>(
     'therapies?active=true',
@@ -61,7 +45,10 @@ export default async function Professionals() {
       <h1>Profissionais</h1>
       <SearchData.Container>
         <div className="flex flex-row h-fit w-full justify-between">
-          <SearchData.Filters endPoint={END_POINT} queryKey={QUERY_KEY_READ} />
+          <SearchData.Filters
+            endPoint={END_POINT}
+            queryKey={READ_PROFESSIONAL_KEY}
+          />
 
           <Modal.Container
             openModalButton={
@@ -76,12 +63,13 @@ export default async function Professionals() {
           >
             <ProfessionalForm
               endPoint={END_POINT}
-              queryKey={QUERY_KEY_CREATE}
+              mutationKey={CREATE_PROFESSIONAL_KEY}
               titleForm="Cadastro de Profissional"
+              queryKeys={[READ_PROFESSIONAL_KEY]}
               method="POST"
               therapiesData={therapiesData}
               ActionButton={
-                <Button type="submit" queryKeys={[QUERY_KEY_CREATE]}>
+                <Button type="submit">
                   <PlusIcon
                     className="pointer-events-none h-full w-5 text-white"
                     aria-hidden="true"
@@ -93,17 +81,17 @@ export default async function Professionals() {
           </Modal.Container>
         </div>
 
-        <SearchData.ErrorResult queryKey={QUERY_KEY_READ} />
         <SearchData.Table
           editDataModal={
             <ProfessionalForm
               endPoint={END_POINT}
-              queryKey={QUERY_KEY_UPDATE}
+              mutationKey={UPDATE_PROFESSIONAL_KEY}
               method="PATCH"
+              queryKeys={[READ_PROFESSIONAL_KEY]}
               therapiesData={therapiesData}
               titleForm="Editar dados do Profissional"
               ActionButton={
-                <Button type="submit" queryKeys={[QUERY_KEY_READ]}>
+                <Button type="submit">
                   <ArrowUpCircleIcon
                     className="pointer-events-none h-full w-5 text-white"
                     aria-hidden="true"
@@ -113,10 +101,16 @@ export default async function Professionals() {
               }
             />
           }
-          queryKey={QUERY_KEY_DELETE}
+          confirmRemoveDataModal={
+            <ConfirmToRemoveDataModal
+              mutationKey={DELETE_PROFESSIONAL_KEY}
+              queryKeys={[READ_PROFESSIONAL_KEY]}
+              title="Deletar Cadastro"
+              text="Tem certeza que deseja deletar esse cadastro? (Essa ação não pode ser revertida)"
+            />
+          }
+          queryKey={READ_PROFESSIONAL_KEY}
           endPoint="professionals"
-          titleToConfirmToRemoveDataModal="Deletar Cadastro"
-          textToConfirmToRemoveDataModal="Tem certeza de que deseja desativar sua conta? Todos os seus dados serão removidos permanentemente de nossos servidores para sempre. Essa ação não pode ser desfeita."
         />
       </SearchData.Container>
     </div>

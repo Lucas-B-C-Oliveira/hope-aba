@@ -1,43 +1,62 @@
 'use client'
 
 import { CSFetch } from '@/utils/api/clientFetch'
+import { queryClient } from '@/utils/lib/react-query'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { useMutation } from '@tanstack/react-query'
 import { memo } from 'react'
+import { Button } from '../Button'
 
 interface Props {
-  endPoint: string
-  mutationKey: string
+  endPoint?: string
+  mutationKey?: string
   setOpen?: (value: boolean) => void
-  dataIdsToDelete: string[]
-  title: string
-  text: string
+  title?: string
+  text?: string
+  queryKeys?: string[]
 }
 
 export const ConfirmToRemoveDataModal = memo(function ConfirmToRemoveDataModal({
   endPoint,
   mutationKey,
   setOpen,
-  dataIdsToDelete,
   title,
   text,
+  queryKeys,
 }: Props) {
-  const { mutate } = useMutation({
+  const { mutateAsync, status } = useMutation({
+    mutationKey: [mutationKey],
     mutationFn: async () => {
       try {
-        const promises = dataIdsToDelete.map((id: string) => {
-          return CSFetch(`${endPoint}/${id}`, {
-            method: 'DELETE',
-          })
+        const response = await CSFetch(endPoint, {
+          method: 'DELETE',
         })
-        return await Promise.all(promises)
+
+        if (response?.error) {
+          throw new Error(response?.error)
+        }
+
+        return { ...response }
       } catch (error) {
         console.error(error)
         throw new Error(error)
       }
     },
-    mutationKey: [mutationKey],
   })
+
+  async function deleteHandle() {
+    try {
+      await mutateAsync()
+      queryClient.resetQueries({
+        queryKey: [queryKeys],
+        exact: true,
+        stale: true,
+      })
+    } catch (error) {
+      console.log('error dentro do catch do deleteHandle')
+      console.error(error)
+    }
+  }
 
   return (
     <div className="flex flex-col gap-2 w-96">
@@ -58,13 +77,16 @@ export const ConfirmToRemoveDataModal = memo(function ConfirmToRemoveDataModal({
         </div>
       </div>
       <div className="flex flex-row-reverse">
-        <button
+        <Button
           type="button"
           className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-          onClick={() => mutate()}
+          onClick={deleteHandle}
+          mutationStatus={status}
+          isMutationAction={true}
         >
           Deletar
-        </button>
+        </Button>
+
         <button
           type="button"
           className=" inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50  sm:w-auto"

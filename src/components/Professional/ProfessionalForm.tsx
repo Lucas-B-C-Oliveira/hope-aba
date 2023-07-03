@@ -1,5 +1,5 @@
 'use client'
-import { cloneElement, memo, useEffect, useRef } from 'react'
+import { cloneElement, memo, useEffect } from 'react'
 
 import {
   ProfessionalFormData,
@@ -12,35 +12,27 @@ import {
 
 import { useProfessionalForm } from './hooks/useProfessionalForm'
 
-import { useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { CSFetch } from '@/utils/api/clientFetch'
-
-import { useRouter } from 'next/navigation'
 import { Modal } from '../Modal'
 
 export const ProfessionalForm = memo(function ProfessionalForm({
   endPoint,
-  queryKey,
+  mutationKey,
+  queryKeys,
   therapiesData,
   method,
-  setOpen,
   registerData,
   ActionButton,
   titleForm,
 }: ProfessionalFormProps) {
-  const router = useRouter()
-  const professionalData = useRef<ProfessionalFormData | undefined>(undefined)
-
-  const { refetch, status } = useQuery({
-    queryKey: [queryKey],
-    queryFn: async () => {
+  const { mutateAsync, status } = useMutation({
+    mutationKey: [mutationKey],
+    mutationFn: async (data: ProfessionalFormData) => {
       try {
-        if (typeof professionalData.current === 'undefined')
-          throw new Error('professionalData.current is undefined')
-
         const response = await CSFetch<any>(endPoint, {
           method,
-          body: JSON.stringify(professionalData.current),
+          body: JSON.stringify(data),
         })
 
         if (response?.error) {
@@ -53,7 +45,6 @@ export const ProfessionalForm = memo(function ProfessionalForm({
         throw new Error(error)
       }
     },
-    enabled: false,
   })
 
   const {
@@ -70,12 +61,9 @@ export const ProfessionalForm = memo(function ProfessionalForm({
     formFields,
     reset,
   } = useProfessionalForm({
-    status,
-    refetch,
-    professionalData,
-    router,
-    setOpen,
-  }) //! TODO: Checar se precisa do router ou não, pq eu uso só pra fechar o modal, mas pode ser q precise dele
+    queryKeys,
+    mutateAsync,
+  })
 
   useEffect(() => {
     if (typeof registerData !== 'undefined') {
@@ -86,8 +74,8 @@ export const ProfessionalForm = memo(function ProfessionalForm({
       const day = String(date.getDate()).padStart(2, '0')
       const month = String(date.getMonth() + 1).padStart(2, '0')
       const year = date.getFullYear()
-      // const bornDate = `${year}-${month}-${day}`
-      const bornDate = `${day}-${month}-${year}`
+      const bornDate = `${year}-${month}-${day}`
+      // const bornDate = `${day}-${month}-${year}`
 
       // 2023-06-04
 
@@ -108,7 +96,8 @@ export const ProfessionalForm = memo(function ProfessionalForm({
           }
         }
 
-        return { day: [{ start: '00:00', end: '00:00' }] }
+        // return { day: [{ start: '00:00', end: '00:00' }] }
+        return { day: [] }
       })
 
       const therapiesAttended = therapiesData?.map((value, index) => {
@@ -135,13 +124,13 @@ export const ProfessionalForm = memo(function ProfessionalForm({
       })
     } else {
       setValue('scheduleAvailability', [
-        { day: [{ start: '00:00', end: '00:00' }] },
-        { day: [{ start: '00:00', end: '00:00' }] },
-        { day: [{ start: '00:00', end: '00:00' }] },
-        { day: [{ start: '00:00', end: '00:00' }] },
-        { day: [{ start: '00:00', end: '00:00' }] },
-        { day: [{ start: '00:00', end: '00:00' }] },
-        { day: [{ start: '00:00', end: '00:00' }] },
+        { day: [] },
+        { day: [] },
+        { day: [] },
+        { day: [] },
+        { day: [] },
+        { day: [] },
+        { day: [] },
       ])
 
       if (typeof therapiesData !== 'undefined') {
@@ -171,6 +160,8 @@ export const ProfessionalForm = memo(function ProfessionalForm({
         ActionButton &&
         cloneElement(ActionButton, {
           disabled: isSubmitting,
+          mutationStatus: status,
+          isMutationAction: true,
         })
       }
       SpecialFields={

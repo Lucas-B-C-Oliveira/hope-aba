@@ -28,7 +28,7 @@ export const Filters = memo(function Filters({ endPoint, queryKey }: Props) {
   const {
     refetch,
     status,
-    data: queryData,
+    // data: queryData,
   } = useQuery({
     queryKey: [queryKey],
     queryFn: async () => {
@@ -50,11 +50,12 @@ export const Filters = memo(function Filters({ endPoint, queryKey }: Props) {
         throw new Error(error)
       }
     },
+    // enabled: typeof inputSearchData?.current?.search !== 'undefined',
     enabled: false,
   })
 
   if (status === 'success') {
-    console.log('queryData onSucess', queryData)
+    // console.log('queryData onSucess', queryData)
   }
 
   const createSearchForm = useForm<SearchData>({
@@ -67,7 +68,6 @@ export const Filters = memo(function Filters({ endPoint, queryKey }: Props) {
   } = createSearchForm
 
   function search(data: SearchData) {
-    console.log('searchData submit', data)
     inputSearchData.current = data
     refetch()
   }
