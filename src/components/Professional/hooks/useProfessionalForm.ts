@@ -22,7 +22,6 @@ export const useProfessionalForm = ({
   const queryClient = useQueryClient()
 
   const {
-    register,
     handleSubmit,
     formState: { isSubmitting },
     control,
@@ -114,7 +113,6 @@ export const useProfessionalForm = ({
   }
 
   return {
-    register,
     handleSubmit,
     isSubmitting,
     setValue,

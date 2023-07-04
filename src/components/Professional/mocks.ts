@@ -1,7 +1,7 @@
 import { SELECT_INPUT_CLASSNAME, TEXT_INPUT_CLASSNAME } from '@/style/consts'
-import { FormFieldSettings } from '.'
 
 import { v4 as uuidv4 } from 'uuid'
+import { FormProfessionalFieldSettings } from './types'
 
 export const TEXT_INPUT_STYLE = `block w-full ${TEXT_INPUT_CLASSNAME}`
 export const SELECT_INPUT_STYLE = `block w-full ${SELECT_INPUT_CLASSNAME}`
@@ -26,7 +26,7 @@ export const weekdayName = [
   'Domingo',
 ]
 
-export const formFields: FormFieldSettings[] = [
+export const formFields: FormProfessionalFieldSettings[] = [
   {
     className: TEXT_INPUT_STYLE,
     htmlFor: 'name',
@@ -187,5 +187,25 @@ export const formFields: FormFieldSettings[] = [
     ],
     type: 'select',
     key: uuidv4(),
+  },
+]
+
+export const tableHeaders = [
+  {
+    key: 'name',
+    value: 'Nome',
+    id: uuidv4(),
+  },
+
+  {
+    key: 'profession',
+    value: 'Profissão',
+    id: uuidv4(),
+  },
+
+  {
+    key: 'email',
+    value: 'E-mail',
+    id: uuidv4(),
   },
 ]

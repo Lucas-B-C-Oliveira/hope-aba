@@ -59,20 +59,10 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
         return await Promise.all(promises)
       } catch (error: unknown) {
         console.error('error', error)
-        throw new Error(error)
       }
     },
     enabled: false,
   })
-
-  if (getClinicsDataStatus === 'success') {
-    const clinicsData = getClinicsData?.map((element: any) => {
-      return element.data
-    })
-
-    setCookie('clinicsData', clinicsData)
-    router.push('/dashboard')
-  }
 
   const {
     data: signInQueryData,
@@ -84,7 +74,7 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
       try {
         if (typeof signInData.current === 'undefined') throw new Error('')
 
-        const response = await CSFetch<unknown>('sign-in', {
+        const response = await CSFetch<any>('sign-in', {
           method: 'POST',
           body: JSON.stringify(signInData.current),
         })
@@ -96,7 +86,6 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
         return { ...response }
       } catch (error: unknown) {
         console.error('error', error)
-        throw new Error(error)
       }
     },
     enabled: false,
@@ -112,6 +101,22 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
       expires: expDate,
     })
     getClinicsDataRefetch()
+  }
+
+  if (getClinicsDataStatus === 'success') {
+    const { token } = signInQueryData
+
+    const { exp } = tokenDecode(token)
+    const expDate = new Date(exp * 1000)
+
+    const clinicsData = getClinicsData?.map((element: any) => {
+      return element.data
+    })
+
+    setCookie('clinicsData', clinicsData, {
+      expires: expDate,
+    })
+    router.push('/dashboard')
   }
 
   const signInForm = useForm<SignInData>({

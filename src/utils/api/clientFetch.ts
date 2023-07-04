@@ -9,8 +9,11 @@ export async function CSFetch<T = unknown>(
   const accessToken = getCookie('accessToken')
   const clinicsData = getCookie('clinicsData')
 
-  if (typeof accessToken === 'undefined') {
-    redirect('/')
+  if (
+    typeof accessToken === 'undefined' ||
+    typeof clinicsData === 'undefined'
+  ) {
+    redirect('/') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
   }
 
   const defaultHeaders = {

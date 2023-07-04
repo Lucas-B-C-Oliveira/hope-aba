@@ -1,22 +1,16 @@
 'use client'
 import { cloneElement, memo, useEffect } from 'react'
 
-import {
-  ProfessionalFormData,
-  ProfessionalFormProps,
-  ScheduleAvailabilityFields,
-  weekdayKeys,
-  weekdayName,
-} from '.'
+import { RoomFormData, RoomFormProps } from '.'
 
-import { useProfessionalForm } from './hooks/useProfessionalForm'
+import { useRoomForm } from './hooks/useRoomForm'
 
 import { useMutation } from '@tanstack/react-query'
 import { CSFetch } from '@/utils/api/clientFetch'
 import { Modal } from '../Modal'
 import { TherapiesFields } from '../Therapies/TherapiesFields'
 
-export const ProfessionalForm = memo(function ProfessionalForm({
+export const RoomForm = memo(function RoomForm({
   endPoint,
   mutationKey,
   queryKeys,
@@ -26,10 +20,10 @@ export const ProfessionalForm = memo(function ProfessionalForm({
   ActionButton,
   titleForm,
   setOpen,
-}: ProfessionalFormProps) {
+}: RoomFormProps) {
   const { mutateAsync, status } = useMutation({
     mutationKey: [mutationKey],
-    mutationFn: async (data: ProfessionalFormData) => {
+    mutationFn: async (data: RoomFormData) => {
       try {
         const response = await CSFetch<any>(endPoint as string, {
           method,
@@ -48,18 +42,15 @@ export const ProfessionalForm = memo(function ProfessionalForm({
   })
 
   const {
-    addHourRanges,
     handleSubmit,
     handleSubmitData,
     isSubmitting,
-    removeHourRanges,
     setValue,
     therapiesAttendedFields,
-    professionalFormData,
-    scheduleAvailabilityFields,
+    roomFormData,
     formFields,
     reset,
-  } = useProfessionalForm({
+  } = useRoomForm({
     queryKeys,
     mutateAsync,
     setOpen,
@@ -67,35 +58,6 @@ export const ProfessionalForm = memo(function ProfessionalForm({
 
   useEffect(() => {
     if (typeof registerData !== 'undefined') {
-      console.log('registerData', registerData)
-
-      const { bornDate: bornDateBackend } = registerData
-      const date = new Date(bornDateBackend as string)
-      const day = String(date.getDate()).padStart(2, '0')
-      const month = String(date.getMonth() + 1).padStart(2, '0')
-      const year = date.getFullYear()
-      const bornDate = `${year}-${month}-${day}`
-
-      const scheduleAvailability = weekdayKeys.map((weekdayKey) => {
-        if (typeof registerData !== 'undefined') {
-          const { scheduleAvailability: scheduleAvailabilityArray } =
-            registerData
-
-          const foundObject = scheduleAvailabilityArray.find((item) => {
-            const [key] = Object.entries(item)[0]
-
-            return key === weekdayKey
-          })
-
-          if (foundObject) {
-            const times = Object.values(foundObject)
-            return { day: times[0] }
-          }
-        }
-
-        return { day: [] }
-      })
-
       const therapiesAttended = therapiesData?.map((value, index) => {
         const { therapiesAttended: therapiesAttendedArray } = registerData
 
@@ -113,20 +75,8 @@ export const ProfessionalForm = memo(function ProfessionalForm({
       reset({
         ...registerData,
         therapiesAttended,
-        scheduleAvailability,
-        bornDate,
       })
     } else {
-      setValue('scheduleAvailability', [
-        { day: [] },
-        { day: [] },
-        { day: [] },
-        { day: [] },
-        { day: [] },
-        { day: [] },
-        { day: [] },
-      ])
-
       if (typeof therapiesData !== 'undefined') {
         setValue(
           'therapiesAttended',
@@ -148,7 +98,12 @@ export const ProfessionalForm = memo(function ProfessionalForm({
       handleSubmit={handleSubmit}
       handleSubmitData={handleSubmitData}
       titleForm={titleForm}
-      useFormReturn={professionalFormData}
+      useFormReturn={roomFormData}
+      therapiesFieldsClassNameGrid="row-start-1 col-start-2 col-end-2"
+      therapiesFieldsGridRowEnd="3"
+      mainFieldsGridRowGap="2px"
+      mainFieldsGridTemplateRows="repeat(6, 55px)"
+      mainFieldsGridTemplateColumns="repeat(2, 190px)"
       ActionButton={
         ActionButton &&
         cloneElement(ActionButton, {
@@ -156,14 +111,6 @@ export const ProfessionalForm = memo(function ProfessionalForm({
           mutationStatus: status,
           isMutationAction: true,
         })
-      }
-      SpecialFields={
-        <ScheduleAvailabilityFields
-          addHourRanges={addHourRanges}
-          removeHourRanges={removeHourRanges}
-          scheduleAvailabilityFields={scheduleAvailabilityFields}
-          weekdayName={weekdayName}
-        />
       }
       TherapiesFields={
         <TherapiesFields therapiesAttendedFields={therapiesAttendedFields} />

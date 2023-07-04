@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { professionalFormSchema } from './'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
 import { ReactElement } from 'react'
-import { TherapyData } from '@/types'
+import { FormFieldSettings, TherapyData } from '@/types'
 
 export type ProfessionalFormData = z.infer<typeof professionalFormSchema>
 
@@ -46,17 +46,10 @@ export type NameInputs =
   | 'scholarity'
   | 'profession'
 
-export type FormFieldSettings = {
-  className: string
-  placeholder: string
-  type: string
+export type FormProfessionalFieldSettings = {
   name: NameInputs
-  htmlFor: string
-  labelText: string
-  key: string
-  field: string
   options?: Option[]
-}
+} & FormFieldSettings
 
 export interface UseProfessionalFormProps {
   queryKeys?: string[]

@@ -6,20 +6,25 @@ import {
   CHECKBOX_INPUT_CLASSNAME,
   TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
 } from '@/style/consts'
+import { twMerge } from 'tailwind-merge'
 
 interface TherapiesFieldsProps {
   therapiesAttendedFields: any
+  classNameGrid?: string
+  gridRowEnd?: string
 }
 
 export const TherapiesFields = memo(function TherapiesFields({
   therapiesAttendedFields,
+  classNameGrid = 'row-start-3 col-start-2 col-end-2',
+  gridRowEnd = '10',
 }: TherapiesFieldsProps) {
   return (
     <Form.Field
       style={{
-        gridRowEnd: '10',
+        gridRowEnd,
       }}
-      className="flex flex-col gap-1 row-start-3 col-start-2 col-end-2"
+      className={twMerge('flex flex-col gap-1', classNameGrid)}
     >
       <div className="flex flex-row gap-1 items-center">
         <Form.Label>Terapias</Form.Label>

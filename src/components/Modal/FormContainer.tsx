@@ -6,10 +6,13 @@ import {
   FormProvider,
   SubmitErrorHandler,
   SubmitHandler,
-  UseFormRegister,
   UseFormReturn,
 } from 'react-hook-form'
 import { Form } from '../Form'
+import {
+  CHECKBOX_INPUT_CLASSNAME,
+  TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
+} from '@/style/consts'
 
 interface Props {
   useFormReturn: UseFormReturn
@@ -19,11 +22,15 @@ interface Props {
   ) => (e?: BaseSyntheticEvent<T> | undefined) => Promise<T>
   handleSubmitData: (data: any) => void
   formFields: any[]
-  register: UseFormRegister<FieldValues>
   ActionButton: ReactElement
   SpecialFields: ReactElement
   TherapiesFields: ReactElement
   titleForm: string
+  therapiesFieldsClassNameGrid?: string
+  therapiesFieldsGridRowEnd?: string
+  mainFieldsGridRowGap?: string
+  mainFieldsGridTemplateRows?: string
+  mainFieldsGridTemplateColumns?: string
 }
 
 export const FormContainer = memo(function FormContainer({
@@ -31,11 +38,15 @@ export const FormContainer = memo(function FormContainer({
   handleSubmit,
   handleSubmitData,
   formFields,
-  register,
   titleForm,
   ActionButton,
   SpecialFields,
   TherapiesFields,
+  therapiesFieldsClassNameGrid = 'row-start-3 col-start-2 col-end-2',
+  therapiesFieldsGridRowEnd = '10',
+  mainFieldsGridRowGap = '14px',
+  mainFieldsGridTemplateRows = 'repeat(10, 60px)',
+  mainFieldsGridTemplateColumns = 'repeat(2, 190px)',
 }: Props) {
   return (
     <FormProvider {...useFormReturn}>
@@ -51,10 +62,10 @@ export const FormContainer = memo(function FormContainer({
           <div
             style={{
               display: 'grid',
-              gridTemplateRows: 'repeat(10, 60px)',
-              gridTemplateColumns: 'repeat(2, 190px)',
+              gridTemplateRows: mainFieldsGridTemplateRows,
+              gridTemplateColumns: mainFieldsGridTemplateColumns,
               gridAutoFlow: 'column',
-              gridRowGap: '14px',
+              gridRowGap: mainFieldsGridRowGap,
               gridColumnGap: '24px',
             }}
           >
@@ -77,19 +88,6 @@ export const FormContainer = memo(function FormContainer({
                           options={formField?.options}
                           placeholder={formField.placeholder}
                         />
-
-                        {/* <select
-                          {...register(formField?.name)}
-                          
-                        >
-                          <option value="">{formField.placeholder}</option>
-                          {formField?.options?.length > 0 &&
-                            formField.options.map((data: any) => (
-                              <option key={data.key} value={data.key}>
-                                {data.value}
-                              </option>
-                            ))}
-                        </select> */}
                       </Form.Field>
                     )
                   }
@@ -113,6 +111,31 @@ export const FormContainer = memo(function FormContainer({
                   )
                 }
 
+                if (formField.type === 'checkbox') {
+                  return (
+                    <Form.Field
+                      key={formField.key}
+                      className="flex flex-row gap-2 items-center"
+                    >
+                      <Form.Input
+                        className={`${CHECKBOX_INPUT_CLASSNAME} w-5 h-5`}
+                        type={formField.type}
+                        name={formField.name}
+                      />
+
+                      <div className="flex flex-row gap-1 items-center">
+                        <Form.Label
+                          className={TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME}
+                          htmlFor={formField.name}
+                        >
+                          {formField.labelText}
+                        </Form.Label>
+                        <Form.ErrorMessage field={formField.field} />
+                      </div>
+                    </Form.Field>
+                  )
+                }
+
                 return (
                   <Form.Field key={formField.key}>
                     <div className="flex flex-row gap-1 items-center">
@@ -131,7 +154,11 @@ export const FormContainer = memo(function FormContainer({
                 )
               })}
 
-            {TherapiesFields && cloneElement(TherapiesFields)}
+            {TherapiesFields &&
+              cloneElement(TherapiesFields, {
+                classNameGrid: therapiesFieldsClassNameGrid,
+                gridRowEnd: therapiesFieldsGridRowEnd,
+              })}
           </div>
 
           {SpecialFields && cloneElement(SpecialFields)}

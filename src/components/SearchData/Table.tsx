@@ -3,7 +3,6 @@
 import { CHECKBOX_INPUT_CLASSNAME } from '@/style/consts'
 import { useQuery } from '@tanstack/react-query'
 import { ReactElement, cloneElement, memo } from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import { Button } from '../Button'
 import { TrashIcon, PencilSquareIcon } from '@heroicons/react/20/solid'
 import { Modal } from '../Modal'
@@ -13,6 +12,7 @@ interface Props {
   endPoint: string
   editDataModal: ReactElement
   confirmRemoveDataModal: ReactElement
+  tableHeaders: { key: string; value: string; id: string }[]
 }
 
 export const Table = memo(function Table({
@@ -20,6 +20,7 @@ export const Table = memo(function Table({
   endPoint,
   editDataModal,
   confirmRemoveDataModal,
+  tableHeaders,
 }: Props) {
   //! TODO: No futuro, tem que definir bem esse Table, se ele é genérico ou não, pq nesse caso, ele não está sendo genérico, está?
 
@@ -27,26 +28,6 @@ export const Table = memo(function Table({
   const { data } = useQuery({
     queryKey: [queryKey],
   })
-
-  const headers = [
-    {
-      key: 'name',
-      value: 'Nome',
-      id: uuidv4(),
-    },
-
-    {
-      key: 'profession',
-      value: 'Profissão',
-      id: uuidv4(),
-    },
-
-    {
-      key: 'email',
-      value: 'E-mail',
-      id: uuidv4(),
-    },
-  ]
 
   return (
     <div className="mt-8 flow-root">
@@ -72,8 +53,8 @@ export const Table = memo(function Table({
                     onChange={toggleAll} */}
                   </th>
 
-                  {headers?.length > 0 &&
-                    headers.map((header) => (
+                  {tableHeaders?.length > 0 &&
+                    tableHeaders.map((header) => (
                       <th
                         key={header.id}
                         scope="col"
@@ -102,19 +83,20 @@ export const Table = memo(function Table({
                         <input
                           type="checkbox"
                           className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                        // ref={checkbox}
-                        // checked={checked}
-                        // onChange={toggleAll}
                         />
                       </td>
 
-                      {headers.length > 0 &&
-                        headers.map((header) => (
+                      {tableHeaders.length > 0 &&
+                        tableHeaders.map((header) => (
                           <td
                             key={header.id + register.id}
                             className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 "
                           >
-                            {register[header?.key]}
+                            {typeof register[header?.key] === 'boolean'
+                              ? register[header?.key] === true
+                                ? 'Sim'
+                                : 'Não'
+                              : register[header?.key]}
                           </td>
                         ))}
 

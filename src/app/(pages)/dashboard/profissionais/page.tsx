@@ -2,29 +2,21 @@ import { ProfessionalForm } from '@/components/Professional/ProfessionalForm'
 import { Button } from '@/components/Button'
 import { Modal } from '@/components/Modal'
 import { SearchData } from '@/components/SearchData'
-import { TherapyData } from '@/types'
+import { FetchTherapiesData, TherapyData } from '@/types'
 import { SSFetch } from '@/utils/api/serverFetch'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
 import { redirect } from 'next/navigation'
 import { ConfirmToRemoveDataModal } from '@/components/Modals/ConfirmToRemoveDataModal'
-
-type FetchTherapiesData = {
-  data: TherapyData[]
-  meta?: {
-    page?: number
-    perPage?: number
-    total?: number
-  }
-}
+import { tableHeaders } from '@/components/Professional'
 
 export default async function Professionals() {
   const END_POINT = 'professionals'
 
-  const CREATE_PROFESSIONAL_KEY = 'create-professional'
-  const READ_PROFESSIONAL_KEY = 'read-professional'
-  const UPDATE_PROFESSIONAL_KEY = 'update-professional'
-  const DELETE_PROFESSIONAL_KEY = 'delete-professional'
+  const CREATE_KEY = 'create-professional'
+  const READ_KEY = 'read-professional'
+  const UPDATE_KEY = 'update-professional'
+  const DELETE_KEY = 'delete-professional'
 
   const response = await SSFetch<FetchTherapiesData | any>(
     'therapies?active=true',
@@ -41,14 +33,11 @@ export default async function Professionals() {
   }))
 
   return (
-    <div className="">
+    <>
       <h1>Profissionais</h1>
       <SearchData.Container>
         <div className="flex flex-row h-fit w-full justify-between">
-          <SearchData.Filters
-            endPoint={END_POINT}
-            queryKey={READ_PROFESSIONAL_KEY}
-          />
+          <SearchData.Filters endPoint={END_POINT} queryKey={READ_KEY} />
 
           <Modal.Container
             openModalButton={
@@ -63,9 +52,9 @@ export default async function Professionals() {
             childrenThatCanSetOpenModal={
               <ProfessionalForm
                 endPoint={END_POINT}
-                mutationKey={CREATE_PROFESSIONAL_KEY}
+                mutationKey={CREATE_KEY}
                 titleForm="Cadastro de Profissional"
-                queryKeys={[READ_PROFESSIONAL_KEY]}
+                queryKeys={[READ_KEY]}
                 method="POST"
                 therapiesData={therapiesData}
                 ActionButton={
@@ -83,12 +72,13 @@ export default async function Professionals() {
         </div>
 
         <SearchData.Table
+          tableHeaders={tableHeaders}
           editDataModal={
             <ProfessionalForm
               endPoint={END_POINT}
-              mutationKey={UPDATE_PROFESSIONAL_KEY}
+              mutationKey={UPDATE_KEY}
               method="PATCH"
-              queryKeys={[READ_PROFESSIONAL_KEY]}
+              queryKeys={[READ_KEY]}
               therapiesData={therapiesData}
               titleForm="Editar dados do Profissional"
               ActionButton={
@@ -104,16 +94,16 @@ export default async function Professionals() {
           }
           confirmRemoveDataModal={
             <ConfirmToRemoveDataModal
-              mutationKey={DELETE_PROFESSIONAL_KEY}
-              queryKeys={[READ_PROFESSIONAL_KEY]}
+              mutationKey={DELETE_KEY}
+              queryKeys={[READ_KEY]}
               title="Deletar Cadastro"
               text="Tem certeza que deseja deletar esse cadastro? (Essa ação não pode ser revertida)"
             />
           }
-          queryKey={READ_PROFESSIONAL_KEY}
-          endPoint="professionals"
+          queryKey={READ_KEY}
+          endPoint={END_POINT}
         />
       </SearchData.Container>
-    </div>
+    </>
   )
 }
