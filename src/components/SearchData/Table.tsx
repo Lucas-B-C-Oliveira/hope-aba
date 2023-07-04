@@ -24,9 +24,8 @@ export const Table = memo(function Table({
   //! TODO: No futuro, tem que definir bem esse Table, se ele é genérico ou não, pq nesse caso, ele não está sendo genérico, está?
 
   //! TODO: Fazer um estado de loading para a table? Talvez?
-  const { isFetching, data } = useQuery({
+  const { data } = useQuery({
     queryKey: [queryKey],
-    enabled: false,
   })
 
   const headers = [

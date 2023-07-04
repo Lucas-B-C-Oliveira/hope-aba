@@ -25,12 +25,13 @@ export const ProfessionalForm = memo(function ProfessionalForm({
   registerData,
   ActionButton,
   titleForm,
+  setOpen,
 }: ProfessionalFormProps) {
   const { mutateAsync, status } = useMutation({
     mutationKey: [mutationKey],
     mutationFn: async (data: ProfessionalFormData) => {
       try {
-        const response = await CSFetch<any>(endPoint, {
+        const response = await CSFetch<any>(endPoint as string, {
           method,
           body: JSON.stringify(data),
         })
@@ -42,7 +43,6 @@ export const ProfessionalForm = memo(function ProfessionalForm({
         return { ...response }
       } catch (error) {
         console.error(error)
-        throw new Error(error)
       }
     },
   })
@@ -63,6 +63,7 @@ export const ProfessionalForm = memo(function ProfessionalForm({
   } = useProfessionalForm({
     queryKeys,
     mutateAsync,
+    setOpen,
   })
 
   useEffect(() => {

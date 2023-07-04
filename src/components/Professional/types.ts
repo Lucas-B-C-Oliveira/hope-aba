@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { professionalFormSchema } from './'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
-import { MutableRefObject, ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { TherapyData } from '@/types'
 
 export type ProfessionalFormData = z.infer<typeof professionalFormSchema>
@@ -24,6 +24,7 @@ export interface ProfessionalFormProps {
   method?: 'POST' | 'PATCH'
   ActionButton?: ReactElement
   titleForm?: string
+  setOpen?: (value: boolean) => void
 }
 
 export type Option = {
@@ -59,5 +60,6 @@ export type FormFieldSettings = {
 
 export interface UseProfessionalFormProps {
   queryKeys?: string[]
-  mutateAsync: UseMutateAsyncFunction<any, unknown, void, unknown>
+  mutateAsync: UseMutateAsyncFunction<any, unknown, any, unknown>
+  setOpen?: (value: boolean) => void
 }

@@ -60,25 +60,26 @@ export default async function Professionals() {
                 Adicionar Profissional
               </Button>
             }
-          >
-            <ProfessionalForm
-              endPoint={END_POINT}
-              mutationKey={CREATE_PROFESSIONAL_KEY}
-              titleForm="Cadastro de Profissional"
-              queryKeys={[READ_PROFESSIONAL_KEY]}
-              method="POST"
-              therapiesData={therapiesData}
-              ActionButton={
-                <Button type="submit">
-                  <PlusIcon
-                    className="pointer-events-none h-full w-5 text-white"
-                    aria-hidden="true"
-                  />
-                  Cadastrar
-                </Button>
-              }
-            />
-          </Modal.Container>
+            childrenThatCanSetOpenModal={
+              <ProfessionalForm
+                endPoint={END_POINT}
+                mutationKey={CREATE_PROFESSIONAL_KEY}
+                titleForm="Cadastro de Profissional"
+                queryKeys={[READ_PROFESSIONAL_KEY]}
+                method="POST"
+                therapiesData={therapiesData}
+                ActionButton={
+                  <Button type="submit">
+                    <PlusIcon
+                      className="pointer-events-none h-full w-5 text-white"
+                      aria-hidden="true"
+                    />
+                    Cadastrar
+                  </Button>
+                }
+              />
+            }
+          />
         </div>
 
         <SearchData.Table

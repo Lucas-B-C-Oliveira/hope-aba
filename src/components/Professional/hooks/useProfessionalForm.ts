@@ -8,15 +8,18 @@ import {
   formFields,
 } from '../'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { queryClient } from '@/utils/lib/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 export const useProfessionalForm = ({
   mutateAsync,
   queryKeys,
+  setOpen,
 }: UseProfessionalFormProps) => {
   const professionalFormData = useForm<ProfessionalFormData>({
     resolver: zodResolver(professionalFormSchema),
   })
+
+  const queryClient = useQueryClient()
 
   const {
     register,
@@ -97,25 +100,14 @@ export const useProfessionalForm = ({
   async function handleSubmitData(data: ProfessionalFormData) {
     try {
       await mutateAsync(data)
-      // queryClient.invalidateQueries({
-      //   queryKey: [queryKeys],
-      //   // exact: true,
-      //   type: 'all',
-      // })
 
-      // queryClient.refetchQueries({
-      //   queryKey: ['read-professional'],
-      //   type: 'all',
-      // })
+      await queryClient.refetchQueries({
+        queryKey: queryKeys,
+        exact: true,
+        type: 'all',
+      })
 
-      // queryClient.refetchQueries({
-      //   queryKey: queryKeys,
-      //   type: 'all',
-      // })
-
-      await queryClient.resetQueries({ queryKey: queryKeys })
-
-      // router.refresh()
+      if (setOpen) setOpen(false)
     } catch (error) {
       console.error(error)
     }

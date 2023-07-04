@@ -25,11 +25,7 @@ interface Props {
 
 export const Filters = memo(function Filters({ endPoint, queryKey }: Props) {
   const inputSearchData = useRef<SearchData | undefined>(undefined)
-  const {
-    refetch,
-    status,
-    // data: queryData,
-  } = useQuery({
+  const { refetch } = useQuery({
     queryKey: [queryKey],
     queryFn: async () => {
       try {
@@ -47,16 +43,11 @@ export const Filters = memo(function Filters({ endPoint, queryKey }: Props) {
         return { ...response }
       } catch (error) {
         console.error(error)
-        throw new Error(error)
+        return error
       }
     },
-    // enabled: typeof inputSearchData?.current?.search !== 'undefined',
     enabled: false,
   })
-
-  if (status === 'success') {
-    // console.log('queryData onSucess', queryData)
-  }
 
   const createSearchForm = useForm<SearchData>({
     resolver: zodResolver(searchSchema),

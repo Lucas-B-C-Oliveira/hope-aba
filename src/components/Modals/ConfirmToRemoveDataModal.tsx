@@ -1,9 +1,8 @@
 'use client'
 
 import { CSFetch } from '@/utils/api/clientFetch'
-import { queryClient } from '@/utils/lib/react-query'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { memo } from 'react'
 import { Button } from '../Button'
 
@@ -24,11 +23,12 @@ export const ConfirmToRemoveDataModal = memo(function ConfirmToRemoveDataModal({
   text,
   queryKeys,
 }: Props) {
+  const queryClient = useQueryClient()
   const { mutateAsync, status } = useMutation({
     mutationKey: [mutationKey],
     mutationFn: async () => {
       try {
-        const response = await CSFetch(endPoint, {
+        const response = await CSFetch<any>(endPoint as string, {
           method: 'DELETE',
         })
 
@@ -39,7 +39,6 @@ export const ConfirmToRemoveDataModal = memo(function ConfirmToRemoveDataModal({
         return { ...response }
       } catch (error) {
         console.error(error)
-        throw new Error(error)
       }
     },
   })
@@ -47,11 +46,14 @@ export const ConfirmToRemoveDataModal = memo(function ConfirmToRemoveDataModal({
   async function deleteHandle() {
     try {
       await mutateAsync()
-      queryClient.resetQueries({
-        queryKey: [queryKeys],
+
+      await queryClient.refetchQueries({
+        queryKey: queryKeys,
         exact: true,
-        stale: true,
+        type: 'all',
       })
+
+      if (setOpen) setOpen(false)
     } catch (error) {
       console.log('error dentro do catch do deleteHandle')
       console.error(error)

@@ -28,8 +28,6 @@ export async function CSFetch<T = unknown>(
     headers,
   })
 
-  // console.log('data', data)
-
   if (data?.statusText === 'No Content') {
     return data
   }
