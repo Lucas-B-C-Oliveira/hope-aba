@@ -1,7 +1,8 @@
+/* eslint-disable prettier/prettier */
 'use client'
 import { InputHTMLAttributes, memo } from 'react'
 import { useFormContext } from 'react-hook-form'
-import TimePicker from 'react-time-picker'
+// import TimePicker from 'react-time-picker'
 import { twMerge } from 'tailwind-merge'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -18,6 +19,7 @@ function getError(errors: any, name: string) {
       const hourRangesIndex = parseInt(parts[3])
       const endOrStartStr = parts[4]
       currentError =
+
         errors?.scheduleAvailability[availabilityFieldIndex]?.day[
         hourRangesIndex
         ][endOrStartStr]

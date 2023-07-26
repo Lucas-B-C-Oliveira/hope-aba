@@ -1,7 +1,7 @@
 import { SELECT_INPUT_CLASSNAME, TEXT_INPUT_CLASSNAME } from '@/style/consts'
 
 import { v4 as uuidv4 } from 'uuid'
-import { FormProfessionalFieldSettings } from './types'
+import { FormProfessionalFieldSettings, TableHeaderProfessional } from './types'
 
 export const TEXT_INPUT_STYLE = `block w-full ${TEXT_INPUT_CLASSNAME}`
 export const SELECT_INPUT_STYLE = `block w-full ${SELECT_INPUT_CLASSNAME}`
@@ -101,7 +101,7 @@ export const formFields: FormProfessionalFieldSettings[] = [
     htmlFor: 'zipcode',
     name: 'zipcode',
     field: 'zipcode',
-    labelText: 'Cep',
+    labelText: 'CEP',
     placeholder: '00.000-000',
     type: 'text',
     key: uuidv4(),
@@ -123,7 +123,7 @@ export const formFields: FormProfessionalFieldSettings[] = [
     htmlFor: 'document',
     name: 'document',
     field: 'document',
-    labelText: 'Cpf',
+    labelText: 'CPF',
     placeholder: '000.000.000-00',
     type: 'text',
     key: uuidv4(),
@@ -190,7 +190,7 @@ export const formFields: FormProfessionalFieldSettings[] = [
   },
 ]
 
-export const tableHeaders = [
+export const tableHeaders: TableHeaderProfessional[] = [
   {
     key: 'name',
     value: 'Nome',

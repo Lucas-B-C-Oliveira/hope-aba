@@ -11,10 +11,12 @@ const therapiesAttendedSchema = z
     }),
   )
   .refine((fields) => fields.some((field) => field.checked), {
-    message: 'Pelo menos uma terapia tem que ser selecionada',
+    message: 'Selecione ao menos uma terapia',
   })
   .transform((field) => {
-    return field.filter((obj) => obj.checked).map((therapy) => therapy.id)
+    return field
+      .filter((obj) => obj.checked)
+      .map((therapy) => ({ name: therapy.name, id: therapy.id }))
   })
 
 export const roomFormSchema = z.object({

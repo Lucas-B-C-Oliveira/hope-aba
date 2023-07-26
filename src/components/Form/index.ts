@@ -3,6 +3,18 @@ import { Field } from './Field'
 import { Input } from './Input'
 import { Label } from './Label'
 import { Select } from './Select'
+import { Autocomplete } from './Autocomplete'
+import { SelectByFormData } from './SelectByFormData'
+import { SelectFetchOptionsById } from './SelectFetchOptionsById'
+import { SelectByData } from './SelectByData'
+
+// import dynamic from 'next/dynamic'
+// import type { ComponentType } from 'react'
+
+// const SelectByFormData = dynamic<ComponentType>(
+//   () => import('./SelectByFormData'),
+//   { ssr: false },
+// )
 
 export const Form = {
   Label,
@@ -10,4 +22,8 @@ export const Form = {
   ErrorMessage,
   Field,
   Select,
+  Autocomplete,
+  SelectByFormData,
+  SelectFetchOptionsById,
+  SelectByData,
 }

@@ -25,7 +25,7 @@ export const Table = memo(function Table({
   //! TODO: No futuro, tem que definir bem esse Table, se ele é genérico ou não, pq nesse caso, ele não está sendo genérico, está?
 
   //! TODO: Fazer um estado de loading para a table? Talvez?
-  const { data } = useQuery({
+  const { data } = useQuery<{ data: any[] }>({
     queryKey: [queryKey],
   })
 
@@ -73,7 +73,8 @@ export const Table = memo(function Table({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {data?.data?.length > 0 &&
+                {typeof data?.data !== 'undefined' &&
+                  data?.data?.length > 0 &&
                   data?.data?.map((register: any) => (
                     <tr
                       className="divide-x divide-gray-200 even:bg-gray-50 "
@@ -87,18 +88,37 @@ export const Table = memo(function Table({
                       </td>
 
                       {tableHeaders.length > 0 &&
-                        tableHeaders.map((header) => (
-                          <td
-                            key={header.id + register.id}
-                            className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 "
-                          >
-                            {typeof register[header?.key] === 'boolean'
-                              ? register[header?.key] === true
-                                ? 'Sim'
-                                : 'Não'
-                              : register[header?.key]}
-                          </td>
-                        ))}
+                        tableHeaders.map((header) => {
+                          const value = register[header?.key]
+
+                          if (typeof value !== 'object') {
+                            return (
+                              <td
+                                key={header.id + register.id}
+                                className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 "
+                              >
+                                {typeof value === 'boolean'
+                                  ? value === true
+                                    ? 'Sim'
+                                    : 'Não'
+                                  : value}
+                              </td>
+                            )
+                          }
+
+                          const valuesList = value
+                            ?.map((item: any) => item.name)
+                            .join(' ')
+
+                          return (
+                            <td
+                              key={header.id + register.id}
+                              className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 "
+                            >
+                              {valuesList}
+                            </td>
+                          )
+                        })}
 
                       <td className="relative items-center gap-3 flex flex-row  whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
                         <Modal.Container

@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query'
 import { CSFetch } from '@/utils/api/clientFetch'
 import { Modal } from '../Modal'
 import { TherapiesFields } from '../Therapies/TherapiesFields'
+import { fixBackendTherapies } from '@/utils/functions'
 
 export const RoomForm = memo(function RoomForm({
   endPoint,
@@ -57,20 +58,16 @@ export const RoomForm = memo(function RoomForm({
   })
 
   useEffect(() => {
-    if (typeof registerData !== 'undefined') {
-      const therapiesAttended = therapiesData?.map((value, index) => {
-        const { therapiesAttended: therapiesAttendedArray } = registerData
+    if (
+      typeof registerData !== 'undefined' &&
+      typeof therapiesData !== 'undefined'
+    ) {
+      const { therapiesAttended: therapiesAttendedArray } = registerData
 
-        const checked = therapiesAttendedArray.some(
-          (item) => item.name === value.name,
-        )
-
-        return {
-          checked,
-          id: value.id,
-          name: value.name,
-        }
-      })
+      const therapiesAttended = fixBackendTherapies(
+        therapiesData,
+        therapiesAttendedArray,
+      )
 
       reset({
         ...registerData,
@@ -105,7 +102,7 @@ export const RoomForm = memo(function RoomForm({
       mainFieldsGridTemplateRows="repeat(6, 55px)"
       mainFieldsGridTemplateColumns="repeat(2, 190px)"
       ActionButton={
-        ActionButton &&
+        typeof ActionButton !== 'undefined' &&
         cloneElement(ActionButton, {
           disabled: isSubmitting,
           mutationStatus: status,
@@ -113,7 +110,7 @@ export const RoomForm = memo(function RoomForm({
         })
       }
       TherapiesFields={
-        <TherapiesFields therapiesAttendedFields={therapiesAttendedFields} />
+        <TherapiesFields therapiesFields={therapiesAttendedFields} />
       }
     />
   )

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -18,12 +19,24 @@ export async function SSFetch<T = unknown>(
   }
 
   const token = accessToken?.value
-  const currentClinic =
-    typeof clinicsData !== 'undefined' ? clinicsData?.value[0] : clinicsData
+
+  let clinicsDataParsed
+
+  const currentClinic: any | undefined =
+    typeof clinicsData !== 'undefined'
+      ? JSON.parse(clinicsData.value)
+      : undefined;
+
+  if (typeof currentClinic !== 'undefined') {
+    clinicsDataParsed = currentClinic[0]?.id
+  }
 
   const defaultHeaders = {
     'Content-Type': 'application/json',
-    'X-Clinic-Id': typeof clinicsData !== 'undefined' ? currentClinic?.id : '',
+    'X-Clinic-Id':
+      typeof clinicsDataParsed !== 'undefined' && typeof clinicsDataParsed === 'string'
+        ? (clinicsDataParsed as string)
+        : '',
     Authorization: typeof token !== 'undefined' ? token : '',
   }
   const headers = init?.headers

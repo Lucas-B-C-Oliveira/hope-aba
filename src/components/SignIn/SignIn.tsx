@@ -59,6 +59,7 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
         return await Promise.all(promises)
       } catch (error: unknown) {
         console.error('error', error)
+        // throw new Error(error)
       }
     },
     enabled: false,
@@ -72,7 +73,8 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
     queryKey: [queryKeys[0]],
     queryFn: async () => {
       try {
-        if (typeof signInData.current === 'undefined') throw new Error('')
+        if (typeof signInData.current === 'undefined')
+          throw new Error('signInData is undefined')
 
         const response = await CSFetch<any>('sign-in', {
           method: 'POST',
@@ -86,6 +88,7 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
         return { ...response }
       } catch (error: unknown) {
         console.error('error', error)
+        // throw new Error(error)
       }
     },
     enabled: false,
@@ -109,14 +112,14 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
     const { exp } = tokenDecode(token)
     const expDate = new Date(exp * 1000)
 
-    const clinicsData = getClinicsData?.map((element: any) => {
-      return element.data
-    })
+    const clinicsData = getClinicsData?.map((element: any) => element.data)
 
     setCookie('clinicsData', clinicsData, {
       expires: expDate,
     })
-    router.push('/dashboard')
+
+    // setCookie('clinicsData', clinicsData)
+    router.push('/')
   }
 
   const signInForm = useForm<SignInData>({
@@ -136,11 +139,11 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
   return (
     <section className="w-full h-full flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2">
-        <img
+        {/* <img
           className="h-10 w-auto"
           src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
           alt="Your Company"
-        />
+        /> */}
         <h2 className=" text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Faça login em sua conta
         </h2>

@@ -9,6 +9,7 @@ import {
 } from '../'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
+import { documentMask } from '@/utils/functions'
 
 export const useProfessionalForm = ({
   mutateAsync,
@@ -48,10 +49,7 @@ export const useProfessionalForm = ({
   })
 
   if (typeof documentInputValue !== 'undefined') {
-    const cpfRegex = /^(\d{0,3})(\d{0,3})(\d{0,3})(\d{0,2})$/
-
-    const newValue = documentInputValue.replace(/\D/g, '')
-    const newValueWithMask = newValue.replace(cpfRegex, '$1.$2.$3-$4')
+    const newValueWithMask = documentMask(documentInputValue)
 
     if (
       newValueWithMask !== documentInputValue &&

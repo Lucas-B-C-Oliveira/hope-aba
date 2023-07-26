@@ -15,6 +15,7 @@ import { useMutation } from '@tanstack/react-query'
 import { CSFetch } from '@/utils/api/clientFetch'
 import { Modal } from '../Modal'
 import { TherapiesFields } from '../Therapies/TherapiesFields'
+import { fixBackendDate, fixBackendTherapies } from '@/utils/functions'
 
 export const ProfessionalForm = memo(function ProfessionalForm({
   endPoint,
@@ -66,15 +67,16 @@ export const ProfessionalForm = memo(function ProfessionalForm({
   })
 
   useEffect(() => {
-    if (typeof registerData !== 'undefined') {
-      console.log('registerData', registerData)
+    if (
+      typeof registerData !== 'undefined' &&
+      typeof therapiesData !== 'undefined'
+    ) {
+      const {
+        bornDate: bornDateBackend,
+        therapiesAttended: therapiesAttendedArray,
+      } = registerData
 
-      const { bornDate: bornDateBackend } = registerData
-      const date = new Date(bornDateBackend as string)
-      const day = String(date.getDate()).padStart(2, '0')
-      const month = String(date.getMonth() + 1).padStart(2, '0')
-      const year = date.getFullYear()
-      const bornDate = `${year}-${month}-${day}`
+      const bornDate = fixBackendDate(bornDateBackend)
 
       const scheduleAvailability = weekdayKeys.map((weekdayKey) => {
         if (typeof registerData !== 'undefined') {
@@ -96,19 +98,10 @@ export const ProfessionalForm = memo(function ProfessionalForm({
         return { day: [] }
       })
 
-      const therapiesAttended = therapiesData?.map((value, index) => {
-        const { therapiesAttended: therapiesAttendedArray } = registerData
-
-        const checked = therapiesAttendedArray.some(
-          (item) => item.name === value.name,
-        )
-
-        return {
-          checked,
-          id: value.id,
-          name: value.name,
-        }
-      })
+      const therapiesAttended = fixBackendTherapies(
+        therapiesData,
+        therapiesAttendedArray,
+      )
 
       reset({
         ...registerData,
@@ -166,7 +159,7 @@ export const ProfessionalForm = memo(function ProfessionalForm({
         />
       }
       TherapiesFields={
-        <TherapiesFields therapiesAttendedFields={therapiesAttendedFields} />
+        <TherapiesFields therapiesFields={therapiesAttendedFields} />
       }
     />
   )

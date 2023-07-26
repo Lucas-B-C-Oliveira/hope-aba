@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { roomFormSchema } from './'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
 import { ReactElement } from 'react'
-import { FormFieldSettings, TherapyData } from '@/types'
+import { FormFieldSettings, TableHeader, TherapyData } from '@/types'
 
 export type RoomFormData = z.infer<typeof roomFormSchema>
 
@@ -18,8 +18,10 @@ export interface RoomFormProps {
   setOpen?: (value: boolean) => void
 }
 
+type NameInputs = keyof RoomFormData
+
 export type FormFieldRoomSettings = {
-  name: 'name' | 'active'
+  name: NameInputs
 } & FormFieldSettings
 
 export interface UseRoomFormProps {
@@ -27,3 +29,7 @@ export interface UseRoomFormProps {
   mutateAsync: UseMutateAsyncFunction<any, unknown, any, unknown>
   setOpen?: (value: boolean) => void
 }
+
+export type TableHeaderRoom = {
+  key: NameInputs
+} & TableHeader

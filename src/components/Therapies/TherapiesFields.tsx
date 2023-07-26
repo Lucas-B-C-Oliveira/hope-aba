@@ -9,15 +9,19 @@ import {
 import { twMerge } from 'tailwind-merge'
 
 interface TherapiesFieldsProps {
-  therapiesAttendedFields: any
+  therapiesFields: any
   classNameGrid?: string
   gridRowEnd?: string
+  titleLabel?: string
+  therapiesFieldName?: string
 }
 
 export const TherapiesFields = memo(function TherapiesFields({
-  therapiesAttendedFields,
+  therapiesFields,
   classNameGrid = 'row-start-3 col-start-2 col-end-2',
   gridRowEnd = '10',
+  titleLabel = 'Terapias',
+  therapiesFieldName = 'therapiesAttended',
 }: TherapiesFieldsProps) {
   return (
     <Form.Field
@@ -27,14 +31,14 @@ export const TherapiesFields = memo(function TherapiesFields({
       className={twMerge('flex flex-col gap-1', classNameGrid)}
     >
       <div className="flex flex-row gap-1 items-center">
-        <Form.Label>Terapias</Form.Label>
-        <Form.ErrorMessage field="therapiesAttended" />
+        <Form.Label>{titleLabel}</Form.Label>
+        <Form.ErrorMessage field={therapiesFieldName} />
       </div>
 
       <div className="flex flex-col gap-2">
-        {therapiesAttendedFields?.length > 0 &&
-          therapiesAttendedFields.map((therapy: any, index: number) => {
-            const fieldName = `therapiesAttended.${index}.checked`
+        {therapiesFields?.length > 0 &&
+          therapiesFields.map((therapy: any, index: number) => {
+            const fieldName = `${therapiesFieldName}.${index}.checked`
             return (
               <Form.Field
                 key={therapy.id}

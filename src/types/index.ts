@@ -1,12 +1,4 @@
-export type Person = {
-  id: string
-  name: string
-  title: string
-  email: string
-}
-
-export type Header = {
-  key: keyof Person
+export interface TableHeader {
   value: string
   id: string
 }

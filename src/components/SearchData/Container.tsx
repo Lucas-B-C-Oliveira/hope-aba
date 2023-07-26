@@ -11,7 +11,7 @@ export const Container = memo(function Container({
   ...rest
 }: ContainerProps) {
   return (
-    <div className="flex flex-col gap-1" {...rest}>
+    <div className="flex flex-col gap-1 w-full h-full" {...rest}>
       {children}
     </div>
   )

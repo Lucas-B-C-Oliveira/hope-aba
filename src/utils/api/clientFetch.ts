@@ -9,18 +9,28 @@ export async function CSFetch<T = unknown>(
   const accessToken = getCookie('accessToken')
   const clinicsData = getCookie('clinicsData')
 
+  const regex = /(clinics|sign-in)/
+  const isSignOrClinicsEndPoint = String(input).match(regex)
+
   if (
-    typeof accessToken === 'undefined' ||
-    typeof clinicsData === 'undefined'
+    (typeof accessToken === 'undefined' ||
+      typeof clinicsData === 'undefined') &&
+    !isSignOrClinicsEndPoint
   ) {
     redirect('/') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
   }
 
+  let clinicsDataParsed
+
+  if (typeof clinicsData !== 'undefined' && typeof clinicsData === 'string') {
+    clinicsDataParsed = JSON.parse(clinicsData)[0]?.id
+  }
+
   const defaultHeaders = {
     'Content-Type': 'application/json',
-    'X-Clinic-Id':
-      typeof clinicsData !== 'undefined' ? JSON.parse(clinicsData)[0]?.id : '',
-    Authorization: typeof accessToken !== 'undefined' ? accessToken : '',
+    'X-Clinic-Id': typeof clinicsData !== 'undefined' ? clinicsDataParsed : '',
+    Authorization:
+      typeof accessToken !== 'undefined' ? (accessToken as string) : '',
   }
   const headers = init?.headers
     ? { ...defaultHeaders, ...init.headers }

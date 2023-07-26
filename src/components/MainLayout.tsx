@@ -13,7 +13,7 @@ export async function MainLayout({ children }: Props) {
       <div className="flex flex-col w-full h-full">
         <Header />
 
-        <main id="main" className="h-full w-full bg-white px-8">
+        <main id="main" className="h-full w-full bg-white px-8 pt-4">
           {children}
         </main>
       </div>

@@ -44,9 +44,11 @@ export const Content = memo(function Content({
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const refMainElement = document?.getElementById('main')
-      const { height, width } = refMainElement?.getBoundingClientRect()
+      const mainRef = refMainElement?.getBoundingClientRect()
 
-      setSizeClass(getSizeClass(width, height))
+      if (typeof mainRef?.width !== 'undefined' && typeof mainRef?.height) {
+        setSizeClass(getSizeClass(mainRef?.width, mainRef?.height))
+      }
     }
   }, [sidebarIsOpen])
 
@@ -56,7 +58,11 @@ export const Content = memo(function Content({
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={(value: any) => {
+          if (typeof setOpen !== 'undefined') {
+            setOpen(value)
+          }
+        }}
       >
         <Transition.Child
           as={Fragment}
@@ -67,7 +73,7 @@ export const Content = memo(function Content({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 z-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
         <div className={` fixed inset-0 z-10 overflow-y-auto `}>
@@ -95,14 +101,18 @@ export const Content = memo(function Content({
               >
                 <Dialog.Panel
                   className={`
-                    pointer-events-auto transform overflow-hidden rounded-lg bg-white p-6 text-left shadow-xl transition-all w-fit h-fit
+                    pointer-events-auto transform  rounded-lg bg-white p-6 text-left shadow-xl transition-all w-fit h-fit
                 `}
                 >
                   <button
                     className="absolute top-3 right-3"
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      if (typeof setOpen !== 'undefined') {
+                        setOpen(false)
+                      }
+                    }}
                   >
-                    <XMarkIcon className="w-6 h-6 text-red-500 hover:text-red-400" />
+                    <XMarkIcon className="w-6 h-6 text-pink-400 hover:text-pink-300" />
                   </button>
                   {children}
                 </Dialog.Panel>

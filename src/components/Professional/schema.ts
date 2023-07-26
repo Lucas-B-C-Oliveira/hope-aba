@@ -1,5 +1,3 @@
-//  //! TODO: Depois, defina os selections com esse modelo
-
 import { z } from 'zod'
 
 import { getCookie } from 'cookies-next'
@@ -32,21 +30,6 @@ const hourRanges = z
       path: ['end'],
     },
   )
-
-// export type Days =
-//   | 'monday'
-//   | 'tuesday'
-//   | 'wednesday'
-//   | 'thursday'
-//   | 'friday'
-//   | 'saturday'
-//   | 'sunday'
-// type ProfessionalScheduleAvailabilityInput = {
-//   [Key in Days]: {
-//     start: string
-//     end: string
-//   }[]
-// }
 
 const REQUIRED_ERROR_MESSAGE = 'Campo obrigatório'
 const INVALID_ENUM_SELECTED = 'Selecione uma opção'
@@ -120,7 +103,7 @@ const therapiesAttendedSchema = z
     }),
   )
   .refine((fields) => fields.some((field) => field.checked), {
-    message: 'Pelo menos uma terapia tem que ser selecionada',
+    message: 'Selecione ao menos uma terapia',
   })
   .transform((field) => {
     return field

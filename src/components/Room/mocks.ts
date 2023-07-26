@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { FormFieldRoomSettings } from './types'
+import { FormFieldRoomSettings, TableHeaderRoom } from './types'
 import { TEXT_INPUT_STYLE } from '../Professional'
 
 export const formFields: FormFieldRoomSettings[] = [
@@ -26,7 +26,7 @@ export const formFields: FormFieldRoomSettings[] = [
   },
 ]
 
-export const tableHeaders = [
+export const tableHeaders: TableHeaderRoom[] = [
   {
     key: 'name',
     value: 'Nome',

@@ -1,31 +1,41 @@
 'use client'
 
-import { BaseSyntheticEvent, ReactElement, cloneElement, memo } from 'react'
-import {
-  FieldValues,
-  FormProvider,
-  SubmitErrorHandler,
-  SubmitHandler,
-  UseFormReturn,
-} from 'react-hook-form'
+import { ReactElement, cloneElement, memo } from 'react'
+import { FormProvider } from 'react-hook-form'
 import { Form } from '../Form'
 import {
   CHECKBOX_INPUT_CLASSNAME,
   TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
 } from '@/style/consts'
 
+// interface Props {
+//   useFormReturn: UseFormReturn
+//   handleSubmit: <T extends FieldValues>(
+//     onValid: SubmitHandler<T> | any,
+//     onInvalid?: SubmitErrorHandler<T> | undefined,
+//   ) => (e?: BaseSyntheticEvent<T> | undefined) => Promise<T>
+//   handleSubmitData: (data: any) => void
+//   formFields: any[]
+//   ActionButton: ReactElement
+//   SpecialFields: ReactElement
+//   TherapiesFields: ReactElement
+//   titleForm: string
+//   therapiesFieldsClassNameGrid?: string
+//   therapiesFieldsGridRowEnd?: string
+//   mainFieldsGridRowGap?: string
+//   mainFieldsGridTemplateRows?: string
+//   mainFieldsGridTemplateColumns?: string
+// }
+
 interface Props {
-  useFormReturn: UseFormReturn
-  handleSubmit: <T extends FieldValues>(
-    onValid: SubmitHandler<T>,
-    onInvalid?: SubmitErrorHandler<T> | undefined,
-  ) => (e?: BaseSyntheticEvent<T> | undefined) => Promise<T>
+  useFormReturn: any
+  handleSubmit: any
   handleSubmitData: (data: any) => void
   formFields: any[]
-  ActionButton: ReactElement
-  SpecialFields: ReactElement
+  ActionButton: ReactElement | any
+  SpecialFields?: ReactElement | any
   TherapiesFields: ReactElement
-  titleForm: string
+  titleForm?: string
   therapiesFieldsClassNameGrid?: string
   therapiesFieldsGridRowEnd?: string
   mainFieldsGridRowGap?: string
@@ -54,7 +64,7 @@ export const FormContainer = memo(function FormContainer({
         className="flex flex-col gap-4 h-full w-full justify-between"
         onSubmit={handleSubmit(handleSubmitData)}
       >
-        <h2 className="text-left text-3xl font-bold tracking-tight text-gray-900">
+        <h2 className="text-left text-3xl font-bold tracking-tight text-gray-600">
           {titleForm}
         </h2>
 

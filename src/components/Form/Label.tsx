@@ -6,7 +6,7 @@ export const Label = memo(function Label(
 ) {
   return (
     <label
-      className="text-base font-semibold text-black flex items-center justify-between"
+      className="text-base font-semibold text-gray-700 flex items-center justify-between"
       {...props}
     />
   )

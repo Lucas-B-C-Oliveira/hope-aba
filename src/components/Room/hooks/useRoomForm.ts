@@ -30,7 +30,6 @@ export const useRoomForm = ({
   })
 
   async function handleSubmitData(data: RoomFormData) {
-    console.log('data', data)
     try {
       await mutateAsync(data)
 
