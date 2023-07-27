@@ -16,10 +16,6 @@ export const CalendarHourGrid = memo(function CalendarHourGrid({
 }: CalendarHourGridProps) {
   // console.log('currentAppointmentsByDate', currentAppointmentsByDate)
 
-  const calendarGrid: any[][] = Array.from({ length: 23 }, () =>
-    Array(7).fill(''),
-  )
-
   return (
     <div className="flex flex-auto">
       <div className="sticky left-0 z-10 w-14 flex-none bg-white ring-1 ring-gray-100" />
@@ -119,38 +115,9 @@ export const CalendarHourGrid = memo(function CalendarHourGrid({
           <div className="col-start-8 row-span-full w-8" />
         </div>
 
-        <div className="col-start-1 col-end-2 row-start-1 grid divide-y divide-gray-100">
-          {/* Renderize os eventos com base na matriz */}
-          {calendarGrid.map((row, rowIndex) =>
-            row.map((event, colIndex) => (
-              <div
-                key={`${rowIndex}-${colIndex}`}
-                className={`${event ? 'relative' : 'empty-cell' // Defina estilos diferentes para células vazias
-                  }`}
-                style={{
-                  gridColumn: `span 1`, // Cada evento ocupa uma coluna
-                  gridRow: `${rowIndex + 1} / span 1`, // Cada evento ocupa uma linha
-                }}
-              >
-                {event && (
-                  <a
-                    href="#"
-                    className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-green-100 p-2 text-xs leading-5 hover:bg-green-200"
-                  >
-                    <p className="order-1 font-semibold text-gray-700">
-                      Profissional: {event.name}
-                    </p>
-                    {/* Adicione mais informações do evento, se necessário */}
-                  </a>
-                )}
-              </div>
-            )),
-          )}
-        </div>
-
         {/* Events */}
 
-        {/* <ol
+        <ol
           className="col-start-1 col-end-2 row-start-1 grid grid-cols-1 sm:grid-cols-7 sm:pr-8 "
           style={{
             gridTemplateRows: 'repeat(1000, minmax(0, 1fr)) auto',
@@ -221,7 +188,8 @@ export const CalendarHourGrid = memo(function CalendarHourGrid({
 
                     <p className="text-gray-500 group-hover:text-gray-700">
                       <time dateTime="2022-01-15T10:00">
-                         //! TODO: Receber as datas aqui, vc pode fazer a data atual e enviar dentro do obj da semana  
+                        //! TODO: Receber as datas aqui, vc pode fazer a data
+                        atual e enviar dentro do obj da semana
                         {start} - {end}
                       </time>
                     </p>
@@ -280,7 +248,7 @@ export const CalendarHourGrid = memo(function CalendarHourGrid({
               )
             })} */}
 
-        {/* 
+          {/* 
           <li
             className="relative  t-px hidden sm:col-start-2 sm:flex"
             // style={{ gridRow: '2 / span 14' }} // é de 12 + 2 = 14 em 14 cada linha
@@ -337,8 +305,8 @@ export const CalendarHourGrid = memo(function CalendarHourGrid({
                 <time dateTime="2022-01-15T10:00">10:00 AM</time>
               </p>
             </a>
-          </li> 
-        </ol> */}
+          </li> */}
+        </ol>
       </div>
     </div>
   )
