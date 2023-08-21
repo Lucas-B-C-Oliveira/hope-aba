@@ -1,0 +1,125 @@
+
+.rbc-allday-cell {
+  display: none;
+}
+
+.rbc-time-content {
+  border: none;
+}
+
+.rbc-time-header {
+ border: none;
+  --tw-ring-color: rgb(0 0 0 / 0.05);
+  --tw-shadow: 0 3px 3px -2px rgb(0 0 0 / 0.1), 0 -1px var(--tw-ring-color);
+  box-shadow: var(--tw-shadow, 0 0 #0000);
+  z-index: 30;
+}
+
+
+.rbc-time-header-content {
+  border-color: rgb(243 244 246 );
+}
+
+.rbc-time-slot {
+
+}
+
+.rbc-events-container .rbc-background-event {
+
+
+}
+
+.rbc-background-event {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.rbc-event, .rbc-day-slot .rbc-background-event {
+  background-color: transparent;
+  padding: 0 !important;
+  margin: 0 !important;
+
+
+}
+
+.rbc-today {
+    background-color: #eaf6ff4a;
+}
+
+.rbc-label {
+--tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+  line-height: 1.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.rbc-time-content > * + * > * {
+border-color: rgb(243 244 246 );
+    
+}
+.rbc-timeslot-group {
+    border-color: rgb(243 244 246 );
+
+}
+
+.rbc-time-view {
+  border: none;
+}
+
+.rbc-header {
+  border-top: none;
+  border-bottom: none;
+  --tw-border-opacity: 1;
+  border-color: rgb(243 244 246 );
+
+}
+
+.rbc-event {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+
+}
+
+.rbc-day-slot .rbc-events-container {
+  margin: 0px;
+  margin-top: 4px;
+  margin-right: 4px;
+}
+
+.rbc-day-slot .rbc-event, .rbc-day-slot .rbc-background-event {
+  border: none;
+}
+
+.rbc-label .rbc-time-header-gutter {
+    border-color: rgb(243 244 246 );
+}
+
+.rbc-time-header-gutter {
+    border: none;
+    border-color: rgb(243 244 246 );
+}
+
+.rbc-header + .rbc-header {
+    border-left: 1px solid;
+    border-color: rgb(243 244 246 );
+}
+
+.rbc-event {
+  padding: 0 !important;
+  font-size: 16px;
+  /* background-color: aqua !important; */
+}
+
+.rbc-event-label {
+  display: none !important;
+  color: black;
+
+}
+
+.rbc-events-container {
+  /* background-color: blueviolet !important; */
+  margin: 0 !important;
+
+}

@@ -59,3 +59,7 @@ export function getMin(time: string) {
   else if (time === '7') return 10
   return 0
 }
+
+export function capitalizedText(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}

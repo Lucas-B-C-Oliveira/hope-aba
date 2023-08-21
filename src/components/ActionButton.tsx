@@ -5,11 +5,13 @@ import { twMerge } from 'tailwind-merge'
 interface ActionButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode
   icon?: ElementType
+  errors?: boolean
 }
 
 export const ActionButton = memo(function ActionButton({
   children,
   icon: Icon,
+  errors,
   ...rest
 }: ActionButtonProps) {
   return (
@@ -17,6 +19,7 @@ export const ActionButton = memo(function ActionButton({
       className={twMerge(
         `flex flex-row gap-1 h-fit w-fit items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`,
         rest?.className,
+        // `${errors ? ' ring-2 ring-inset ring-red-500' : ''}`,
       )}
       {...rest}
     >

@@ -14,11 +14,17 @@ interface Props {
   // layoutheader: ReactNode
   rightsidebar: ReactNode
   children: ReactNode
+  rightcontentsidebar: ReactNode
   modal: ReactNode
   // modal: ReactNode
 }
 
-export default async function Layout({ children, rightsidebar, modal }: Props) {
+export default async function Layout({
+  children,
+  rightsidebar,
+  modal,
+  rightcontentsidebar,
+}: Props) {
   return (
     <div className="flex flex-row w-full h-full ">
       {rightsidebar}
@@ -26,7 +32,7 @@ export default async function Layout({ children, rightsidebar, modal }: Props) {
       <div className="flex flex-row w-full h-full px-3 pt-3 pb-2">
         {children}
       </div>
-      {modal}
+      {rightcontentsidebar}
     </div>
   )
 }

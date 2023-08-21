@@ -2,6 +2,7 @@
 
 import { memo } from 'react'
 import { AvailableTimeCard } from '../../../page'
+import { AdapterCalendar } from '../AdapterCalendar'
 
 interface CalendarHourGridProps {
   containerOffset?: any

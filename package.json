@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.1.0",
+    "@mui/material": "^5.14.4",
+    "@mui/x-date-pickers": "^6.11.1",
     "@tailwindcss/forms": "^0.5.3",
     "@tanstack/react-query": "^4.29.19",
     "@tanstack/react-query-devtools": "^4.29.19",
@@ -43,6 +47,7 @@
   "devDependencies": {
     "@rocketseat/eslint-config": "^1.2.0",
     "@tanstack/eslint-plugin-query": "^4.29.9",
+    "@types/react-big-calendar": "^1.6.4",
     "@types/uuid": "^9.0.2",
     "eslint": "^8.42.0"
   }
