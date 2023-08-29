@@ -8,7 +8,9 @@ import { XMarkIcon } from '@heroicons/react/24/solid'
 import { AppointmentForm } from '../../components/Form/AppointmentForm'
 import { ErrorFeedback } from '../../components/ErrorFeedback'
 import { useMainLayoutStore } from '@/store/mainLayoutStore'
-import { TimePickerAdapter } from '@/components/Form/TimePickerAdapter'
+import { DatePickerAdapter } from '@/components/Form/DatePickerAdapter'
+import { TimePickerAdapterEnd } from '@/components/Form/TimePickerAdapterEnd'
+import { TimePickerAdapterStart } from '@/components/Form/TimePickerAdapterStart'
 
 export const RightContentSidebar = memo(function RightContentSidebar() {
   const { openAndCloseRightContentSidebar, rightContentSidebarIsOpen } =
@@ -49,7 +51,9 @@ export const RightContentSidebar = memo(function RightContentSidebar() {
               Cadastrar
             </ActionButton>
           }
-          timePicker={<TimePickerAdapter />}
+          datePicker={<DatePickerAdapter />}
+          timePickerStart={<TimePickerAdapterStart />}
+          timePickerEnd={<TimePickerAdapterEnd />}
           errorFeedback={<ErrorFeedback />}
         />
       </div>

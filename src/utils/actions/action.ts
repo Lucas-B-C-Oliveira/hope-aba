@@ -1,10 +1,9 @@
 'use server'
 
 import { SSFetch } from '@/utils/api/serverFetch'
-import dayjs from 'dayjs'
-import { v4 as uuidv4 } from 'uuid'
-import { getGridColumnByWeekday, getHour, getMin } from '../functions'
+import { getAvailabilityTimeByDate, getAvailabilityTimeData, getAvailabilityWeekDays } from '../functions'
 import { dateAdapter } from '../dateAdapter'
+
 
 export async function doFetch<T = unknown>(
   input: RequestInfo | URL,
@@ -14,30 +13,10 @@ export async function doFetch<T = unknown>(
     const response = await SSFetch<T>(input, init)
     return response
   } catch (error: unknown | string | undefined) {
-    throw new Error(error)
+    console.log('error', error)
+    // throw new Error(error)
   }
 }
-
-const eventsTest = [
-  {
-    start: dateAdapter('2023-07-30T10:00:00').toDate(),
-    end: dateAdapter('2023-07-30T10:40:00').toDate(),
-    title: 'MRI Registration',
-    data: {
-      patient: 'Marcos',
-      therapy: 'Fono',
-    },
-  },
-  {
-    start: dateAdapter('2023-07-30T10:00:00').toDate(),
-    end: dateAdapter('2023-07-30T10:40:00').toDate(),
-    title: 'TESTE',
-    data: {
-      patient: 'José',
-      therapy: 'Fisio',
-    },
-  },
-]
 
 export async function getAppointmentsByRangeDate<T = unknown>(
   input: RequestInfo | URL,
@@ -73,41 +52,6 @@ export async function getAppointmentsByRangeDate<T = unknown>(
   }
 }
 
-function getDayNumber(day: string) {
-  const daysOfWeek = [
-    'sunday',
-    'monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday',
-    'saturday',
-  ]
-  return daysOfWeek.indexOf(day.toLowerCase())
-}
-
-function convertTimeFormat(day: any, time: any, currentDate?: any) {
-  const [hours, minutes] = time.split(':')
-  const dayNumber = getDayNumber(day)
-  const date =
-    typeof currentDate !== 'undefined'
-      ? dateAdapter(currentDate).startOf('isoWeek').day(dayNumber)
-      : dateAdapter().startOf('isoWeek').day(dayNumber)
-  return date.hours(hours).minutes(minutes).format('YYYY-MM-DDTHH:mm:ss')
-}
-
-function transformArray(inputArray: any[], currentDate?: any): any[] {
-  return inputArray.map((dayObj) => {
-    const day = Object.keys(dayObj)[0]
-    const timeArray = dayObj[day].map((timeObj) => ({
-      start: convertTimeFormat(day, timeObj.start, currentDate),
-      end: convertTimeFormat(day, timeObj.end, currentDate),
-      type: 'filter',
-    }))
-
-    return timeArray
-  })
-}
 
 export async function getProfessionalScheduleAvailability(
   professionalId: string,
@@ -119,9 +63,64 @@ export async function getProfessionalScheduleAvailability(
       data: { scheduleAvailability },
     } = response
 
-    const professionalScheduleAvailability = transformArray(
+    const professionalScheduleAvailability = getAvailabilityTimeData(
       scheduleAvailability,
       currentDate,
+    )
+
+    return professionalScheduleAvailability.flat()
+  } catch (error: unknown | string | undefined) {
+    throw new Error(error as any)
+  }
+}
+
+export async function getAvailableScheduleTime(
+  professionalId: string,
+  currentDate?: any,
+) {
+  try {
+    const response = await SSFetch<any>(`professionals/${professionalId}`)
+    const {
+      data: { scheduleAvailability },
+    } = response
+
+    const professionalScheduleAvailability = getAvailabilityTimeByDate(
+      scheduleAvailability,
+      currentDate,
+    )
+
+    const newArrayFlat = professionalScheduleAvailability.flat()
+
+    const scheduleAvailabilityFiltered = newArrayFlat.filter((date) => {
+      return date?.start.split('T')[0] === currentDate
+    })
+    const availableTimeFormated = scheduleAvailabilityFiltered.map((rangeTime: { start: string, end: string }) => {
+      return {
+        start: rangeTime?.start?.split('T')[1],
+        end: rangeTime?.end?.split('T')[1],
+      }
+
+    })
+
+    return availableTimeFormated
+
+  } catch (error: unknown | string | undefined) {
+    console.log('error', error)
+    throw new Error(error as any)
+  }
+}
+
+export async function getProfessionalScheduleAvailabilityWeekDays(
+  professionalId: string,
+) {
+  try {
+    const response = await SSFetch<any>(`professionals/${professionalId}`)
+    const {
+      data: { scheduleAvailability },
+    } = response
+
+    const professionalScheduleAvailability = getAvailabilityWeekDays(
+      scheduleAvailability,
     )
 
     return professionalScheduleAvailability.flat()

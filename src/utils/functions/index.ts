@@ -1,4 +1,5 @@
 import { TherapyData } from '@/types'
+import { dateAdapter } from '../dateAdapter'
 
 export const fixBackendDate = (backendDate: string) => {
   const date = new Date(backendDate)
@@ -28,38 +29,62 @@ export const documentMask = (inputValue: string) => {
   return newValue.replace(cpfRegex, '$1.$2.$3-$4')
 }
 
-export function getGridColumnByWeekday(weekday: string) {
-  if (weekday === 'monday') return 'col-start-1'
-  else if (weekday === 'tuesday') return 'col-start-2'
-  else if (weekday === 'wednesday') return 'col-start-3'
-  else if (weekday === 'thursday') return 'col-start-4'
-  else if (weekday === 'friday') return 'col-start-5'
-}
-
-export function getHour(time: string) {
-  if (time === '07') return 2
-  else if (time === '08') return 44
-  else if (time === '09') return 86
-  else if (time === '10') return 128
-  else if (time === '11') return 170
-  else if (time === '12') return 212
-  else if (time === '13') return 254
-  else if (time === '14') return 296
-  else if (time === '15') return 338
-  else if (time === '16') return 380
-  else if (time === '17') return 422
-  else return 464
-}
-
-export function getMin(time: string) {
-  if (time === '50') return 35
-  else if (time === '40') return 28
-  else if (time === '30') return 21
-  else if (time === '20') return 14
-  else if (time === '7') return 10
-  return 0
-}
 
 export function capitalizedText(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+export function getDayNumber(day: string) {
+  const daysOfWeek = [
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+  ]
+  return daysOfWeek.indexOf(day.toLowerCase())
+}
+
+export function convertTimeFormat(day: any, time: any, currentDate?: any) {
+  const [hours, minutes] = time.split(':')
+  const dayNumber = getDayNumber(day)
+  const date =
+    typeof currentDate !== 'undefined'
+      ? dateAdapter(currentDate).startOf('isoWeek').day(dayNumber)
+      : dateAdapter().startOf('isoWeek').day(dayNumber)
+  return date.hours(hours).minutes(minutes).format('YYYY-MM-DDTHH:mm')
+}
+
+export function getAvailabilityTimeData(inputArray: any[], currentDate?: any): any[] {
+  return inputArray.map((dayObj) => {
+    const day = Object.keys(dayObj)[0]
+    const timeArray = dayObj[day].map((timeObj: any) => ({
+      start: convertTimeFormat(day, timeObj.start, currentDate),
+      end: convertTimeFormat(day, timeObj.end, currentDate),
+      type: 'filter',
+    }))
+
+    return timeArray
+  })
+}
+
+export function getAvailabilityTimeByDate(inputArray: any[], currentDate: string): any[] {
+  return inputArray.map((dayObj) => {
+    const day = Object.keys(dayObj)[0]
+    const timeArray = dayObj[day].map((timeObj: any) => ({
+      start: convertTimeFormat(day, timeObj.start, currentDate),
+      end: convertTimeFormat(day, timeObj.end, currentDate),
+    }))
+
+    return timeArray
+  })
+}
+
+export function getAvailabilityWeekDays(inputArray: any[]): any[] {
+  return inputArray.map((dayObj) => {
+    const day = Object.keys(dayObj)[0]
+    return getDayNumber(day)
+  })
 }

@@ -107,7 +107,9 @@ interface Props {
   therapy?: ReactElement
   professional?: ReactElement
   room?: ReactElement
-  timePicker?: ReactElement
+  datePicker?: ReactElement
+  timePickerStart?: ReactElement
+  timePickerEnd?: ReactElement
   actionButton?: ReactElement
   errorFeedback?: ReactElement
   titleForm?: string
@@ -144,7 +146,9 @@ export const AppointmentForm = memo(function AppointmentForm({
   titleForm,
   actionButton,
   errorFeedback,
-  timePicker,
+  timePickerStart,
+  timePickerEnd,
+  datePicker,
 }: Props) {
   const { setProfessionalId } = useCalendarStore()
   const router = useRouter()
@@ -221,90 +225,37 @@ export const AppointmentForm = memo(function AppointmentForm({
               title: 'Salas',
               fieldNameToObserve: 'therapy',
             })}
-          <Form.Field className="relative">
-            <Form.Label
-              className={twMerge(MAGIC_LABEL_CLASSNAME, 'z-10')}
-              htmlFor="schedule.day"
-            >
-              Data
-            </Form.Label>
 
-            <div className="absolute right-0">
-              <Form.ErrorMessage
-                field="schedule.day"
-                specificStyle="z-40 absolute -top-[0.65rem] right-0 animate-pulse bg-white"
-              />
-            </div>
-
-            <Form.Input
-              className={twMerge(
-                MAGIC_INPUT_CLASSNAME,
-                ' w-56 cursor-default text-left',
-              )}
-              type="date"
-              name="schedule.day"
-            />
-          </Form.Field>
-          {/* <DatePicker />
-          <TimePicker /> */}
-          {timePicker &&
+          {datePicker &&
             cloneElement(
-              timePicker,
-                {
+              datePicker,
+              {
+                name: 'schedule.day',
+                title: 'Data',
+              }
+            )}
+
+          {timePickerStart &&
+            cloneElement(
+              timePickerStart,
+              {
                 name: 'schedule.start',
                 title: 'Início',
                 fieldNameToObserve: 'schedule.day',
               }
             )}
 
-          <Form.Field className="relative">
-            <Form.Label
-              className={twMerge(MAGIC_LABEL_CLASSNAME, 'z-10')}
-              htmlFor="schedule.start"
-            >
-              Início
-            </Form.Label>
+          {timePickerEnd &&
+            cloneElement(
+              timePickerEnd,
+              {
+                name: 'schedule.end',
+                title: 'Fim',
+                fieldDateToObserve: 'schedule.day',
+                fieldStartTimeToObserve: 'schedule.start',
+              }
+            )}
 
-            <div className="absolute right-0">
-              <Form.ErrorMessage
-                field="schedule.start"
-                specificStyle="z-40 absolute -top-[0.65rem] right-0 animate-pulse bg-white"
-              />
-            </div>
-
-            <Form.Input
-              className={twMerge(
-                MAGIC_INPUT_CLASSNAME,
-                ' w-56 cursor-default text-left',
-              )}
-              type="time"
-              name="schedule.start"
-            />
-          </Form.Field>
-          <Form.Field className="relative">
-            <Form.Label
-              className={twMerge(MAGIC_LABEL_CLASSNAME, 'z-10')}
-              htmlFor="schedule.end"
-            >
-              Fim
-            </Form.Label>
-
-            <div className="absolute right-0">
-              <Form.ErrorMessage
-                field="schedule.end"
-                specificStyle="z-40 absolute -top-[0.65rem] right-0 animate-pulse bg-white"
-              />
-            </div>
-
-            <Form.Input
-              className={twMerge(
-                MAGIC_INPUT_CLASSNAME,
-                ' w-56 cursor-default text-left',
-              )}
-              type="time"
-              name="schedule.end"
-            />
-          </Form.Field>
           <Form.Field className="relative">
             <Form.Label
               className={twMerge(MAGIC_LABEL_CLASSNAME, 'z-10')}
