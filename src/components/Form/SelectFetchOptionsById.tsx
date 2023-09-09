@@ -117,7 +117,11 @@ export const SelectFetchOptionsById = memo(function SelectFetchOptionsById({
 
         if (!isEqual(selected, selectedData)) {
           if (typeof setProfessionalData !== 'undefined') {
-            setProfessionalData(selectedData.id)
+            const newData = {
+              id: selectedData?.id,
+              name: selectedData?.name
+            }
+            setProfessionalData(newData)
           }
           setSelected(selectedData)
         }

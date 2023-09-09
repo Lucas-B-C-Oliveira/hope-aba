@@ -1,13 +1,15 @@
-import { Header } from './Header'
-import { CalendarContent } from './CalendarContent'
-import { CalendarWeekdayBar } from './CalendarWeekdayBar'
-import { CalendarHourGrid } from './CalendarHourGrid/CalendarHourGrid'
-import { WeekdayBarWeekday } from './WeekdayBarWeekday'
+'use client'
+
+import { AdapterCalendar } from './Content/AdapterCalendar'
+import { BigCalendarHeader } from './Header/BigCalendarHeader'
+import { BigCalendarWeekDay } from './BigCalendarWeekDay'
+import { BigCalendarAppointmentCard } from './BigCalendarAppointmentCard'
+import { BigCalendarFilterView } from './BigCalendarFilterView'
 
 export const Calendar = {
-  Header,
-  Content: CalendarContent,
-  WeekdayBar: CalendarWeekdayBar,
-  HourGrid: CalendarHourGrid,
-  Weekday: WeekdayBarWeekday,
+  Header: BigCalendarHeader,
+  Weekday: BigCalendarWeekDay,
+  Content: AdapterCalendar,
+  AppointmentCard: BigCalendarAppointmentCard,
+  FilterView: BigCalendarFilterView,
 }

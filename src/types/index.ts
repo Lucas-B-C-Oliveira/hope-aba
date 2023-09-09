@@ -28,3 +28,10 @@ export interface FormFieldSettings {
   key: string
   field: string
 }
+
+export type Filter = {
+  name: string
+  id: string
+}
+
+export type FilterKey = 'patients' | 'professionals' | 'rooms' | 'therapies'

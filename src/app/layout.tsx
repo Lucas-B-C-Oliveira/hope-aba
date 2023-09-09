@@ -24,13 +24,15 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <Providers>
+        {/* <body className="w-screen h-screen bg-white flex flex-row"> */}
         <body className="w-screen h-screen bg-white flex flex-row">
           <aside className="z-50 w-fit h-fit">{layoutleftsidebar}</aside>
 
           <div className="flex flex-col w-full h-full">
             <header>{layoutheader}</header>
 
-            <main id="main" className="h-full w-full bg-white flex flex-row">
+            {/* <main id="main" className="h-full w-full  flex-grow flex flex-row p-4"> */}
+            <main id="main" className="h-full w-full bg-white flex flex-row ">
               {children}
             </main>
           </div>

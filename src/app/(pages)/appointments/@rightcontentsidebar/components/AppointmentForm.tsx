@@ -3,18 +3,18 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { ReactElement, cloneElement, memo, useRef, useState } from 'react'
+import { ReactElement, cloneElement, memo, useState } from 'react'
 import { Form } from '@/components/Form'
 import { twMerge } from 'tailwind-merge'
 import { MAGIC_INPUT_CLASSNAME, MAGIC_LABEL_CLASSNAME } from '@/style/consts'
 import {
   doFetch,
-  getProfessionalScheduleAvailability,
 } from '@/utils/actions/action'
 import { useRouter } from 'next/navigation'
 import { useCalendarStore } from '@/store/calendarStore'
-import { DatePicker, TimePicker, TimePickerProps } from '@mui/x-date-pickers'
-import dayjs, { Dayjs } from 'dayjs'
+import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
+import { Filter, FilterKey } from '@/types'
+
 
 const recurrenceSchema = z.enum([
   'dont_repeat',
@@ -151,6 +151,7 @@ export const AppointmentForm = memo(function AppointmentForm({
   datePicker,
 }: Props) {
   const { setProfessionalId } = useCalendarStore()
+  const { addFilter } = useAppointmentFilterStore()
   const router = useRouter()
   const createAppointmentForm = useForm<AppointmentData>({
     resolver: zodResolver(appointmentSchema),
@@ -185,14 +186,9 @@ export const AppointmentForm = memo(function AppointmentForm({
     // refetch()
   }
 
-  async function setProfessionalData(professionalId: string) {
-    // router.push(`/appointments?eae=${data.scheduleAvailability}`)
-    // getProfessionalScheduleAvailability(professionalId).then((response) =>
-    //   console.log('response', response),
-    // ) //! TODO: Apagar essa action depois e fazer do jeito que está descrito no Notion
-    setProfessionalId(professionalId)
-    // console.log('Professional ==> professionalId', professionalId)
-    // router.push(`/appointments?professionalId=${professionalId}`)
+  function setProfessionalData(professionalData: Filter) {
+    const key: FilterKey = 'professionals'
+    addFilter(key, professionalData)
   }
 
   return (

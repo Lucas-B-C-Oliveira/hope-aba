@@ -15,6 +15,7 @@ interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
   openModalButton: ReactElement
   children?: ReactNode
   childrenThatCanSetOpenModal?: ReactElement
+  withoutMask?: boolean
 }
 
 export const Container = memo(function Container({

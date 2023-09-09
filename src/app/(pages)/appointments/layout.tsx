@@ -1,8 +1,7 @@
 import { Providers } from '@/components/Providers'
 import '@/style/globals.css'
 import { ReactNode } from 'react'
-// import { LayoutLeftSidebar } from './@layoutleftsidebar/LayoutLeftSidebar'
-// import { LayoutHeader } from './@layoutheader/LayoutHeader'
+
 
 export const metadata = {
   title: 'Create Next App',
@@ -10,24 +9,19 @@ export const metadata = {
 }
 
 interface Props {
-  // layoutleftsidebar: ReactNode
-  // layoutheader: ReactNode
-  rightsidebar: ReactNode
+  leftcontentsidebar: ReactNode
   children: ReactNode
   rightcontentsidebar: ReactNode
-  modal: ReactNode
-  // modal: ReactNode
 }
 
 export default async function Layout({
   children,
-  rightsidebar,
-  modal,
+  leftcontentsidebar,
   rightcontentsidebar,
 }: Props) {
   return (
     <div className="flex flex-row w-full h-full ">
-      {rightsidebar}
+      {leftcontentsidebar}
       {/* <div className=" w-full bg-green-500 h-full px-8 py-4 p-3">{children}</div> */}
       <div className="flex flex-row w-full h-full px-3 pt-3 pb-2">
         {children}
