@@ -7,7 +7,6 @@ export function useAuth() {
   console.log('accessToken', accessToken)
   console.log('clinicsData', clinicsData)
 
-
   // const regex = /(clinics|sign-in)/
   // // const isSignOrClinicsEndPoint = String(input).match(regex)
 
@@ -20,8 +19,7 @@ export function useAuth() {
   // // }
 
   const authenticatedUser =
-    typeof accessToken !== 'undefined' &&
-    typeof clinicsData !== 'undefined'
+    typeof accessToken !== 'undefined' && typeof clinicsData !== 'undefined'
   return {
     authenticatedUser,
   }

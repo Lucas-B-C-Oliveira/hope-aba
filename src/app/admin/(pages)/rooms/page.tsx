@@ -8,7 +8,7 @@ import { FetchTherapiesData, TherapyData } from '@/types'
 import { SSFetch } from '@/utils/api/serverFetch'
 import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
 import { PlusIcon } from '@heroicons/react/24/solid'
-import { redirect } from 'next/navigation'
+// import { redirect } from 'next/navigation'
 
 export default async function Rooms() {
   const END_POINT = 'rooms'
@@ -22,9 +22,9 @@ export default async function Rooms() {
     'therapies?active=true',
   )
 
-  if (response?.error) {
-    redirect('/login')
-  }
+  // if (response?.error) {
+  //   redirect('/login')
+  // }
 
   const therapiesData = response.data?.map((therapy: TherapyData) => ({
     id: therapy.id,

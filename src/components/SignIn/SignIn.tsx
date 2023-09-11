@@ -15,7 +15,6 @@ import { memo, useRef } from 'react'
 import { setCookie, getCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { CSFetch } from '@/utils/api/clientFetch'
-import { redirect } from 'next/navigation'
 
 const signInSchema = z.object({
   email: z.string().nonempty({ message: 'Esse campo não pode ficar vazio' }),
@@ -35,6 +34,7 @@ function tokenDecode(token: string) {
 export const SignIn = memo(function SignIn({ queryKeys }: Props) {
   const router = useRouter()
   const signInData = useRef<undefined | SignInData>(undefined)
+
 
   const {
     data: getClinicsData,
@@ -119,25 +119,27 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
       expires: expDate,
     })
 
-    redirect('/')
+    router.replace("/admin/appointments")
   }
 
   const signInForm = useForm<SignInData>({
     resolver: zodResolver(signInSchema),
+    mode: 'onSubmit',
   })
 
   const {
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting }
   } = signInForm
 
-  function handleSignIn(data: SignInData) {
+  async function handleSignIn(data: SignInData) {
     signInData.current = data
-    signInRefetch()
+    await signInRefetch()
   }
 
+
   return (
-    <section className="w-full h-full flex flex-col items-center gap-4">
+    <div className="w-full h-full flex flex-col items-center gap-4">
       <div className="flex flex-col gap-2">
         {/* <img
           className="h-10 w-auto"
@@ -190,7 +192,7 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
             />
             <Form.ErrorMessage field="password" />
           </Form.Field>
-          +
+
           <Button
             queryKeys={queryKeys}
             type="submit"
@@ -199,8 +201,13 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
           >
             Entrar
           </Button>
+
+
+
+
         </form>
       </FormProvider>
+
 
       <div className="flex flex-col gap-0  items-center">
         <p className="text-center text-sm text-gray-500">
@@ -213,6 +220,6 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
           Entre grátis por 7 dias
         </a>
       </div>
-    </section>
+    </div>
   )
 })

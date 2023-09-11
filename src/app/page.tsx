@@ -1,5 +1,10 @@
-import { SignIn } from '@/components/SignIn/SignIn'
+import { HomeComponent } from "./Home";
 
 export default async function Home() {
-  return <div className="flex h-full w-full bg-inherit p-20"></div>
+
+  return (
+    <div className="flex h-full w-full bg-white p-20">
+      <HomeComponent />
+    </div>
+  )
 }

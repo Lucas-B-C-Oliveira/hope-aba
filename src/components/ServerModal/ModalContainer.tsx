@@ -3,7 +3,6 @@ import { Fragment, ReactNode, memo, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useMainLayoutStore } from '@/store/mainLayoutStore'
 import { XMarkIcon } from '@heroicons/react/24/solid'
-import { useRouter } from 'next/navigation'
 
 interface Props {
   children: ReactNode
@@ -34,7 +33,6 @@ export const ModalContainer = memo(function ModalContainer({
   children,
   containerId = 'main',
 }: Props) {
-  const router = useRouter()
   // const cancelButtonRef = useRef(null)
   // const isFirstRender = useRef(true)
 
@@ -113,7 +111,7 @@ export const ModalContainer = memo(function ModalContainer({
               leave="ease-in duration-200"
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
-              afterLeave={() => router.back()}
+            // afterLeave={() => router.back()}
             >
               <div
                 style={{

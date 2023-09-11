@@ -1,6 +1,6 @@
 import { getCookie } from 'cookies-next'
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
-import { redirect } from 'next/navigation'
+// import { redirect } from 'next/navigation'
 
 export async function CSFetch<T = unknown>(
   input: RequestInfo | URL,
@@ -12,13 +12,13 @@ export async function CSFetch<T = unknown>(
   const regex = /(clinics|sign-in)/
   const isSignOrClinicsEndPoint = String(input).match(regex)
 
-  if (
-    (typeof accessToken === 'undefined' ||
-      typeof clinicsData === 'undefined') &&
-    !isSignOrClinicsEndPoint
-  ) {
-    redirect('/login') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
-  }
+  // if (
+  //   (typeof accessToken === 'undefined' ||
+  //     typeof clinicsData === 'undefined') &&
+  //   !isSignOrClinicsEndPoint
+  // ) {
+  //   redirect('/login') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
+  // }
 
   let clinicsDataParsed
 

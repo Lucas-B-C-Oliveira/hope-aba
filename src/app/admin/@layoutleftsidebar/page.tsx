@@ -3,9 +3,5 @@ import { LayoutLeftSidebar } from './LayoutLeftSidebar'
 
 export default async function LayoutLeftSidebarPage() {
   const { authenticatedUser } = useServerAuth()
-  return (
-    <>
-      {authenticatedUser && <LayoutLeftSidebar />}
-    </>
-  )
+  return <>{authenticatedUser && <LayoutLeftSidebar />}</>
 }

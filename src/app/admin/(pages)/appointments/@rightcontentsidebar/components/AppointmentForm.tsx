@@ -8,7 +8,6 @@ import { Form } from '@/components/Form'
 import { twMerge } from 'tailwind-merge'
 import { MAGIC_INPUT_CLASSNAME, MAGIC_LABEL_CLASSNAME } from '@/style/consts'
 import { doFetch } from '@/utils/actions/action'
-import { useRouter } from 'next/navigation'
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 import { Filter, FilterKey } from '@/types'
 
@@ -153,7 +152,6 @@ export const AppointmentForm = memo(function AppointmentForm({
   datePicker,
 }: Props) {
   const { addFilter } = useAppointmentFilterStore()
-  const router = useRouter()
   const createAppointmentForm = useForm<AppointmentData>({
     resolver: zodResolver(appointmentSchema),
   })

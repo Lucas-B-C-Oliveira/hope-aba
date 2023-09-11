@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+// import { redirect } from 'next/navigation'
 
 export async function SSFetch<T = unknown>(
   input: RequestInfo | URL,
@@ -11,12 +11,12 @@ export async function SSFetch<T = unknown>(
   const accessToken = cookieStore.get('accessToken')
   const clinicsData = cookieStore.get('clinicsData')
 
-  if (
-    typeof accessToken === 'undefined' ||
-    typeof clinicsData === 'undefined'
-  ) {
-    redirect('/login') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
-  }
+  // if (
+  //   typeof accessToken === 'undefined' ||
+  //   typeof clinicsData === 'undefined'
+  // ) {
+  //   redirect('/login') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
+  // }
 
   const token = accessToken?.value
 

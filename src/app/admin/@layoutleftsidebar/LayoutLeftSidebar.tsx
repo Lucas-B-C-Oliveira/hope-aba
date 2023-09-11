@@ -11,10 +11,10 @@ import { LinkNav } from '@/components/LinkNav'
 import { useMainLayoutStore } from '@/store/mainLayoutStore'
 
 const navigation = [
-  { name: 'Agendamentos', href: '/appointments', icon: CalendarIcon },
-  { name: 'Pacientes', href: '/patients', icon: UsersIcon },
-  { name: 'Profissionais', href: '/professionals', icon: UserIcon },
-  { name: 'Salas', href: '/rooms', icon: HomeIcon },
+  { name: 'Agendamentos', href: '/admin/appointments', icon: CalendarIcon },
+  { name: 'Pacientes', href: '/admin/patients', icon: UsersIcon },
+  { name: 'Profissionais', href: '/admin/professionals', icon: UserIcon },
+  { name: 'Salas', href: '/admin/rooms', icon: HomeIcon },
 ]
 
 export function LayoutLeftSidebar() {

@@ -3,9 +3,5 @@ import { LayoutHeader } from './LayoutHeader'
 
 export default async function LayoutHeaderPage() {
   const { authenticatedUser } = useServerAuth()
-  return (
-    <>
-      {authenticatedUser && <LayoutHeader />}
-    </>
-  )
+  return <>{authenticatedUser && <LayoutHeader />}</>
 }
