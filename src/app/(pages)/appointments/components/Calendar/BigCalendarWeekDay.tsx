@@ -45,5 +45,4 @@ export const BigCalendarWeekDay = memo(function BigCalendarWeekDay({
       )}
     </>
   )
-
 })

@@ -23,7 +23,7 @@ export default async function Rooms() {
   )
 
   if (response?.error) {
-    redirect('/')
+    redirect('/login')
   }
 
   const therapiesData = response.data?.map((therapy: TherapyData) => ({

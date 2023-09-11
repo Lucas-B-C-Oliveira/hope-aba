@@ -15,7 +15,7 @@ export async function SSFetch<T = unknown>(
     typeof accessToken === 'undefined' ||
     typeof clinicsData === 'undefined'
   ) {
-    redirect('/') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
+    redirect('/login') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
   }
 
   const token = accessToken?.value
@@ -30,6 +30,10 @@ export async function SSFetch<T = unknown>(
   if (typeof currentClinic !== 'undefined') {
     clinicsDataParsed = currentClinic[0]?.id
   }
+
+
+  console.log('clinicsDataParsed', clinicsDataParsed)
+
 
   const defaultHeaders = {
     'Content-Type': 'application/json',

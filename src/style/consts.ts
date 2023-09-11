@@ -7,13 +7,11 @@ export const BUTTON_CLASSNAME = `justify-center rounded-md bg-indigo-600 px-3 py
 export const MAGIC_LABEL_CLASSNAME = `absolute -top-[0.65rem] left-2 inline-block bg-white px-1 text-sm font-bold text-gray-600`
 export const MAGIC_INPUT_CLASSNAME = `block w-full rounded-md border-0 py-2 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`
 
-
 export const MUI_INPUT_SX = {
-
   bgcolor: 'transparent',
   '& .MuiInputBase-input': {
-    boxSizing: "unset",
-    height: "fit-content",
+    boxSizing: 'unset',
+    height: 'fit-content',
     width: '100%',
     border: 'none',
     paddingTop: '0.6rem',
@@ -48,5 +46,4 @@ export const MUI_INPUT_SX = {
     borderWidth: '0px',
     color: 'transparent',
   },
-
 }

@@ -3,18 +3,20 @@
 import { ChangeEvent, memo, useEffect, useState } from 'react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { Combobox, Listbox } from '@headlessui/react'
-import { MAGIC_INPUT_CLASSNAME, MAGIC_LABEL_CLASSNAME, MUI_INPUT_SX } from '@/style/consts'
+import {
+  MAGIC_INPUT_CLASSNAME,
+  MAGIC_LABEL_CLASSNAME,
+  MUI_INPUT_SX,
+} from '@/style/consts'
 import { isEqual } from 'lodash'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
-import {
-  getProfessionalScheduleAvailabilityWeekDays,
-} from '@/utils/actions/action'
+import { getProfessionalScheduleAvailabilityWeekDays } from '@/utils/actions/action'
 import { DatePicker } from '@mui/x-date-pickers'
-import { useCalendarStore } from '@/store/calendarStore'
 import { Form } from '.'
 import { dateAdapter } from '@/utils/dateAdapter'
 import { DATE_FORMAT } from '@/utils/globalConstants'
+import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 
 interface Props {
   name?: string
@@ -25,7 +27,7 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
   name,
   title,
 }: Props) {
-  const { professionalId } = useCalendarStore()
+  const { filters } = useAppointmentFilterStore()
 
   const [weekDaysAvailable, setWeekDaysAvailable] = useState<number[]>([99])
 
@@ -41,10 +43,10 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
   const formValues = getValues()
 
   function isDateDisabled(date: any) {
-    const jsDate = date.toDate();
+    const jsDate = date.toDate()
     const dayNumber: number = jsDate?.getDay() ?? 8
     return !weekDaysAvailable?.includes(dayNumber)
-  };
+  }
 
   function handleCalendar(date: any) {
     const dateFormated = dateAdapter(date).format(DATE_FORMAT)
@@ -54,15 +56,16 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
   }
 
   useEffect(() => {
-    if (typeof professionalId !== 'undefined') {
-      getProfessionalScheduleAvailabilityWeekDays(professionalId).then(async (data) => {
+    if (typeof filters?.professionals?.id !== 'undefined') {
+      getProfessionalScheduleAvailabilityWeekDays(
+        filters?.professionals?.id,
+      ).then(async (data) => {
         setWeekDaysAvailable(data)
       })
     }
-  }, [professionalId])
+  }, [filters?.professionals?.id])
 
   return (
-
     <Form.Field className="relative">
       <Form.Label
         className={twMerge(MAGIC_LABEL_CLASSNAME, 'z-10')}
@@ -73,7 +76,7 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
 
       <div className="absolute right-0">
         <Form.ErrorMessage
-          field={name}
+          field={`${name}`}
           specificStyle="z-40 absolute -top-[0.65rem] right-0 animate-pulse bg-white"
         />
       </div>
@@ -83,9 +86,7 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
         shouldDisableDate={isDateDisabled}
         onChange={handleCalendar}
         sx={MUI_INPUT_SX}
-
       />
     </Form.Field>
-
   )
 })

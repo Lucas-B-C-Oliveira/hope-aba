@@ -14,6 +14,8 @@ export const ErrorFeedback = memo(function ErrorMessage({
   ...rest
 }: ErrorFeedbackProps) {
 
+  console.log('errors no erro', errors)
+
   return (
     <div className="relative">
       {errors && errors.length > 0 && (
@@ -22,7 +24,7 @@ export const ErrorFeedback = memo(function ErrorMessage({
           <div style={{ height: 'full', maxHeight: '19.2rem' }} className="  rounded-md border-0  max-w-[15rem] w-full py-2 pt-3 pl-2 box-content text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300">
             <div className="flex shadow-lg p-3  rounded-lg flex-col gap-4 overflow-y-auto  max-w-[13rem] w-full" style={{ height: 'full', maxHeight: '19.2rem' }}>
               {errors.map(([date, message]) => (
-                <span className="text-sm w-fit text-red-500 font-bold">
+                <span key={`${date}-${message}`} className="text-sm w-fit text-red-500 font-bold">
                   * {date} - {message}
                 </span>
               ))}

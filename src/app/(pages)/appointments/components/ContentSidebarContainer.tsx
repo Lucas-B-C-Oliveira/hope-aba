@@ -9,7 +9,6 @@ interface Props {
 }
 
 export function ContentSidebarContainer({ content, isOpen }: Props) {
-
   return (
     <Transition
       show={isOpen}
@@ -21,7 +20,8 @@ export function ContentSidebarContainer({ content, isOpen }: Props) {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      <div className={`
+      <div
+        className={`
           pointer-events-auto transform  h-full rounded-2xl bg-white
           p-6 text-left shadow-xl transition-all w-fit 
         `}
@@ -30,5 +30,4 @@ export function ContentSidebarContainer({ content, isOpen }: Props) {
       </div>
     </Transition>
   )
-
 }

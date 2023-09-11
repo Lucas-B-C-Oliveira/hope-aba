@@ -1,11 +1,7 @@
 'use client'
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from '@heroicons/react/20/solid'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { ReactElement, memo } from 'react'
 import { useBigCalendarHeader } from './useBigCalendarHeader'
-
 
 interface CalendarHeaderProps {
   onNavigatePrev: () => void
@@ -31,14 +27,12 @@ export const BigCalendarHeader = memo(function BigCalendarHeader({
       style={{ backgroundColor: '#f9fafc' }}
       className="flex flex-none bg-white items-center justify-between border-b border-gray-200 px-6 py-4"
     >
-
       <div className="hidden md:flex md:items-center">
         {openLeftContentSidebarButton && openLeftContentSidebarButton}
         <div className="ml-6 h-6 w-px bg-gray-300" />
       </div>
 
       <div className="hidden md:ml-4 md:flex md:items-center">
-
         <div className="flex items-center gap-6">
           <h1 className="text-base font-semibold leading-6 text-gray-900">
             {dateLabel}
@@ -78,7 +72,6 @@ export const BigCalendarHeader = memo(function BigCalendarHeader({
         <div className="ml-6 mr-6 h-6 w-px bg-gray-300" />
         {openRightContentSidebarButton && openRightContentSidebarButton}
       </div>
-
     </header>
   )
 })

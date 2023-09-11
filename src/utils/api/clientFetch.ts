@@ -17,7 +17,7 @@ export async function CSFetch<T = unknown>(
       typeof clinicsData === 'undefined') &&
     !isSignOrClinicsEndPoint
   ) {
-    redirect('/') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
+    redirect('/login') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
   }
 
   let clinicsDataParsed

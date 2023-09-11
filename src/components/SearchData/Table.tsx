@@ -62,10 +62,7 @@ export const Table = memo(function Table({
                   </th>
                 ))}
 
-              <th
-                scope="col"
-                className="relative py-3.5 pl-3 pr-4 sm:pr-6 w-5"
-              >
+              <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6 w-5">
                 <span className="sr-only">Edit</span>
               </th>
             </tr>
@@ -126,13 +123,10 @@ export const Table = memo(function Table({
                           <PencilSquareIcon className="text-white h-5 w-5 " />
                         </Button>
                       }
-                      childrenThatCanSetOpenModal={cloneElement(
-                        editDataModal,
-                        {
-                          endPoint: `${endPoint}/${register?.id}`,
-                          registerData: register,
-                        },
-                      )}
+                      childrenThatCanSetOpenModal={cloneElement(editDataModal, {
+                        endPoint: `${endPoint}/${register?.id}`,
+                        registerData: register,
+                      })}
                     />
 
                     <Modal.Container

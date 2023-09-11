@@ -4,8 +4,10 @@ interface Props {
   filterData?: any
 }
 
-export const BigCalendarFilterView = memo(function BigCalendarFilterView({ filterData }: Props) {
-  console.log('🚀 ~ file: Appointment.tsx:9 ~ filterData:', filterData)
+export const BigCalendarFilterView = memo(function BigCalendarFilterView({
+  filterData,
+}: Props) {
+  // console.log('🚀 ~ file: Appointment.tsx:9 ~ filterData:', filterData)
 
   return (
     <div

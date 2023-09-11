@@ -25,8 +25,9 @@ export const Accordion = memo(function Accordion({ children }: Props) {
                       {titles[index]}
                     </span>
                     <ChevronUpIcon
-                      className={`${open ? 'rotate-180' : ''
-                        } h-5 w-5 text-gray-600 font-bold stroke-2`}
+                      className={`${
+                        open ? 'rotate-180' : ''
+                      } h-5 w-5 text-gray-600 font-bold stroke-2`}
                     />
                   </Disclosure.Button>
 

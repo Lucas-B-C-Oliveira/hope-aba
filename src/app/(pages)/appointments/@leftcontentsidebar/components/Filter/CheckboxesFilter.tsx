@@ -2,13 +2,16 @@
 
 import { Form } from '@/components/Form'
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
-import { CHECKBOX_INPUT_CLASSNAME, TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME } from '@/style/consts'
+import {
+  CHECKBOX_INPUT_CLASSNAME,
+  TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
+} from '@/style/consts'
 import { FilterKey } from '@/types'
 import { doFetch } from '@/utils/actions/action'
 import { memo, useEffect, useState } from 'react'
 
 interface Props {
-  filterKey: FilterKey,
+  filterKey: FilterKey
   endPoint: string
   labelText: string
 }
@@ -16,9 +19,8 @@ interface Props {
 export const CheckboxesFilter = memo(function CheckboxesFilter({
   filterKey,
   endPoint,
-  labelText
+  labelText,
 }: Props) {
-
   const { addFilter, removeFilter } = useAppointmentFilterStore()
   const [checkboxes, setCheckboxes] = useState<any>([])
 
@@ -27,24 +29,20 @@ export const CheckboxesFilter = memo(function CheckboxesFilter({
     if (checked) {
       const newFilter = {
         name: checboxSelectedData?.name,
-        id: checboxSelectedData?.id
+        id: checboxSelectedData?.id,
       }
       addFilter(filterKey, newFilter)
-    }
-    else {
+    } else {
       removeFilter(filterKey, checboxSelectedData?.id)
     }
   }
 
   async function onChangeHandle() {
     try {
-      const data = await doFetch<any | { data: any }>(
-        `${endPoint}?search`,
-      )
+      const data = await doFetch<any | { data: any }>(`${endPoint}?search`)
       if (data?.data.length > 0) {
         setCheckboxes(data?.data)
       }
-
     } catch (error) {
       console.error('SERVER ACTION ERROR - endPoint: ', endPoint, error)
     }
@@ -55,10 +53,11 @@ export const CheckboxesFilter = memo(function CheckboxesFilter({
   }, [])
 
   return (
-    <Form.Field className='flex flex-col gap-1'>
+    <Form.Field className="flex flex-col gap-1">
       <Form.Label>{labelText}</Form.Label>
       <div className="flex flex-col gap-2">
-        {typeof checkboxes !== 'undefined' && checkboxes?.length > 0 &&
+        {typeof checkboxes !== 'undefined' &&
+          checkboxes?.length > 0 &&
           checkboxes.map((checkbox: any) => {
             return (
               <Form.Field
@@ -83,6 +82,5 @@ export const CheckboxesFilter = memo(function CheckboxesFilter({
           })}
       </div>
     </Form.Field>
-
   )
 })

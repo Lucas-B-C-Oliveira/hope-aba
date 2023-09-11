@@ -7,14 +7,10 @@ import { ReactElement, cloneElement, memo, useState } from 'react'
 import { Form } from '@/components/Form'
 import { twMerge } from 'tailwind-merge'
 import { MAGIC_INPUT_CLASSNAME, MAGIC_LABEL_CLASSNAME } from '@/style/consts'
-import {
-  doFetch,
-} from '@/utils/actions/action'
+import { doFetch } from '@/utils/actions/action'
 import { useRouter } from 'next/navigation'
-import { useCalendarStore } from '@/store/calendarStore'
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 import { Filter, FilterKey } from '@/types'
-
 
 const recurrenceSchema = z.enum([
   'dont_repeat',
@@ -135,7 +131,13 @@ function getErrorsMessage(defaultErrors: any, errorMessage: string) {
 }
 
 function isEmptyObject(obj: any) {
-  return Object.keys(obj).length === 0
+  return Object.keys(obj)?.length === 0
+}
+
+interface Result {
+  data?: {
+    errors?: any
+  }
 }
 
 export const AppointmentForm = memo(function AppointmentForm({
@@ -150,7 +152,6 @@ export const AppointmentForm = memo(function AppointmentForm({
   timePickerEnd,
   datePicker,
 }: Props) {
-  const { setProfessionalId } = useCalendarStore()
   const { addFilter } = useAppointmentFilterStore()
   const router = useRouter()
   const createAppointmentForm = useForm<AppointmentData>({
@@ -165,24 +166,31 @@ export const AppointmentForm = memo(function AppointmentForm({
   } = createAppointmentForm
 
   async function schedule(data: AppointmentData) {
-    console.log('data', data)
-    const result = await doFetch('appointments', {
+    // console.log('data', data)
+    const result = (await doFetch('appointments', {
       method: 'POST',
       body: JSON.stringify(data),
-    })
+    })) as Result
 
-    const errors = result?.data?.errors
+    const errors = result?.data?.errors || {}
+
+    // const errors = (result && result?.data && result?.data?.errors) || {}
+
+    console.log('errors', errors)
+    console.log('!isEmptyObject(errors)', !isEmptyObject(errors))
 
     if (!isEmptyObject(errors)) {
       const translatedErrors = Object.entries(errors).map(([date, message]) => [
         date,
         getErrorsMessage(DEFAULT_ERRORS, message as string),
       ])
+
+      console.log('translatedErrors', translatedErrors)
       setFeedbackErrors(translatedErrors)
     }
     //! TODO: Se não tiver erro => Chamar um popup de sucesso e fechar o modal de agendamento
 
-    console.log('result', result)
+    console.log('AppointmentForm Resultado do agendamento => result', result)
     // refetch()
   }
 
@@ -223,34 +231,25 @@ export const AppointmentForm = memo(function AppointmentForm({
             })}
 
           {datePicker &&
-            cloneElement(
-              datePicker,
-              {
-                name: 'schedule.day',
-                title: 'Data',
-              }
-            )}
+            cloneElement(datePicker, {
+              name: 'schedule.day',
+              title: 'Data',
+            })}
 
           {timePickerStart &&
-            cloneElement(
-              timePickerStart,
-              {
-                name: 'schedule.start',
-                title: 'Início',
-                fieldNameToObserve: 'schedule.day',
-              }
-            )}
+            cloneElement(timePickerStart, {
+              name: 'schedule.start',
+              title: 'Início',
+              fieldNameToObserve: 'schedule.day',
+            })}
 
           {timePickerEnd &&
-            cloneElement(
-              timePickerEnd,
-              {
-                name: 'schedule.end',
-                title: 'Fim',
-                fieldDateToObserve: 'schedule.day',
-                fieldStartTimeToObserve: 'schedule.start',
-              }
-            )}
+            cloneElement(timePickerEnd, {
+              name: 'schedule.end',
+              title: 'Fim',
+              fieldDateToObserve: 'schedule.day',
+              fieldStartTimeToObserve: 'schedule.start',
+            })}
 
           <Form.Field className="relative">
             <Form.Label

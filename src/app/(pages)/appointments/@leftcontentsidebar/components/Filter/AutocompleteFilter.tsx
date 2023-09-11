@@ -15,7 +15,7 @@ function classNames(...classes: any[]) {
 }
 
 interface Props {
-  filterKey: FilterKey,
+  filterKey: FilterKey
   endPoint: string
   labelText: string
 }
@@ -23,13 +23,12 @@ interface Props {
 export const AutocompleteFilter = memo(function AutocompleteFilter({
   filterKey,
   endPoint,
-  labelText
+  labelText,
 }: Props) {
   const [selected, setSelected] = useState(null)
   const [responseData, setResponseData] = useState<any>([]) //! TODO: Trocar o tipo para o tipo correto
   const [isLoading, setIsLoading] = useState(false)
   const { addFilter, filters } = useAppointmentFilterStore()
-
 
   const ARE_THERE_OPTIONS_TO_SHOW =
     typeof responseData?.data !== 'undefined' && responseData?.data.length > 0
@@ -70,14 +69,20 @@ export const AutocompleteFilter = memo(function AutocompleteFilter({
             ' w-56 cursor-default text-left',
           )}
           onChange={onChangeHandle}
-          displayValue={(dataSelected: any,) => {
-
+          displayValue={(dataSelected: any) => {
             if (dataSelected) {
               const filterKeyValue = filters[filterKey]
-              if (filterKeyValue?.id !== dataSelected?.id) {
+              if (
+                (Array.isArray(filterKeyValue) &&
+                  filterKeyValue.some((item) => item.id === dataSelected.id)) ||
+                (!Array.isArray(filterKeyValue) &&
+                  filterKeyValue?.id === dataSelected.id)
+              ) {
+                // O item já foi selecionado, você pode tratar isso aqui
+              } else {
                 const filterData = {
-                  name: dataSelected?.name,
-                  id: dataSelected?.id,
+                  name: dataSelected.name,
+                  id: dataSelected.id,
                 }
                 addFilter(filterKey, filterData)
               }

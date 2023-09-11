@@ -29,7 +29,6 @@ export const documentMask = (inputValue: string) => {
   return newValue.replace(cpfRegex, '$1.$2.$3-$4')
 }
 
-
 export function capitalizedText(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
@@ -57,7 +56,10 @@ export function convertTimeFormat(day: any, time: any, currentDate?: any) {
   return date.hours(hours).minutes(minutes).format('YYYY-MM-DDTHH:mm')
 }
 
-export function getAvailabilityTimeData(inputArray: any[], currentDate?: any): any[] {
+export function getAvailabilityTimeData(
+  inputArray: any[],
+  currentDate?: any,
+): any[] {
   return inputArray.map((dayObj) => {
     const day = Object.keys(dayObj)[0]
     const timeArray = dayObj[day].map((timeObj: any) => ({
@@ -70,7 +72,10 @@ export function getAvailabilityTimeData(inputArray: any[], currentDate?: any): a
   })
 }
 
-export function getAvailabilityTimeByDate(inputArray: any[], currentDate: string): any[] {
+export function getAvailabilityTimeByDate(
+  inputArray: any[],
+  currentDate: string,
+): any[] {
   return inputArray.map((dayObj) => {
     const day = Object.keys(dayObj)[0]
     const timeArray = dayObj[day].map((timeObj: any) => ({

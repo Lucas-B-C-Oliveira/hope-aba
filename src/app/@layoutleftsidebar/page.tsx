@@ -1,5 +1,11 @@
+import { useServerAuth } from '@/hooks/useServerAuth'
 import { LayoutLeftSidebar } from './LayoutLeftSidebar'
 
 export default async function LayoutLeftSidebarPage() {
-  return <LayoutLeftSidebar />
+  const { authenticatedUser } = useServerAuth()
+  return (
+    <>
+      {authenticatedUser && <LayoutLeftSidebar />}
+    </>
+  )
 }

@@ -9,7 +9,6 @@ interface MainLayoutStore {
 
   leftContentSidebarIsOpen: boolean
   openAndCloseLeftContentSidebar: (open: boolean) => void
-
 }
 
 export const useMainLayoutStore = create<MainLayoutStore>()((set) => ({
@@ -23,5 +22,4 @@ export const useMainLayoutStore = create<MainLayoutStore>()((set) => ({
   leftContentSidebarIsOpen: false,
   openAndCloseLeftContentSidebar: (open) =>
     set(() => ({ leftContentSidebarIsOpen: open })),
-
 }))

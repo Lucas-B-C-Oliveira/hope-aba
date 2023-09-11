@@ -1,5 +1,11 @@
+import { useServerAuth } from '@/hooks/useServerAuth'
 import { LayoutHeader } from './LayoutHeader'
 
 export default async function LayoutHeaderPage() {
-  return <LayoutHeader />
+  const { authenticatedUser } = useServerAuth()
+  return (
+    <>
+      {authenticatedUser && <LayoutHeader />}
+    </>
+  )
 }

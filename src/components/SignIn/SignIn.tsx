@@ -15,6 +15,7 @@ import { memo, useRef } from 'react'
 import { setCookie, getCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 import { CSFetch } from '@/utils/api/clientFetch'
+import { redirect } from 'next/navigation'
 
 const signInSchema = z.object({
   email: z.string().nonempty({ message: 'Esse campo não pode ficar vazio' }),
@@ -118,8 +119,7 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
       expires: expDate,
     })
 
-    // setCookie('clinicsData', clinicsData)
-    router.push('/')
+    redirect('/')
   }
 
   const signInForm = useForm<SignInData>({

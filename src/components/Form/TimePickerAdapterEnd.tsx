@@ -1,21 +1,22 @@
 'use client'
 
 import { memo, useEffect, useState } from 'react'
-import { MAGIC_INPUT_CLASSNAME, MAGIC_LABEL_CLASSNAME, MUI_INPUT_SX } from '@/style/consts'
+import {
+  MAGIC_INPUT_CLASSNAME,
+  MAGIC_LABEL_CLASSNAME,
+  MUI_INPUT_SX,
+} from '@/style/consts'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
-import {
-  getAvailableScheduleTime,
-} from '@/utils/actions/action'
+import { getAvailableScheduleTime } from '@/utils/actions/action'
 import { TimePicker } from '@mui/x-date-pickers'
-import { useCalendarStore } from '@/store/calendarStore'
 import { Form } from '.'
 import { dateAdapter } from '@/utils/dateAdapter'
 import { HOUR_MIN_FORMAT } from '@/utils/globalConstants'
 
 import './styles.css'
 import { ThemeProvider, createTheme } from '@mui/material'
-
+import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 
 interface Props {
   name?: string
@@ -30,8 +31,10 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
   name,
   title,
 }: Props) {
-  const { professionalId } = useCalendarStore()
-  const [availableTimeRanges, setAvailableTimeRanges] = useState<[] | { start: string, end: string }[]>([]);
+  const { filters } = useAppointmentFilterStore()
+  const [availableTimeRanges, setAvailableTimeRanges] = useState<
+    [] | { start: string; end: string }[]
+  >([])
 
   const {
     setValue,
@@ -54,42 +57,46 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
 
   const formValues = getValues()
 
-
-
   function shouldDisableTime(value: any) {
-    const selectedTime = value.format(HOUR_MIN_FORMAT);
+    const selectedTime = value.format(HOUR_MIN_FORMAT)
 
-    const durationToAddInMinutes = 40;
+    const durationToAddInMinutes = 40
 
-    const timeWithDuration = dateAdapter(startTimeField, "HH:mm").add(durationToAddInMinutes, "minutes");
+    const timeWithDuration = dateAdapter(startTimeField, 'HH:mm').add(
+      durationToAddInMinutes,
+      'minutes',
+    )
 
-    const formattedTime = timeWithDuration.format("HH:mm");
+    const formattedTime = timeWithDuration.format('HH:mm')
 
-    const isTimeDisabled = !(selectedTime >= startTimeField && selectedTime <= formattedTime)
+    const isTimeDisabled = !(
+      selectedTime >= startTimeField && selectedTime <= formattedTime
+    )
 
-    return isTimeDisabled;
-  };
+    return isTimeDisabled
+  }
 
   function handleTimePicker(date: any) {
-    const dateFormated = dateAdapter(date).format("HH:mm")
+    const dateFormated = dateAdapter(date).format('HH:mm')
     if (formValues?.schedule?.start !== dateFormated) {
       setValue(`${name}`, dateFormated)
     }
-
   }
 
   useEffect(() => {
-    if (typeof professionalId !== 'undefined' && typeof observedField !== 'undefined') {
-      getAvailableScheduleTime(professionalId, observedField).then(async (data) => {
-        setAvailableTimeRanges(data);
-      });
+    if (
+      typeof filters?.professionals?.id !== 'undefined' &&
+      typeof observedField !== 'undefined'
+    ) {
+      getAvailableScheduleTime(filters?.professionals?.id, observedField).then(
+        async (data) => {
+          setAvailableTimeRanges(data)
+        },
+      )
     }
-  }, [professionalId, observedField]);
-
-
+  }, [filters?.professionals?.id, observedField])
 
   return (
-
     <Form.Field className="relative">
       <Form.Label
         className={twMerge(MAGIC_LABEL_CLASSNAME, 'z-10')}
@@ -111,6 +118,5 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
         sx={MUI_INPUT_SX}
       />
     </Form.Field>
-
   )
 })

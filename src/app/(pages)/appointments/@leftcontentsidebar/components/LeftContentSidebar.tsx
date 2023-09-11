@@ -16,29 +16,47 @@ export function LeftContentSidebar() {
   }
 
   return (
-    <ContentSidebarContainer isOpen={leftContentSidebarIsOpen} content={
-      <div className="flex flex-col gap-5">
-        <h2 className="text-left text-xl font-bold tracking-tight text-gray-600">
-          Filtros
-        </h2>
-        <div className="flex flex-col items-start gap-4">
-          <Filter.Autocomplete labelText='Profissionais' filterKey='professionals' endPoint='professionals' />
-          <Filter.Autocomplete labelText='Pacientes' filterKey='patients' endPoint='patients' />
-          <Filter.Checkboxes labelText='Terapias' filterKey='therapies' endPoint='therapies' />
-          <Filter.Checkboxes labelText='Salas' filterKey='rooms' endPoint='rooms' />
-
-          <ActionButton onClick={handleClick}>
-            <AdjustmentsHorizontalIcon
-              className="pointer-events-none h-5 w-5 text-white"
-              aria-hidden="true"
+    <ContentSidebarContainer
+      isOpen={leftContentSidebarIsOpen}
+      content={
+        <div className="flex flex-col gap-5">
+          <h2 className="text-left text-xl font-bold tracking-tight text-gray-600">
+            Filtros
+          </h2>
+          <div className="flex flex-col items-start gap-4">
+            <Filter.Autocomplete
+              labelText="Profissionais"
+              filterKey="professionals"
+              endPoint="professionals"
             />
-            Filtrar
-          </ActionButton>
+            <Filter.Autocomplete
+              labelText="Pacientes"
+              filterKey="patients"
+              endPoint="patients"
+            />
+            <Filter.Checkboxes
+              labelText="Terapias"
+              filterKey="therapies"
+              endPoint="therapies"
+            />
+            <Filter.Checkboxes
+              labelText="Salas"
+              filterKey="rooms"
+              endPoint="rooms"
+            />
 
-          <Filter.Labels />
+            <ActionButton onClick={handleClick}>
+              <AdjustmentsHorizontalIcon
+                className="pointer-events-none h-5 w-5 text-white"
+                aria-hidden="true"
+              />
+              Filtrar
+            </ActionButton>
+
+            <Filter.Labels />
+          </div>
         </div>
-      </div>
-    } />
+      }
+    />
   )
-
 }

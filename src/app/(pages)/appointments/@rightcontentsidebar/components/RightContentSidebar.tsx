@@ -16,7 +16,6 @@ export const RightContentSidebar = memo(function RightContentSidebar() {
     useMainLayoutStore()
 
   return (
-
     <ContentSidebarContainer
       isOpen={rightContentSidebarIsOpen}
       content={
@@ -28,6 +27,9 @@ export const RightContentSidebar = memo(function RightContentSidebar() {
             <Form.SelectFetchOptionsById endPoint="professionals" />
           }
           room={<Form.SelectFetchOptionsById endPoint="rooms" />}
+          datePicker={<DatePickerAdapter />}
+          timePickerStart={<TimePickerAdapterStart />}
+          timePickerEnd={<TimePickerAdapterEnd />}
           actionButton={
             <ActionButton type="submit">
               <ArrowUpCircleIcon
@@ -37,14 +39,9 @@ export const RightContentSidebar = memo(function RightContentSidebar() {
               Cadastrar
             </ActionButton>
           }
-          datePicker={<DatePickerAdapter />}
-          timePickerStart={<TimePickerAdapterStart />}
-          timePickerEnd={<TimePickerAdapterEnd />}
           errorFeedback={<ErrorFeedback />}
         />
       }
     />
-
-
   )
 })
