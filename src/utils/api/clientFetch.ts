@@ -8,6 +8,7 @@ export async function CSFetch<T = unknown>(
 ) {
   const accessToken = getCookie('accessToken')
   const clinicsData = getCookie('clinicsData')
+  const currentClinicDataIndex = typeof getCookie('currentClinicDataIndex') === 'string' ? getCookie('currentClinicDataIndex') as string : 0
 
   const regex = /(clinics|sign-in)/
   const isSignOrClinicsEndPoint = String(input).match(regex)
@@ -23,7 +24,7 @@ export async function CSFetch<T = unknown>(
   let clinicsDataParsed
 
   if (typeof clinicsData !== 'undefined' && typeof clinicsData === 'string') {
-    clinicsDataParsed = JSON.parse(clinicsData)[0]?.id
+    clinicsDataParsed = JSON.parse(clinicsData)[currentClinicDataIndex]?.id
   }
 
   const defaultHeaders = {

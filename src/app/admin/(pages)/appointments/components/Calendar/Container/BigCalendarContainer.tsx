@@ -227,8 +227,8 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
           const endDayOfTheWeek =
             dateAdapter(endWeekDate).format(API_FORMAT_DEFAULT)
           lastCalendarWeekday.current = endDayOfTheWeek
-          makeAppointmentFeedback(endDayOfTheWeek)
-          // makeAppointmentFeedbacka(endDayOfTheWeek, "a")
+          // makeAppointmentFeedback(endDayOfTheWeek)
+          makeAppointmentFeedbacka(endDayOfTheWeek, "a")
           makeFeedbackOfProfessionalAvailableHour(endDayOfTheWeek)
         }}
       />

@@ -35,3 +35,8 @@ export type Filter = {
 }
 
 export type FilterKey = 'patients' | 'professionals' | 'rooms' | 'therapies'
+
+export type LoginParams = {
+  email: string
+  password: string
+}

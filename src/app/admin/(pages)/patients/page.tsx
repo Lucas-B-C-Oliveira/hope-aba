@@ -22,9 +22,9 @@ export default async function Patient() {
     'therapies?active=true',
   )
 
-  if (response?.error) {
-    redirect('/login')
-  }
+  // if (response?.error) {
+  //   redirect('/login')
+  // }
 
   const therapiesData = response.data?.map((therapy: TherapyData) => ({
     id: therapy.id,

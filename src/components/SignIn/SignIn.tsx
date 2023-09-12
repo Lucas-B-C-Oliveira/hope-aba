@@ -13,8 +13,9 @@ import { Button } from '../Button'
 import { useQuery } from '@tanstack/react-query'
 import { memo, useRef } from 'react'
 import { setCookie, getCookie } from 'cookies-next'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { CSFetch } from '@/utils/api/clientFetch'
+import { signIn } from 'next-auth/react'
 
 const signInSchema = z.object({
   email: z.string().nonempty({ message: 'Esse campo não pode ficar vazio' }),
@@ -113,12 +114,15 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
     const { exp } = tokenDecode(token)
     const expDate = new Date(exp * 1000)
 
+    console.log('getClinicsData', getClinicsData)
+
     const clinicsData = getClinicsData?.map((element: any) => element.data)
 
     setCookie('clinicsData', clinicsData, {
       expires: expDate,
     })
 
+    setCookie('currentClinicDataIndex', 0)
     router.replace("/admin/appointments")
   }
 
@@ -135,6 +139,27 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
   async function handleSignIn(data: SignInData) {
     signInData.current = data
     await signInRefetch()
+
+    // console.log("handleSignIn foi chamad ________")
+
+
+    // const result = await signIn('credentials', {
+    //   email: data?.email,
+    //   password: data?.password,
+    //   redirect: false,
+    // })
+
+    // const b = await new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve('');
+    //   }, 5000);
+    // });
+
+    // if (result?.error) {
+    //   console.log('Deu erro => ', result?.error)
+    // }
+    // router.replace("/admin/appointments")
+
   }
 
 
@@ -201,10 +226,6 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
           >
             Entrar
           </Button>
-
-
-
-
         </form>
       </FormProvider>
 

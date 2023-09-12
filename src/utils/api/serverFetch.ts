@@ -10,6 +10,7 @@ export async function SSFetch<T = unknown>(
   const cookieStore = cookies()
   const accessToken = cookieStore.get('accessToken')
   const clinicsData = cookieStore.get('clinicsData')
+  const currentClinicDataIndex = cookieStore.get('currentClinicDataIndex')?.value ?? 0
 
   // if (
   //   typeof accessToken === 'undefined' ||
@@ -28,7 +29,7 @@ export async function SSFetch<T = unknown>(
       : undefined;
 
   if (typeof currentClinic !== 'undefined') {
-    clinicsDataParsed = currentClinic[0]?.id
+    clinicsDataParsed = currentClinic[currentClinicDataIndex]?.id
   }
 
 
