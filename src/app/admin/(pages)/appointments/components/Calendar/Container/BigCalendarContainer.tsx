@@ -181,8 +181,8 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
           endpointWithQuery = endpointWithQuery + '&' + queryFilters
         }
       }
-      console.log('_________________ endpointWithQuery', endpointWithQuery)
-      const data = await getAppointmentsByRangeDate(endpointWithQuery)
+      console.log('______ endpointWithQuery', endpointWithQuery + "&page=1&pageSize=90")
+      const data = await getAppointmentsByRangeDate(endpointWithQuery + "&page=1&pageSize=90")
 
       const newData = data.map((data) => {
         return {
