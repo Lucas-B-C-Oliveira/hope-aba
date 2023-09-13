@@ -66,7 +66,6 @@ export const BigCalendarAppointmentCard = memo(
       await refetch()
     }
 
-
     return (
       <Modal.Container
         openModalButton={
@@ -239,10 +238,11 @@ export const BigCalendarAppointmentCard = memo(
                   disabled={appointmentData?.status !== 'pending'}
                   onClick={() => handleChangeStatus('cancel')}
                   // classNameToMerge="bg-red-600 hover:bg-red-500 w-24 items-center justify-center px-0"
-                  classNameToMerge={`${appointmentData?.status !== 'pending'
+                  classNameToMerge={`${
+                    appointmentData?.status !== 'pending'
                       ? 'bg-red-800 hover:bg-red-800'
                       : 'bg-red-600 hover:bg-red-500'
-                    }  w-24 items-center justify-center px-0`}
+                  }  w-24 items-center justify-center px-0`}
                 >
                   {!loading && 'Cancelar'}
                   {loading && 'Loading'}
@@ -252,10 +252,11 @@ export const BigCalendarAppointmentCard = memo(
                   disabled={appointmentData?.status !== 'pending'}
                   onClick={() => handleChangeStatus('confirmed')}
                   // classNameToMerge="bg-sky-600 hover:bg-sky-500 w-24 items-center justify-center px-0"
-                  classNameToMerge={`${appointmentData?.status !== 'pending'
+                  classNameToMerge={`${
+                    appointmentData?.status !== 'pending'
                       ? 'bg-sky-800 hover:bg-sky-800'
                       : 'bg-sky-600 hover:bg-sky-500'
-                    }  w-24 items-center justify-center px-0`}
+                  }  w-24 items-center justify-center px-0`}
                 >
                   {!loading && 'Confirmar'}
                   {loading && 'Loading'}
@@ -264,10 +265,11 @@ export const BigCalendarAppointmentCard = memo(
                 <ActionButton
                   disabled={appointmentData?.status !== 'confirmed'}
                   onClick={() => handleChangeStatus('done')}
-                  classNameToMerge={`${appointmentData?.status !== 'confirmed'
+                  classNameToMerge={`${
+                    appointmentData?.status !== 'confirmed'
                       ? 'bg-emerald-800 hover:bg-emerald-800'
                       : 'bg-emerald-600 hover:bg-emerald-500'
-                    }  w-24 items-center justify-center px-0`}
+                  }  w-24 items-center justify-center px-0`}
                 >
                   {!loading && 'Realizado'}
                   {loading && 'Loading'}
