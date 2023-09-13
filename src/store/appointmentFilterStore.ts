@@ -66,9 +66,7 @@ export const useAppointmentFilterStore = create<AppointmentFilterStore>()(
         set(() => ({ patients: undefined }))
       } else if (filterKey === 'professionals') {
         console.log('Entrei no Professionalls')
-        // set((state) => ({ ...state, professionals: undefined }))
-        const currentState = get()
-        set({ ...currentState, professionals: undefined }, true)
+        set((state) => ({ ...state, professionals: undefined }))
       }
     },
     getFilters: (filterKey) => {
