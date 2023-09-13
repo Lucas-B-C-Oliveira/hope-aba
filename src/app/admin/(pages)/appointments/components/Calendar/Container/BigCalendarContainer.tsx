@@ -124,6 +124,7 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
     const query = `appointments?to-scheduleDate=${toScheduleDate}&from-scheduleDate=${fromScheduleDate}`
     const data = await getAppointmentsByRangeDate(query)
     if (!isEqual(data, appointments) && data) {
+      console.log('getAppointmentsByRangeDate data', data)
       setAppointments(data)
     }
   }
@@ -173,10 +174,9 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
       }
       console.log('_________________ endpointWithQuery', endpointWithQuery)
       const data = await getAppointmentsByRangeDate(endpointWithQuery)
-      console.log('_________________ data', data)
+      console.log('getAppointmentsByRangeDate data', data)
 
       if (!isEqual(data, appointments) && data) {
-        console.log('SETOU O APPOINTMENT')
         setAppointments(data)
         if (filterButtonStatus === 'clicked') {
           setButtonStatus('idle')
