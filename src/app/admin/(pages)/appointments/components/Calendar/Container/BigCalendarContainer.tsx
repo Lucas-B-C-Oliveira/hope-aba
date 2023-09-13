@@ -173,7 +173,10 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
       }
       console.log('_________________ endpointWithQuery', endpointWithQuery)
       const data = await getAppointmentsByRangeDate(endpointWithQuery)
+      console.log('_________________ data', data)
+
       if (!isEqual(data, appointments) && data) {
+        console.log("SETOU O APPOINTMENT")
         setAppointments(data)
         if (filterButtonStatus === 'clicked') {
           setButtonStatus('idle')
@@ -197,6 +200,8 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   useEffect(() => {
     makeFeedbackOfProfessionalAvailableHour(currentCalendarWeekday.current)
   }, [professionals?.id])
+
+  console.log('appointments', appointments)
 
   return (
     <div id="calendar" className="flex flex-col h-full rounded-md shadow-md">

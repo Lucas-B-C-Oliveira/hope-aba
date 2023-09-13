@@ -32,7 +32,7 @@ export const FilterSelected = memo(function FilterSelected({
   }
 
   return (
-    <Form.Field className="flex flex-row py-2 px-2 bg-indigo-600 rounded-full items-center w-48 justify-between gap-2 ">
+    <Form.Field className="flex flex-row py-2 px-2 bg-indigo-600 rounded-full items-center w-fit max-w-[12rem] justify-between gap-2 ">
       <Form.Label className="text-xs text-white font-semibold truncate overflow-hidden whitespace-nowrap">
         {name}
       </Form.Label>

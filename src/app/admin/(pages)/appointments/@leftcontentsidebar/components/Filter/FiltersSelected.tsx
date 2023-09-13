@@ -59,7 +59,7 @@ export const FiltersSelected = memo(function FiltersSelected() {
   // console.log('filtersSelected', filtersSelected)
 
   return (
-    <div>
+    <div className="flex flex-col gap-1">
       {filtersSelected.length > 0 &&
         filtersSelected &&
         filtersSelected.map((filterSelected) => {
