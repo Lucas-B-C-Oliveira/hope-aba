@@ -23,6 +23,7 @@ interface Props {
   title?: string
   fieldDateToObserve?: string
   fieldStartTimeToObserve?: string
+  professionalField?: string
 }
 
 export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
@@ -30,6 +31,7 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
   fieldStartTimeToObserve,
   name,
   title,
+  professionalField,
 }: Props) {
   const { professionals } = useAppointmentFilterStore()
   const [availableTimeRanges, setAvailableTimeRanges] = useState<
@@ -44,6 +46,11 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
     formState: { errors },
     control,
   } = useFormContext()
+
+  const observedProfessionalField = useWatch({
+    name: `${professionalField}`,
+    control,
+  })
 
   const observedField = useWatch({
     name: `${fieldDateToObserve}`,
@@ -78,8 +85,23 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
 
   function handleTimePicker(date: any) {
     const dateFormated = dateAdapter(date).format('HH:mm')
-    if (formValues?.schedule?.start !== dateFormated) {
-      setValue(`${name}`, dateFormated)
+
+    if (!observedProfessionalField) {
+      setError(`${name}`, {
+        message: 'Selecione um profissional',
+        type: 'string',
+      })
+    } else {
+      const currentErrors = errors.schedule
+      if (currentErrors && 'end' in currentErrors) {
+        if (currentErrors?.end?.message === 'Selecione um profissional') {
+          clearErrors()
+        }
+      }
+
+      if (formValues?.schedule?.start !== dateFormated) {
+        setValue(`${name}`, dateFormated)
+      }
     }
   }
 
@@ -105,17 +127,28 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
         {title}
       </Form.Label>
 
-      {/* <div className="absolute right-0"> //! TODO: Vai ter erro? 
+      <div className="absolute right-0">
         <Form.ErrorMessage
-          field={name}
+          position="left"
+          field={`${name}`}
           specificStyle="z-40 absolute -top-[0.65rem] right-0 animate-pulse bg-white"
         />
-      </div> */}
+      </div>
 
       <TimePicker
         shouldDisableTime={shouldDisableTime}
         onChange={handleTimePicker}
         sx={MUI_INPUT_SX}
+        onError={(error) => {
+          if (error === 'shouldDisableTime-hours' || error === 'invalidDate') {
+            setError(`${name}`, {
+              message: 'Escolha um horário válido',
+              type: 'string',
+            })
+          } else if (!error) {
+            clearErrors()
+          }
+        }}
       />
     </Form.Field>
   )

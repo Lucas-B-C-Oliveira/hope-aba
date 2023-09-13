@@ -12,6 +12,7 @@ interface ErrorMessageProps {
   hourRangesIndex?: number
   lastField?: 'start' | 'end'
   specificStyle?: string
+  position?: 'right' | 'left' | 'center'
 }
 
 function getError(
@@ -37,10 +38,12 @@ export const ErrorMessage = memo(function ErrorMessage({
   hourRangesIndex,
   lastField,
   specificStyle = '',
+  position = 'center'
 }: ErrorMessageProps) {
   const {
     formState: { errors },
   } = useFormContext()
+
 
   let fieldError: any
 
@@ -50,6 +53,7 @@ export const ErrorMessage = memo(function ErrorMessage({
     typeof lastField !== 'undefined' &&
     typeof errors.scheduleAvailability === 'object'
   ) {
+
     fieldError = getError(
       errors,
       availabilityFieldIndex,
@@ -57,8 +61,49 @@ export const ErrorMessage = memo(function ErrorMessage({
       lastField,
     )
   } else {
-    fieldError = errors[field]
+    if (field === 'schedule.day') {
+      const currentErrors = errors.schedule;
+
+      if (currentErrors) {
+        if ('day' in currentErrors) {
+          fieldError = currentErrors.day;
+        }
+      }
+      else {
+        fieldError = undefined
+      }
+    }
+    else if (field === 'schedule.start') {
+      const currentErrors = errors.schedule;
+
+      if (currentErrors) {
+        if ('start' in currentErrors) {
+          fieldError = currentErrors.start;
+        }
+      }
+      else {
+        fieldError = undefined
+      }
+    }
+    else if (field === 'schedule.end') {
+      const currentErrors = errors.schedule;
+
+      if (currentErrors) {
+        if ('end' in currentErrors) {
+          fieldError = currentErrors.end;
+        }
+      }
+      else {
+        fieldError = undefined
+      }
+    }
+
+
+    else {
+      fieldError = errors[field]
+    }
   }
+
 
   if (!fieldError || !fieldError?.message) {
     return null
@@ -88,7 +133,7 @@ export const ErrorMessage = memo(function ErrorMessage({
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="absolute left-1/2 z-40 mt-5 flex -translate-x-1/2 ">
+            <Popover.Panel className={`absolute ${position === 'center' ? 'left-1/2 -translate-x-1/2' : position === 'left' ? 'right-0' : 'left-0'}  z-40 mt-4 flex `}>
               <div className="flex w-fit items-center text-center justify-center shrink rounded-md bg-yellow-50 p-2 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5">
                 <span className="text-xs whitespace-nowrap flex flex-row w-fit text-red-500 font-bold">
                   {fieldError?.message?.toString()}

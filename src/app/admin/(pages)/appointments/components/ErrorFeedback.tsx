@@ -14,8 +14,6 @@ export const ErrorFeedback = memo(function ErrorMessage({
   ...rest
 }: ErrorFeedbackProps) {
 
-  console.log('errors no erro', errors)
-
   return (
     <div className="relative">
       {errors && errors.length > 0 && (

@@ -249,6 +249,7 @@ export const AppointmentForm = memo(function AppointmentForm({
             cloneElement(datePicker, {
               name: 'schedule.day',
               title: 'Data',
+              professionalField: 'professional',
             })}
 
           {timePickerStart &&
@@ -256,6 +257,7 @@ export const AppointmentForm = memo(function AppointmentForm({
               name: 'schedule.start',
               title: 'Início',
               fieldNameToObserve: 'schedule.day',
+              professionalField: 'professional',
             })}
 
           {timePickerEnd &&
@@ -264,6 +266,7 @@ export const AppointmentForm = memo(function AppointmentForm({
               title: 'Fim',
               fieldDateToObserve: 'schedule.day',
               fieldStartTimeToObserve: 'schedule.start',
+              professionalField: 'professional',
             })}
 
           <Form.Field className="relative">

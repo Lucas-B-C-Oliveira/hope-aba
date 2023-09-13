@@ -21,11 +21,13 @@ import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 interface Props {
   name?: string
   title?: string
+  professionalField?: string
 }
 
 export const DatePickerAdapter = memo(function DatePickerAdapter({
   name,
   title,
+  professionalField,
 }: Props) {
   const { professionals } = useAppointmentFilterStore()
 
@@ -40,6 +42,11 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
     control,
   } = useFormContext()
 
+  const observedProfessionalField = useWatch({
+    name: `${professionalField}`,
+    control,
+  })
+
   const formValues = getValues()
 
   function isDateDisabled(date: any) {
@@ -50,8 +57,25 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
 
   function handleCalendar(date: any) {
     const dateFormated = dateAdapter(date).format(DATE_FORMAT)
-    if (formValues?.schedule?.day !== dateFormated) {
-      setValue(`${name}`, dateFormated)
+
+    console.log('observedProfessionalField', observedProfessionalField)
+    console.log('errors', errors)
+
+    if (!observedProfessionalField) {
+      setError(`${name}`, {
+        message: 'Selecione um profissional',
+        type: 'string',
+      })
+    } else {
+      const currentErrors = errors.schedule
+      if (currentErrors && 'day' in currentErrors) {
+        if (currentErrors?.day?.message === 'Selecione um profissional') {
+          clearErrors()
+        }
+      }
+      if (formValues?.schedule?.day !== dateFormated) {
+        setValue(`${name}`, dateFormated)
+      }
     }
   }
 
@@ -76,6 +100,7 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
 
       <div className="absolute right-0">
         <Form.ErrorMessage
+          position="left"
           field={`${name}`}
           specificStyle="z-40 absolute -top-[0.65rem] right-0 animate-pulse bg-white"
         />
@@ -85,6 +110,16 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
         disablePast={true}
         shouldDisableDate={isDateDisabled}
         onChange={handleCalendar}
+        onError={(error) => {
+          if (error === 'invalidDate') {
+            setError(`${name}`, {
+              message: 'Escolha uma data válida',
+              type: 'string',
+            })
+          } else if (!error) {
+            clearErrors()
+          }
+        }}
         sx={MUI_INPUT_SX}
       />
     </Form.Field>
