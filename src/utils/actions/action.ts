@@ -49,6 +49,8 @@ export async function getAppointmentsByRangeDate<T = unknown>(
           return {
             start: startDate,
             end: endDate,
+            startTest: `${day}T${start}:00`,
+            endTest: `${day}T${end}:00`,
             // start: dateAdapter(`${day}T${start}:00`).toDate(),
             // end: dateAdapter(`${day}T${end}:00`).toDate(),
             data: {
