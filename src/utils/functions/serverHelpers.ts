@@ -16,25 +16,23 @@ export function checkServerAuth() {
   }
 }
 
-
 export async function authenticate(loginParams: any) {
-
   console.log('loginParams', loginParams)
 
-
   try {
-
     await new Promise((resolve) => {
       setTimeout(() => {
-        resolve('');
-      }, 5000);
-    });
-
-
-    const signinResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/sign-in`, {
-      method: 'POST',
-      body: JSON.stringify(loginParams),
+        resolve('')
+      }, 5000)
     })
+
+    const signinResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API_URL}/sign-in`,
+      {
+        method: 'POST',
+        body: JSON.stringify(loginParams),
+      },
+    )
 
     // const signinResponse = await SSFetch<any>('', {
     //   method: 'POST',
@@ -43,7 +41,8 @@ export async function authenticate(loginParams: any) {
 
     console.log('signinResponse', signinResponse)
 
-    const token = signinResponse?.token
+    // const token = signinResponse?.token ?? ''
+    const token = ''
     const value = `Bearer ${token}`
 
     console.log('valueToken', value)
@@ -54,9 +53,7 @@ export async function authenticate(loginParams: any) {
     //   expires: expDate,
     // })
 
-
     // const signinResponse = await SSFetch<any>('sign-in')
-
 
     // const clinicsPromises = clinicIds.map((clinicId: string) => {
     //   return SSFetch<{
@@ -65,9 +62,10 @@ export async function authenticate(loginParams: any) {
     // })
 
     const clinicsPromises = clinicIds.map((clinicId: string) => {
-      return fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/sign-in/${clinicId}`)
+      return fetch(
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}/sign-in/${clinicId}`,
+      )
     })
-
 
     const clinicsResults = await Promise.all(clinicsPromises)
 
@@ -76,22 +74,16 @@ export async function authenticate(loginParams: any) {
     const clinicsData = clinicsResults?.map((element: any) => element.data)
     console.log('clinicsData', clinicsData)
 
-
     // setCookie('clinicsData', clinicsData, {
     //   expires: expDate,
     // })
-
   } catch (error) {
-
     console.log('error', error)
-
   }
-
 
   return {
     name: 'name',
     email: 'email',
-    id: 'id'
+    id: 'id',
   }
-
 }

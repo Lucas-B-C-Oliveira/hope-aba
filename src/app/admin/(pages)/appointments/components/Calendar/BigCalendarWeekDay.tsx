@@ -23,7 +23,7 @@ export const BigCalendarWeekDay = memo(function BigCalendarWeekDay({
   return (
     <>
       {isCurrentDate && (
-        <div className="flex items-center justify-center py-3 font-medium text-gray-500">
+        <div className="flex items-center justify-center py-3 font-medium text-gray-500 cursor-auto">
           <span className="flex items-baseline ">
             {capitalizedWeekdayLabel}{' '}
             <span className="ml-1.5 flex h-8 w-8 items-center justify-center rounded-full font-semibold text-white bg-indigo-600">
@@ -34,7 +34,7 @@ export const BigCalendarWeekDay = memo(function BigCalendarWeekDay({
       )}
 
       {!isCurrentDate && (
-        <div className="flex items-center justify-center py-3 font-medium text-gray-500">
+        <div className="flex items-center justify-center py-3 font-medium text-gray-500 cursor-auto">
           <span className="flex items-baseline">
             {capitalizedWeekdayLabel}{' '}
             <span className=" h-8 w-8 flex items-center justify-center font-semibold text-gray-900">

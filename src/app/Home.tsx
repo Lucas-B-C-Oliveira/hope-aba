@@ -1,14 +1,15 @@
 'use client'
-import { useRouter } from "next/navigation"
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export function HomeComponent() {
   const router = useRouter()
-  router.replace("/login")
-  return (
-    <>
 
-    </>
-  )
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      router.replace('/login')
+    }
+  }, [])
 
-
+  return <></>
 }

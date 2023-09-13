@@ -2,111 +2,84 @@ import { Filter, FilterKey } from '@/types'
 import { create } from 'zustand'
 
 interface AppointmentFilterStore {
-  filters: {
-    professionals?: Filter | undefined
-    patients?: Filter
-    therapies?: Filter[]
-    rooms?: Filter[]
-  }
+  professionals?: Filter
+  patients?: Filter
+  therapies?: Filter[]
+  rooms?: Filter[]
+
   addFilter: (filterKey: FilterKey, newFilterValue: Filter) => void
   removeFilter: (filterKey: FilterKey, filterToRemoveId?: string) => void
 
   filterButtonStatus: 'clicked' | 'idle'
   setButtonStatus: (newStatus: 'clicked' | 'idle') => void
+
+  getFilters: (filterKey: FilterKey) => Filter | Filter[] | undefined
 }
 
 export const useAppointmentFilterStore = create<AppointmentFilterStore>()(
   (set, get) => ({
-    filters: {
-      professionals: undefined,
-      patients: undefined,
-      rooms: undefined,
-      therapies: undefined,
-    },
+    professionals: undefined,
+    patients: undefined,
+    rooms: undefined,
+    therapies: undefined,
     addFilter: (filterKey, newFilterValue) => {
-      const currentFiltersState = get().filters
-      const currentFilters = currentFiltersState[filterKey]
-
-      if (filterKey !== 'rooms' && filterKey !== 'therapies') {
-        const newFilters = {
-          ...currentFiltersState,
-          [filterKey]: newFilterValue,
-        }
-
-        set(() => ({ filters: newFilters }))
-      } else {
-        if (
-          typeof currentFilters !== 'undefined' &&
-          Array.isArray(currentFilters)
-        ) {
-          const newFilterAlreadyIsInState = currentFilters?.some(
-            (filter: Filter | undefined) => filter?.id === newFilterValue?.id,
-          )
-          if (!newFilterAlreadyIsInState) {
-            const newFilters = [...currentFilters, newFilterValue]
-            const newFilterState = {
-              ...currentFiltersState,
-              [filterKey]: newFilters,
-            }
-            set(() => ({ filters: newFilterState }))
-          }
-        } else {
-          const newFilters = [newFilterValue]
-          const newFilterState = {
-            ...currentFiltersState,
-            [filterKey]: newFilters,
-          }
-          set(() => ({ filters: newFilterState }))
-        }
+      if (filterKey === 'rooms') {
+        const currentRooms = get()?.rooms ?? []
+        const newRoomAlreadyExist = currentRooms.some(
+          (room) => room?.id === newFilterValue?.id,
+        )
+        const newRooms = newRoomAlreadyExist
+          ? currentRooms
+          : [...currentRooms, newFilterValue]
+        set(() => ({ rooms: newRooms }))
+      } else if (filterKey === 'therapies') {
+        const currentTherapies = get()?.therapies ?? []
+        const newTherapyAlreadyExist = currentTherapies.some(
+          (therapy) => therapy?.id === newFilterValue?.id,
+        )
+        const newTherapies = newTherapyAlreadyExist
+          ? currentTherapies
+          : [...currentTherapies, newFilterValue]
+        set(() => ({ therapies: newTherapies }))
+      } else if (filterKey === 'patients') {
+        set(() => ({ patients: newFilterValue }))
+      } else if (filterKey === 'professionals') {
+        set(() => ({ professionals: newFilterValue }))
       }
     },
     removeFilter: (filterKey, filterToRemoveId) => {
-      const currentFilterState = get().filters
-      const currentFilters = currentFilterState[filterKey] as Filter[]
-      if (filterKey !== 'rooms' && filterKey !== 'therapies') {
-        // console.log('_____________ aaaaaa ___________ filterKey', filterKey)
-        const newFilters = {
-          ...currentFilterState,
-          [filterKey]: {
-            name: 'macarena',
-            id: 'macarenaId',
-          },
-        }
-        console.log('_____________ aaaaaa ___________ newFilters', newFilters)
+      console.log('filterKey', filterKey)
 
-        set(() => ({
-          filters: {
-            patients: undefined,
-            professionals: undefined,
-            rooms: undefined,
-            therapies: undefined,
-          },
-        }))
-        console.log(
-          '_____________ aaaaaa ___________ currentFilterState',
-          currentFilterState,
+      if (filterKey === 'rooms') {
+        const currentRooms = get()?.rooms ?? []
+        const newRooms = currentRooms.filter(
+          (room) => room?.id !== filterToRemoveId,
         )
-      } else {
-        if (
-          typeof filterToRemoveId !== 'undefined' &&
-          Array.isArray(currentFilters)
-        ) {
-          const newArray = currentFilters.filter(
-            (filterValue) => filterValue?.id !== filterToRemoveId,
-          )
-          const newFilters = {
-            ...currentFilterState,
-            [filterKey]: newArray,
-          }
-          set(() => ({ filters: newFilters }))
-        } else {
-          const currentFilters = get().filters
-          const newFilters = {
-            ...currentFilters,
-            [filterKey]: undefined,
-          }
-          set(() => ({ filters: newFilters }))
-        }
+        set(() => ({ rooms: [...newRooms] }))
+      } else if (filterKey === 'therapies') {
+        const currentTherapies = get()?.therapies ?? []
+        const newTherapies = currentTherapies.filter(
+          (therapy) => therapy?.id !== filterToRemoveId,
+        )
+        set(() => ({ therapies: [...newTherapies] }))
+      } else if (filterKey === 'patients') {
+        set(() => ({ patients: undefined }))
+      } else if (filterKey === 'professionals') {
+        console.log('Entrei no Professionalls')
+        // set((state) => ({ ...state, professionals: undefined }))
+        const currentState = get()
+        set({ ...currentState, professionals: undefined }, true)
+      }
+    },
+    getFilters: (filterKey) => {
+      if (filterKey === 'rooms') {
+        return get().rooms
+      } else if (filterKey === 'therapies') {
+        return get().therapies
+      } else if (filterKey === 'patients') {
+        return get().patients
+      } else if (filterKey === 'professionals') {
+        return get().professionals
       }
     },
 

@@ -15,10 +15,11 @@ interface Props {
   dataAppointment: any
 }
 
-function getStatusName(status: 'cancel' | 'confirm' | 'done') {
+function getStatusName(status: 'cancel' | 'confirmed' | 'done' | 'pending') {
   if (status === 'cancel') return 'Cancelado'
-  else if (status === 'confirm') return 'Confirmado'
-  else return 'Realizado'
+  else if (status === 'confirmed') return 'Confirmado'
+  else if (status === 'pending') return 'Pendente'
+  else if (status === 'done') return 'Concluído'
 }
 
 interface Data {
@@ -43,7 +44,7 @@ export const BigCalendarAppointmentCard = memo(
         )) as Data
         const newData = {
           ...response?.data,
-          status: getStatusName(response?.data?.status),
+          labelStatus: getStatusName(response?.data?.status),
         }
         return newData
       },
@@ -52,7 +53,7 @@ export const BigCalendarAppointmentCard = memo(
     const [loading, setLoading] = useState(false)
 
     async function handleChangeStatus(
-      newStatus: 'cancel' | 'confirm' | 'done',
+      newStatus: 'cancel' | 'confirmed' | 'done',
     ) {
       setLoading(true)
       const result = await doFetch(
@@ -62,8 +63,10 @@ export const BigCalendarAppointmentCard = memo(
         },
       )
       setLoading(false)
-      refetch()
+      await refetch()
     }
+
+    console.log('appointmentData', appointmentData)
 
     return (
       <Modal.Container
@@ -73,10 +76,7 @@ export const BigCalendarAppointmentCard = memo(
             className=" sm:flex h-full w-full"
             style={{ paddingLeft: '4px', paddingRight: '4px' }}
           >
-            <a
-              href="#"
-              className="border-gray-100 border-2 w-full h-full  overflow-y-auto flex flex-col rounded-lg bg-yellow-300 px-2 py-1 text-xs leading-4 hover:bg-yellow-400"
-            >
+            <a className="border-gray-100 border-2 w-full h-full  overflow-y-auto flex flex-col rounded-lg bg-yellow-300 px-2 py-1 text-xs leading-4 hover:bg-yellow-400">
               <p className="font-semibold text-gray-700">
                 {dataAppointment?.patientNameLabel}
               </p>
@@ -221,40 +221,57 @@ export const BigCalendarAppointmentCard = memo(
               <Form.Field className="relative">
                 <Form.Label
                   className={twMerge(MAGIC_LABEL_CLASSNAME, 'z-10 ')}
-                  htmlFor={appointmentData?.status}
+                  htmlFor={appointmentData?.labelStatus}
                 >
                   Status
                 </Form.Label>
                 <input
-                  id={appointmentData?.status}
+                  id={appointmentData?.labelStatus}
                   className={twMerge(TEXT_INPUT_STYLE, 'w-28')}
                   type="text"
-                  name={appointmentData?.status}
+                  name={appointmentData?.labelStatus}
                   disabled={true}
-                  value={appointmentData?.status}
+                  value={appointmentData?.labelStatus}
                 />
               </Form.Field>
 
               <div className="flex flex-col gap-2">
                 <ActionButton
+                  disabled={appointmentData?.status !== 'pending'}
                   onClick={() => handleChangeStatus('cancel')}
-                  classNameToMerge="bg-red-600 hover:bg-red-500 w-24 items-center justify-center px-0"
+                  // classNameToMerge="bg-red-600 hover:bg-red-500 w-24 items-center justify-center px-0"
+                  classNameToMerge={`${
+                    appointmentData?.status !== 'pending'
+                      ? 'bg-red-800 hover:bg-red-800'
+                      : 'bg-red-600 hover:bg-red-500'
+                  }  w-24 items-center justify-center px-0`}
                 >
                   {!loading && 'Cancelar'}
                   {loading && 'Loading'}
                 </ActionButton>
 
                 <ActionButton
-                  onClick={() => handleChangeStatus('confirm')}
-                  classNameToMerge="bg-sky-600 hover:bg-sky-500 w-24 items-center justify-center px-0"
+                  disabled={appointmentData?.status !== 'pending'}
+                  onClick={() => handleChangeStatus('confirmed')}
+                  // classNameToMerge="bg-sky-600 hover:bg-sky-500 w-24 items-center justify-center px-0"
+                  classNameToMerge={`${
+                    appointmentData?.status !== 'pending'
+                      ? 'bg-sky-800 hover:bg-sky-800'
+                      : 'bg-sky-600 hover:bg-sky-500'
+                  }  w-24 items-center justify-center px-0`}
                 >
                   {!loading && 'Confirmar'}
                   {loading && 'Loading'}
                 </ActionButton>
 
                 <ActionButton
+                  disabled={appointmentData?.status !== 'confirmed'}
                   onClick={() => handleChangeStatus('done')}
-                  classNameToMerge="bg-emerald-600 hover:bg-emerald-500 w-24 items-center justify-center px-0"
+                  classNameToMerge={`${
+                    appointmentData?.status !== 'confirmed'
+                      ? 'bg-emerald-800 hover:bg-emerald-800'
+                      : 'bg-emerald-600 hover:bg-emerald-500'
+                  }  w-24 items-center justify-center px-0`}
                 >
                   {!loading && 'Realizado'}
                   {loading && 'Loading'}

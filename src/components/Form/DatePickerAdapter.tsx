@@ -27,7 +27,7 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
   name,
   title,
 }: Props) {
-  const { filters } = useAppointmentFilterStore()
+  const { professionals } = useAppointmentFilterStore()
 
   const [weekDaysAvailable, setWeekDaysAvailable] = useState<number[]>([99])
 
@@ -56,14 +56,14 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
   }
 
   useEffect(() => {
-    if (typeof filters?.professionals?.id !== 'undefined') {
-      getProfessionalScheduleAvailabilityWeekDays(
-        filters?.professionals?.id,
-      ).then(async (data) => {
-        setWeekDaysAvailable(data)
-      })
+    if (typeof professionals?.id !== 'undefined') {
+      getProfessionalScheduleAvailabilityWeekDays(professionals?.id).then(
+        async (data) => {
+          setWeekDaysAvailable(data)
+        },
+      )
     }
-  }, [filters?.professionals?.id])
+  }, [professionals?.id])
 
   return (
     <Form.Field className="relative">

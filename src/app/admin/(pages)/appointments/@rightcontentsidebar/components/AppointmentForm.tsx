@@ -10,6 +10,9 @@ import { MAGIC_INPUT_CLASSNAME, MAGIC_LABEL_CLASSNAME } from '@/style/consts'
 import { doFetch } from '@/utils/actions/action'
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 import { Filter, FilterKey } from '@/types'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { useRouter } from 'next/navigation'
 
 const recurrenceSchema = z.enum([
   'dont_repeat',
@@ -151,6 +154,7 @@ export const AppointmentForm = memo(function AppointmentForm({
   timePickerEnd,
   datePicker,
 }: Props) {
+  const router = useRouter()
   const { addFilter } = useAppointmentFilterStore()
   const createAppointmentForm = useForm<AppointmentData>({
     resolver: zodResolver(appointmentSchema),
@@ -189,6 +193,19 @@ export const AppointmentForm = memo(function AppointmentForm({
     //! TODO: Se não tiver erro => Chamar um popup de sucesso e fechar o modal de agendamento
 
     console.log('AppointmentForm Resultado do agendamento => result', result)
+
+    toast.success('Agendamento criado com sucesso!', {
+      position: 'bottom-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+      onClose: () => router.refresh(),
+    })
+
     // refetch()
   }
 
@@ -296,6 +313,19 @@ export const AppointmentForm = memo(function AppointmentForm({
             cloneElement(errorFeedback, {
               errors: feedbackErrors,
             })}
+
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </div>
       </form>
     </FormProvider>

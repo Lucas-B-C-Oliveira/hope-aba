@@ -1,77 +1,160 @@
 'use client'
 
 import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import { Listbox, Transition } from '@headlessui/react'
+import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
+import { setCookie, deleteCookie } from 'cookies-next'
+import { ActionButton } from '@/components/ActionButton'
+import { useRouter } from 'next/navigation'
 
 const userNavigation = [
   { name: 'Your profile', href: '#' },
   { name: 'Sign out', href: '#' },
 ]
 
-export function LayoutHeader() {
+interface LayoutHeaderProps {
+  clinicsData: any
+  currentClinicDataIndex: number
+  userData: {
+    id: string
+    name: string
+    email: string
+    accountId: string
+    clinicsIds: string[]
+    role: string
+  }
+}
+
+function classNames(...classes: any[]) {
+  return classes.filter(Boolean).join(' ')
+}
+
+export function LayoutHeader({
+  clinicsData,
+  currentClinicDataIndex,
+  userData,
+}: LayoutHeaderProps) {
+  const router = useRouter()
+
+  function handleChange(value: { id: string; name: string }) {
+    const currentIndex =
+      clinicsData.findIndex(
+        (clinicData: { id: string }) => clinicData?.id === value?.id,
+      ) ?? 0
+    setCookie('currentClinicDataIndex', currentIndex)
+  }
+
+  function logout() {
+    deleteCookie('currentClinicDataIndex')
+    deleteCookie('clinicsData')
+    deleteCookie('accessToken')
+    router.replace('/login')
+  }
+
   return (
-    <div className="sticky top-0 z-40 flex h-11 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-
-      <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-        <div className="flex items-center gap-x-4 lg:gap-x-6">
-
-          <div
-            className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10"
+    <div className="z-40 flex h-11  justify-end gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:px-6 ">
+      <div className="flex items-center gap-x-4 lg:gap-x-6 al">
+        <div className="flex flex-row gap-3 items-center">
+          <span
+            className=" text-base font-semibold text-gray-900"
             aria-hidden="true"
-          />
+          >
+            {userData?.name}
+          </span>
+          <ActionButton onClick={logout} classNameToMerge="py-1">
+            Sair
+          </ActionButton>
+        </div>
 
-          <Menu as="div" className="relative">
-            <Menu.Button className="-m-1.5 flex items-center p-1.5">
-              {/* <img
+        <div
+          className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10"
+          aria-hidden="true"
+        />
+
+        <Listbox
+          defaultValue={clinicsData[currentClinicDataIndex]}
+          onChange={handleChange}
+          as="div"
+          className="relative"
+        >
+          <Listbox.Button className="flex items-center p-1.5">
+            {/* <img
                 className="h-8 w-8 rounded-full bg-gray-50"
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                 alt=""
               /> */}
-              <span className="hidden lg:flex lg:items-center">
-                <span
-                  className="ml-4 text-sm font-semibold leading-6 text-gray-900"
-                  aria-hidden="true"
-                >
-                  Tom Cook
-                </span>
-                <ChevronDownIcon
-                  className="ml-2 h-5 w-5 text-gray-400"
-                  aria-hidden="true"
-                />
-              </span>
-            </Menu.Button>
 
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                {userNavigation.map((item) => (
-                  <Menu.Item key={item.name}>
-                    {({ active }) => (
-                      <a
-                        href={item.href}
-                        className={`
-                        ${active ? 'bg-gray-50' : ''}
-                        block px-3 py-1 text-sm leading-6 text-gray-900
-                        `}
-                      >
-                        {item.name}
-                      </a>
+            {({ value }) => (
+              <>
+                <span className="hidden lg:flex lg:items-center">
+                  <span
+                    className=" text-sm font-semibold leading-6 text-gray-900"
+                    aria-hidden="true"
+                  >
+                    Clínica: {value?.name}
+                  </span>
+                  {clinicsData.length > 1 && (
+                    <ChevronDownIcon
+                      className="ml-2 h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
+                  )}
+                </span>
+              </>
+            )}
+          </Listbox.Button>
+
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Listbox.Options className="absolute right-0 z-10 mt-2.5 w-fit origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+              {clinicsData &&
+                clinicsData.length > 1 &&
+                clinicsData.map((clinic: { id: string; name: string }) => (
+                  <Listbox.Option
+                    key={clinic?.id}
+                    value={clinic}
+                    className={({ active }) =>
+                      classNames(
+                        active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                        'relative cursor-default select-none  pl-8 pr-4',
+                      )
+                    }
+                  >
+                    {({ selected, active }) => (
+                      <>
+                        <p
+                          className={classNames(
+                            selected ? 'font-semibold' : 'font-normal',
+                            'block truncate px-3 py-1 text-sm leading-6 ',
+                          )}
+                        >
+                          {clinic?.name}
+                        </p>
+
+                        {selected ? (
+                          <span
+                            className={classNames(
+                              active ? 'text-white' : 'text-indigo-600',
+                              'absolute inset-y-0 left-0 flex items-center pl-1.5',
+                            )}
+                          >
+                            <CheckIcon className="h-4 w-4" aria-hidden="true" />
+                          </span>
+                        ) : null}
+                      </>
                     )}
-                  </Menu.Item>
+                  </Listbox.Option>
                 ))}
-              </Menu.Items>
-            </Transition>
-          </Menu>
-        </div>
+            </Listbox.Options>
+          </Transition>
+        </Listbox>
       </div>
     </div>
   )

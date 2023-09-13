@@ -28,7 +28,7 @@ export const AutocompleteFilter = memo(function AutocompleteFilter({
   const [selected, setSelected] = useState(null)
   const [responseData, setResponseData] = useState<any>([]) //! TODO: Trocar o tipo para o tipo correto
   const [isLoading, setIsLoading] = useState(false)
-  const { addFilter, filters } = useAppointmentFilterStore()
+  const { addFilter, patients, professionals } = useAppointmentFilterStore()
 
   const ARE_THERE_OPTIONS_TO_SHOW =
     typeof responseData?.data !== 'undefined' && responseData?.data.length > 0
@@ -71,19 +71,16 @@ export const AutocompleteFilter = memo(function AutocompleteFilter({
           onChange={onChangeHandle}
           displayValue={(dataSelected: any) => {
             if (dataSelected) {
-              const filterKeyValue = filters[filterKey]
-              if (
-                (Array.isArray(filterKeyValue) &&
-                  filterKeyValue.some((item) => item.id === dataSelected.id)) ||
-                (!Array.isArray(filterKeyValue) &&
-                  filterKeyValue?.id === dataSelected.id)
-              ) {
-                // O item já foi selecionado, você pode tratar isso aqui
-              } else {
-                const filterData = {
-                  name: dataSelected.name,
-                  id: dataSelected.id,
-                }
+              const filterData = {
+                name: dataSelected.name,
+                id: dataSelected.id,
+              }
+
+              const isNewFilter =
+                professionals?.id !== dataSelected?.id &&
+                patients?.id !== dataSelected?.id
+
+              if (isNewFilter) {
                 addFilter(filterKey, filterData)
               }
             }

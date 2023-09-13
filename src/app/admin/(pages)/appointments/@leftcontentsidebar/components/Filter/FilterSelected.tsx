@@ -9,7 +9,7 @@ import {
 } from '@/style/consts'
 import { FilterKey } from '@/types'
 import { doFetch } from '@/utils/actions/action'
-import { XMarkIcon } from '@heroicons/react/24/solid'
+import { TrashIcon } from '@heroicons/react/24/solid'
 import { memo, useEffect, useState } from 'react'
 
 interface Props {
@@ -28,13 +28,19 @@ export const FilterSelected = memo(function FilterSelected({
   function handleButton() {
     // console.log('_____________filterKey QUE VOU REMOVER', filterKey)
     removeFilter(filterKey)
+    // clearFilters()
   }
 
   return (
-    <Form.Field className="flex flex-col gap-1 bg-sky-300">
-      <Form.Label>{name}</Form.Label>
-      <ActionButton onClick={handleButton} classNameToMerge="bg-red-500">
-        <XMarkIcon className="w-6 h-6 text-pink-400 hover:text-pink-300" />
+    <Form.Field className="flex flex-row py-2 px-2 bg-indigo-600 rounded-full items-center w-48 justify-between gap-2 ">
+      <Form.Label className="text-xs text-white font-semibold truncate overflow-hidden whitespace-nowrap">
+        {name}
+      </Form.Label>
+      <ActionButton
+        onClick={handleButton}
+        classNameToMerge="bg-transparent hover:bg-transparent shadow-none p-0 h-fit w-fit"
+      >
+        <TrashIcon className="w-4 h-4 text-red-100 hover:text-red-50" />
       </ActionButton>
     </Form.Field>
   )

@@ -1,4 +1,4 @@
-import { SignIn } from "@/components/SignIn/SignIn";
+import { SignIn } from '@/components/SignIn/SignIn'
 
 export default async function Login() {
   return (

@@ -8,7 +8,10 @@ export async function CSFetch<T = unknown>(
 ) {
   const accessToken = getCookie('accessToken')
   const clinicsData = getCookie('clinicsData')
-  const currentClinicDataIndex = typeof getCookie('currentClinicDataIndex') === 'string' ? getCookie('currentClinicDataIndex') as string : 0
+  const currentClinicDataIndex =
+    typeof getCookie('currentClinicDataIndex') === 'string'
+      ? (getCookie('currentClinicDataIndex') as string)
+      : 0
 
   const regex = /(clinics|sign-in)/
   const isSignOrClinicsEndPoint = String(input).match(regex)

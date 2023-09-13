@@ -111,7 +111,7 @@ export const ModalContainer = memo(function ModalContainer({
               leave="ease-in duration-200"
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
-            // afterLeave={() => router.back()}
+              // afterLeave={() => router.back()}
             >
               <div
                 style={{

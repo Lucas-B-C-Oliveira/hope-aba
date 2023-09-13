@@ -1,3 +1,5 @@
-export default function Default() {
-  return null
+import { RightContentSidebar } from './components/RightContentSidebar'
+
+export default async function Default() {
+  return <RightContentSidebar />
 }

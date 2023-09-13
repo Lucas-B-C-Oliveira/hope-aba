@@ -36,7 +36,6 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
   const router = useRouter()
   const signInData = useRef<undefined | SignInData>(undefined)
 
-
   const {
     data: getClinicsData,
     refetch: getClinicsDataRefetch,
@@ -123,7 +122,7 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
     })
 
     setCookie('currentClinicDataIndex', 0)
-    router.replace("/admin/appointments")
+    router.replace('/admin/appointments')
   }
 
   const signInForm = useForm<SignInData>({
@@ -133,7 +132,7 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
 
   const {
     handleSubmit,
-    formState: { isSubmitting }
+    formState: { isSubmitting },
   } = signInForm
 
   async function handleSignIn(data: SignInData) {
@@ -141,7 +140,6 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
     await signInRefetch()
 
     // console.log("handleSignIn foi chamad ________")
-
 
     // const result = await signIn('credentials', {
     //   email: data?.email,
@@ -159,9 +157,7 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
     //   console.log('Deu erro => ', result?.error)
     // }
     // router.replace("/admin/appointments")
-
   }
-
 
   return (
     <div className="w-full h-full flex flex-col items-center gap-4">
@@ -228,7 +224,6 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
           </Button>
         </form>
       </FormProvider>
-
 
       <div className="flex flex-col gap-0  items-center">
         <p className="text-center text-sm text-gray-500">

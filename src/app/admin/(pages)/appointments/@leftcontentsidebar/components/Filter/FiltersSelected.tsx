@@ -18,21 +18,32 @@ export const FiltersSelected = memo(function FiltersSelected() {
     { name: string; filterKey: FilterKey; tag: string }[] | []
   >([])
 
-  const { filters } = useAppointmentFilterStore()
+  const { patients, rooms, professionals, therapies, getFilters } =
+    useAppointmentFilterStore()
+
+  console.log('Fora do useEffect professionals', getFilters('professionals'))
 
   useEffect(() => {
+    // console.log("Filters foi alterado")
+    // console.log("patients", patients)
+    // console.log("Dentro do UseEffect professionals", professionals)
+    console.log(
+      'Dentro do useEffect professionals',
+      getFilters('professionals'),
+    )
+
     const newFilters = []
 
-    if (typeof filters?.patients !== 'undefined') {
+    if (typeof patients !== 'undefined') {
       newFilters.push({
-        name: filters?.patients?.name,
+        name: patients?.name,
         filterKey: 'patients' as FilterKey, // Adicione a conversão para FilterKey aqui
         tag: 'Paciente',
       })
     }
-    if (typeof filters?.professionals !== 'undefined') {
+    if (typeof professionals !== 'undefined') {
       newFilters.push({
-        name: filters?.professionals?.name,
+        name: professionals?.name,
         filterKey: 'professionals' as FilterKey, // Adicione a conversão para FilterKey aqui
         tag: 'Profissional',
       })
@@ -42,7 +53,7 @@ export const FiltersSelected = memo(function FiltersSelected() {
     // if (!isEqual(newFilters, filtersSelected)) {
     //   setFiltersSelected(newFilters)
     // }
-  }, [filters.patients, filters.professionals])
+  }, [patients, professionals])
 
   // console.log('filters', filters)
   // console.log('filtersSelected', filtersSelected)
