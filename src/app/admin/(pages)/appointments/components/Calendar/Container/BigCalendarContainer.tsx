@@ -192,6 +192,7 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
         }
       })
 
+      // console.log('getAppointmentsByRangeDate newData', newData)
       console.log('getAppointmentsByRangeDate newData', newData)
 
       if (!isEqual(newData, appointments) && newData) {
