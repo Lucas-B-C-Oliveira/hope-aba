@@ -43,8 +43,11 @@ export async function getAppointmentsByRangeDate<T = unknown>(
             patientNameSplited[patientNameSplited.length - 1]
           }` //! TODO: Format this name to First upercase first lether
 
-          const startDate = dateAdapter.utc(`${day}T${start}:00`).toDate()
-          const endDate = dateAdapter.utc(`${day}T${end}:00`).toDate()
+          // const startDate = dateAdapter.utc(`${day}T${start}:00`).toDate()
+          // const endDate = dateAdapter.utc(`${day}T${end}:00`).toDate()
+
+          const startDate = new Date(`${day}T${start}:00Z`)
+          const endDate = new Date(`${day}T${end}:00Z`)
 
           return {
             start: startDate,
