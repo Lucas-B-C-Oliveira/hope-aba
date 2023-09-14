@@ -4,7 +4,6 @@ import { Form } from '@/components/Form'
 import { Modal } from '@/components/Modal'
 import { MAGIC_LABEL_CLASSNAME, TEXT_INPUT_CLASSNAME } from '@/style/consts'
 import { doFetch } from '@/utils/actions/action'
-import { PlusIcon } from '@heroicons/react/24/outline'
 import { useQuery } from '@tanstack/react-query'
 import { memo, useCallback, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -246,8 +245,8 @@ export const BigCalendarAppointmentCard = memo(
                     patchFn={handleChangeStatus}
                     openModalButton={
                       <ActionButton
-                        disabled={currentAppointmentData?.status === 'done'}
-                        classNameToMerge={`${currentAppointmentData?.status === 'done'
+                        disabled={currentAppointmentData?.status === 'done' || currentAppointmentData?.status === 'canceled'}
+                        classNameToMerge={`${currentAppointmentData?.status === 'done' || currentAppointmentData?.status === 'canceled'
                           ? 'bg-red-800 hover:bg-red-800'
                           : 'bg-red-600 hover:bg-red-500'
                           }  w-24 items-center justify-center px-0`}
