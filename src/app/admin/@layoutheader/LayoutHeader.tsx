@@ -6,6 +6,7 @@ import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
 import { setCookie, deleteCookie } from 'cookies-next'
 import { ActionButton } from '@/components/ActionButton'
 import { useRouter } from 'next/navigation'
+import { capitalizeFirstLetter } from '@/utils/functions/helpers'
 
 const userNavigation = [
   { name: 'Your profile', href: '#' },
@@ -59,7 +60,7 @@ export function LayoutHeader({
             className=" text-base font-semibold text-gray-900"
             aria-hidden="true"
           >
-            {userData?.name}
+            {capitalizeFirstLetter(userData?.name ?? '')}
           </span>
           <ActionButton onClick={logout} classNameToMerge="py-1">
             Sair
