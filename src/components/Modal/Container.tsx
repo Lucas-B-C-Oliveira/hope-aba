@@ -16,12 +16,16 @@ interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode
   childrenThatCanSetOpenModal?: ReactElement
   withoutMask?: boolean
+  noExitButton?: boolean
+  staticModal?: boolean
 }
 
 export const Container = memo(function Container({
   openModalButton,
   children,
   childrenThatCanSetOpenModal,
+  noExitButton = false,
+  staticModal = false,
 }: ContainerProps) {
   const [isPopUpOpen, setIsPopUpOpen] = useState(false)
 
@@ -35,7 +39,12 @@ export const Container = memo(function Container({
         onClick: () => memoizedSetIsModalOpen(true),
       })}
 
-      <Content open={isPopUpOpen} setOpen={memoizedSetIsModalOpen}>
+      <Content
+        open={isPopUpOpen}
+        setOpen={memoizedSetIsModalOpen}
+        noExitButton={noExitButton}
+        staticModal={staticModal}
+      >
         {children}
 
         {childrenThatCanSetOpenModal &&

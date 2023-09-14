@@ -60,19 +60,16 @@ export function LayoutLeftSidebar() {
 
         {sidebarIsOpen && (
           <div className="flex w-full h-fit justify-center">
-            <Image alt='logo' width={80} height={80} src={logo} />
+            <Image alt="logo" width={80} height={80} src={logo} />
           </div>
         )}
 
         {!sidebarIsOpen && (
           <div className="flex w-full h-fit justify-center">
-            <Image alt='logo' width={40} height={40} src={logo} />
+            <Image alt="logo" width={40} height={40} src={logo} />
           </div>
         )}
-
       </div>
-
-
     </div>
   )
 }

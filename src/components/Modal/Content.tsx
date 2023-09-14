@@ -8,6 +8,8 @@ interface Props {
   open?: boolean
   setOpen?: (value: boolean) => void
   children: ReactNode
+  noExitButton?: boolean
+  staticModal?: boolean
 }
 
 type Size = {
@@ -34,6 +36,8 @@ export const Content = memo(function Content({
   open,
   setOpen,
   children,
+  noExitButton = false,
+  staticModal = false,
 }: Props) {
   const cancelButtonRef = useRef(null)
 
@@ -57,6 +61,7 @@ export const Content = memo(function Content({
       <Dialog
         as="div"
         className="relative z-10"
+        static={staticModal}
         initialFocus={cancelButtonRef}
         onClose={(value: any) => {
           if (typeof setOpen !== 'undefined') {
@@ -101,19 +106,22 @@ export const Content = memo(function Content({
               >
                 <Dialog.Panel
                   className={`
-                    pointer-events-auto transform  rounded-lg bg-white p-6 text-left shadow-xl transition-all w-fit h-fit
+                    pointer-events-auto transform  flex gap-1 flex-col rounded-lg bg-white p-6 text-left shadow-xl transition-all w-fit h-fit
                 `}
                 >
-                  <button
-                    className="absolute top-3 right-3"
-                    onClick={() => {
-                      if (typeof setOpen !== 'undefined') {
-                        setOpen(false)
-                      }
-                    }}
-                  >
-                    <XMarkIcon className="w-6 h-6 text-pink-400 hover:text-pink-300" />
-                  </button>
+                  {!noExitButton && (
+                    <button
+                      className="absolute top-3 right-3"
+                      onClick={() => {
+                        if (typeof setOpen !== 'undefined') {
+                          setOpen(false)
+                        }
+                      }}
+                    >
+                      <XMarkIcon className="w-6 h-6 text-pink-400 hover:text-pink-300" />
+                    </button>
+                  )}
+
                   {children}
                 </Dialog.Panel>
               </div>
