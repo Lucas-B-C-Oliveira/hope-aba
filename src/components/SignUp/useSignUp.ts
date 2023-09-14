@@ -1,19 +1,45 @@
-import { CSFetch } from "@/utils/api/clientFetch"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { CSFetch } from '@/utils/api/clientFetch'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-const signUpSchema = z.object({
-  name: z.string().nonempty({ message: 'Esse campo não pode ficar vazio' }),
-  email: z.string().nonempty({ message: 'Esse campo não pode ficar vazio' }),
-  password: z.string().nonempty({ message: 'Esse campo não pode ficar vazio' }),
-  confirmPassword: z.string().nonempty({ message: 'Esse campo não pode ficar vazio' }),
-  clinicName: z.string().nonempty({ message: 'Esse campo não pode ficar vazio' }),
-  clinicDocument: z.string().nonempty({ message: 'Esse campo não pode ficar vazio' }),
-})
+const nameSchema = z
+  .string()
+  .nonempty({ message: 'Esse campo não pode ficar vazio' })
+const emailSchema = z
+  .string()
+  .nonempty({ message: 'Esse campo não pode ficar vazio' })
+  .email({ message: 'Digite um e-mail válido' })
+const passwordSchema = z
+  .string()
+  .nonempty({ message: 'Esse campo não pode ficar vazio' })
+  .min(6, { message: 'A senha precisa ter pelo menos 6 caracteres' })
+const confirmPasswordSchema = z
+  .string()
+  .nonempty({ message: 'Esse campo não pode ficar vazio' })
+const clinicNameSchema = z
+  .string()
+  .nonempty({ message: 'Esse campo não pode ficar vazio' })
+const clinicDocumentSchema = z
+  .string()
+  .nonempty({ message: 'Esse campo não pode ficar vazio' })
+
+const signUpSchema = z
+  .object({
+    name: nameSchema,
+    email: emailSchema,
+    password: passwordSchema,
+    confirmPassword: confirmPasswordSchema,
+    clinicName: clinicNameSchema,
+    clinicDocument: clinicDocumentSchema,
+  })
+  .refine((fields) => fields?.password === fields?.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'As senhas precisam ser iguais',
+  })
 
 export type SignUpData = z.infer<typeof signUpSchema>
 
@@ -24,19 +50,19 @@ export function useSignUp() {
   const {
     data: createAccountData,
     mutateAsync,
-    status
+    status,
   } = useMutation({
     mutationKey: ['post/signup'],
     mutationFn: async (data: SignUpData) => {
       try {
-        const response = await CSFetch('sign-up', {
-          method: "POST",
-          body: JSON.stringify(data)
+        setLoading(true)
+        const response = await CSFetch<any>('sign-up', {
+          method: 'POST',
+          body: JSON.stringify(data),
         })
         setLoading(false)
 
-        return response?.data
-
+        return response
       } catch (error: unknown) {
         console.error('error', error)
       }
@@ -58,7 +84,7 @@ export function useSignUp() {
   }
 
   function handleGoToLogin() {
-    router.replace("/login")
+    router.replace('/login')
   }
 
   useEffect(() => {
@@ -69,6 +95,11 @@ export function useSignUp() {
     }
   }, [status])
 
+  useEffect(() => {
+    if (status === 'success' && createAccountData) {
+      handleGoToLogin()
+    }
+  }, [createAccountData])
 
   return {
     loading,

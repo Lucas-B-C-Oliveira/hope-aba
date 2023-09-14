@@ -3,225 +3,133 @@
 import { Form } from '@/components/Form'
 import {
   BUTTON_CLASSNAME,
-  TEXT_INPUT_CLASSNAME,
+  MAGIC_INPUT_CLASSNAME,
+  MAGIC_LABEL_CLASSNAME,
   TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
 } from '@/style/consts'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Button } from '../Button'
-import { useQuery } from '@tanstack/react-query'
-import { memo, useRef } from 'react'
-import { setCookie, getCookie } from 'cookies-next'
-import { redirect, useRouter } from 'next/navigation'
-import { CSFetch } from '@/utils/api/clientFetch'
-import { signIn } from 'next-auth/react'
+import { FormProvider } from 'react-hook-form'
+import { memo } from 'react'
+import logo from '@/assets/hopeAbaLogo.png'
+import { useSignIn } from './useSignIn'
+import Image from 'next/image'
+import { ActionButton } from '../ActionButton'
+import { twMerge } from 'tailwind-merge'
+import { ColorRing } from 'react-loader-spinner'
 
-const signInSchema = z.object({
-  email: z.string().nonempty({ message: 'Esse campo não pode ficar vazio' }),
-  password: z.string().nonempty({ message: 'Esse campo não pode ficar vazio' }),
-})
-
-export type SignInData = z.infer<typeof signInSchema>
-
-interface Props {
-  queryKeys: string[]
-}
-
-function tokenDecode(token: string) {
-  return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString())
-}
-
-export const SignIn = memo(function SignIn({ queryKeys }: Props) {
-  const router = useRouter()
-  const signInData = useRef<undefined | SignInData>(undefined)
-
+export const SignIn = memo(function SignIn() {
   const {
-    data: getClinicsData,
-    refetch: getClinicsDataRefetch,
-    status: getClinicsDataStatus,
-  } = useQuery({
-    queryKey: [queryKeys[1]],
-    queryFn: async () => {
-      try {
-        const token = getCookie('accessToken')
-
-        if (typeof token !== 'string') {
-          throw new Error('Invalid token')
-        }
-
-        const { clinicIds } = tokenDecode(token)
-
-        const promises = clinicIds.map((clinicId: string) => {
-          return CSFetch<{
-            data: { id: string; name: string; document: string }
-          }>(`clinics/${clinicId}`)
-        })
-        return await Promise.all(promises)
-      } catch (error: unknown) {
-        console.error('error', error)
-        // throw new Error(error)
-      }
-    },
-    enabled: false,
-  })
-
-  const {
-    data: signInQueryData,
-    refetch: signInRefetch,
-    status: signInStatus,
-  } = useQuery({
-    queryKey: [queryKeys[0]],
-    queryFn: async () => {
-      try {
-        if (typeof signInData.current === 'undefined')
-          throw new Error('signInData is undefined')
-
-        const response = await CSFetch<any>('sign-in', {
-          method: 'POST',
-          body: JSON.stringify(signInData.current),
-        })
-
-        if (response?.error) {
-          throw new Error(response?.error)
-        }
-
-        return { ...response }
-      } catch (error: unknown) {
-        console.error('error', error)
-        // throw new Error(error)
-      }
-    },
-    enabled: false,
-  })
-
-  if (signInStatus === 'success') {
-    const { token } = signInQueryData
-    const value = `Bearer ${token}`
-
-    const { exp } = tokenDecode(token)
-    const expDate = new Date(exp * 1000)
-    setCookie('accessToken', value, {
-      expires: expDate,
-    })
-    getClinicsDataRefetch()
-  }
-
-  if (getClinicsDataStatus === 'success') {
-    const { token } = signInQueryData
-
-    const { exp } = tokenDecode(token)
-    const expDate = new Date(exp * 1000)
-
-    console.log('getClinicsData', getClinicsData)
-
-    const clinicsData = getClinicsData?.map((element: any) => element.data)
-
-    setCookie('clinicsData', clinicsData, {
-      expires: expDate,
-    })
-
-    setCookie('currentClinicDataIndex', 0)
-    router.replace('/admin/appointments')
-  }
-
-  const signInForm = useForm<SignInData>({
-    resolver: zodResolver(signInSchema),
-    mode: 'onSubmit',
-  })
-
-  const {
+    handleGoToSignup,
+    error,
+    handleSignIn,
     handleSubmit,
-    formState: { isSubmitting },
-  } = signInForm
-
-  async function handleSignIn(data: SignInData) {
-    signInData.current = data
-    await signInRefetch()
-
-    // console.log("handleSignIn foi chamad ________")
-
-    // const result = await signIn('credentials', {
-    //   email: data?.email,
-    //   password: data?.password,
-    //   redirect: false,
-    // })
-
-    // const b = await new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve('');
-    //   }, 5000);
-    // });
-
-    // if (result?.error) {
-    //   console.log('Deu erro => ', result?.error)
-    // }
-    // router.replace("/admin/appointments")
-  }
+    isSubmitting,
+    loading,
+    signInData,
+    signInForm,
+  } = useSignIn()
 
   return (
     <div className="w-full h-full flex flex-col items-center gap-4">
-      <div className="flex flex-col gap-2">
-        {/* <img
-          className="h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-        /> */}
-        <h2 className=" text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Faça login em sua conta
+      <div className="flex flex-col gap-2 items-center">
+        <Image src={logo} alt="logo" height={100} width={100} />
+        <h2 className=" leading-9 tracking-tight  text-xl font-bold text-gray-600 ">
+          Entrar
         </h2>
       </div>
 
       <FormProvider {...signInForm}>
         <form
           onSubmit={handleSubmit(handleSignIn)}
-          className="flex flex-col px-6 py-3 w-1/5 h-fit gap-6"
+          className="flex flex-col px-6 py-3 w-fit h-fit gap-6 shadow-md rounded-2xl bg-white min-w-56"
         >
-          <Form.Field>
+          <Form.Field className="relative w-fit h-fit">
             <Form.Label
-              className={TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME}
+              className={twMerge(MAGIC_LABEL_CLASSNAME, 'z-10')}
               htmlFor="email"
             >
               E-mail
             </Form.Label>
-            <Form.Input
-              className={`block w-full ${TEXT_INPUT_CLASSNAME}`}
-              name="email"
-              type="email"
-            />
-            <Form.ErrorMessage field="email" />
-          </Form.Field>
-          <Form.Field>
-            <div className="flex flex-row justify-between">
-              <Form.Label
-                className={TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME}
-                htmlFor="password"
-              >
-                Senha
-              </Form.Label>
-              <a
-                href="#"
-                className="font-semibold text-indigo-600 hover:text-indigo-500 text-sm"
-              >
-                Esqueceu a senha?
-              </a>
+
+            <div className="absolute right-0 bg-blue-300">
+              <Form.ErrorMessage
+                position="center"
+                field="email"
+                specificStyle="z-40 absolute -top-[0.52rem] -right-[5px] animate-pulse bg-white"
+              />
             </div>
             <Form.Input
-              className={TEXT_INPUT_CLASSNAME}
+              className={twMerge(
+                MAGIC_INPUT_CLASSNAME,
+                ' w-56 cursor-default text-left',
+              )}
+              name="email"
+              type="text"
+            />
+          </Form.Field>
+
+          <Form.Field className="relative w-fit h-fit">
+            <Form.Label
+              className={twMerge(MAGIC_LABEL_CLASSNAME, 'z-10')}
+              htmlFor="password"
+            >
+              Senha
+            </Form.Label>
+
+            <div className="absolute right-0 bg-blue-300">
+              <Form.ErrorMessage
+                position="center"
+                field="password"
+                specificStyle="z-40 absolute -top-[0.52rem] -right-[5px] animate-pulse bg-white"
+              />
+            </div>
+            <Form.Input
+              className={twMerge(
+                MAGIC_INPUT_CLASSNAME,
+                ' w-56 cursor-default text-left',
+              )}
               name="password"
               type="password"
             />
-            <Form.ErrorMessage field="password" />
           </Form.Field>
 
-          <Button
-            queryKeys={queryKeys}
-            type="submit"
-            disabled={isSubmitting}
-            className={`flex w-full ${BUTTON_CLASSNAME}`}
-          >
-            Entrar
-          </Button>
+          <div className="flex flex-col gap-1">
+            <ActionButton
+              type="submit"
+              disabled={isSubmitting}
+              className={`flex w-full ${BUTTON_CLASSNAME}`}
+            >
+              {loading && (
+                <ColorRing
+                  visible={true}
+                  height="24"
+                  width="24"
+                  ariaLabel="blocks-loading"
+                  wrapperStyle={{}}
+                  wrapperClass="blocks-wrapper"
+                  colors={[
+                    '#f29849',
+                    '#bf6dd5',
+                    '#db6f91',
+                    '#f5a73c',
+                    '#fbbc30',
+                  ]}
+                />
+              )}
+              Entrar
+            </ActionButton>
+
+            {error?.error && (
+              <Form.Label
+                className={twMerge(
+                  TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
+                  'text-red-500 w-56 break-all',
+                )}
+                htmlFor="clinicDocument"
+              >
+                {error?.error?.message}
+              </Form.Label>
+            )}
+          </div>
         </form>
       </FormProvider>
 
@@ -229,12 +137,19 @@ export const SignIn = memo(function SignIn({ queryKeys }: Props) {
         <p className="text-center text-sm text-gray-500">
           Ainda não tem uma conta?
         </p>
-        <a
-          href="#"
+        <button
+          onClick={handleGoToSignup}
           className="font-semibold text-sm leading-6 text-indigo-600 hover:text-indigo-500"
         >
           Entre grátis por 7 dias
-        </a>
+        </button>
+
+        <button
+          onClick={() => console.log('Need to implement that')}
+          className="font-semibold mt-2 text-sm leading-6 text-indigo-600 hover:text-indigo-500"
+        >
+          Esqueceu a senha?
+        </button>
       </div>
     </div>
   )
