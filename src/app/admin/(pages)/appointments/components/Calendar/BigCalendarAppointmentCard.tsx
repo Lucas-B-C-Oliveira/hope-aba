@@ -246,12 +246,11 @@ export const BigCalendarAppointmentCard = memo(
                     patchFn={handleChangeStatus}
                     openModalButton={
                       <ActionButton
-                        disabled={currentAppointmentData?.status !== 'pending'}
-                        classNameToMerge={`${
-                          currentAppointmentData?.status !== 'pending'
-                            ? 'bg-red-800 hover:bg-red-800'
-                            : 'bg-red-600 hover:bg-red-500'
-                        }  w-24 items-center justify-center px-0`}
+                        disabled={currentAppointmentData?.status === 'done'}
+                        classNameToMerge={`${currentAppointmentData?.status === 'done'
+                          ? 'bg-red-800 hover:bg-red-800'
+                          : 'bg-red-600 hover:bg-red-500'
+                          }  w-24 items-center justify-center px-0`}
                       >
                         {!loading && 'Cancelar'}
                         {loading && 'Loading'}
@@ -262,11 +261,10 @@ export const BigCalendarAppointmentCard = memo(
                   <ActionButton
                     disabled={currentAppointmentData?.status !== 'pending'}
                     onClick={() => handleChangeStatus('confirm')}
-                    classNameToMerge={`${
-                      currentAppointmentData?.status !== 'pending'
-                        ? 'bg-sky-800 hover:bg-sky-800'
-                        : 'bg-sky-600 hover:bg-sky-500'
-                    }  w-24 items-center justify-center px-0`}
+                    classNameToMerge={`${currentAppointmentData?.status !== 'pending'
+                      ? 'bg-sky-800 hover:bg-sky-800'
+                      : 'bg-sky-600 hover:bg-sky-500'
+                      }  w-24 items-center justify-center px-0`}
                   >
                     {!loading && 'Confirmar'}
                     {loading && 'Loading'}
@@ -278,12 +276,11 @@ export const BigCalendarAppointmentCard = memo(
                       currentAppointmentData?.status === 'done'
                     }
                     onClick={() => handleChangeStatus('done')}
-                    classNameToMerge={`${
-                      currentAppointmentData?.status !== 'confirmed' ||
+                    classNameToMerge={`${currentAppointmentData?.status !== 'confirmed' ||
                       currentAppointmentData?.status === 'done'
-                        ? 'bg-emerald-800 hover:bg-emerald-800'
-                        : 'bg-emerald-600 hover:bg-emerald-500'
-                    }  w-24 items-center justify-center px-0`}
+                      ? 'bg-emerald-800 hover:bg-emerald-800'
+                      : 'bg-emerald-500 hover:bg-emerald-400'
+                      }  w-24 items-center justify-center px-0`}
                   >
                     {!loading && 'Concluir'}
                     {loading && 'Loading'}
