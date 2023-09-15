@@ -176,10 +176,15 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
         lastWeekdayFormated,
       )
 
-      const currentFilter =
-        tokenData?.role === 'professional' && !professionalsAppointment
-          ? { name: tokenData?.name, id: tokenData?.professionalId }
-          : professionalsAppointment
+      const professionalFilterByTokenData: Filter = {
+        id: tokenData?.name as string,
+        name: tokenData?.professionalId as string
+      }
+      const isProfessionalRole = tokenData?.role === 'professional'
+
+      const currentFilter = isProfessionalRole && !professionalsAppointment
+        ? professionalFilterByTokenData
+        : professionalsAppointment
 
       const filters = {
         patientsAppointment,
@@ -235,7 +240,6 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   useEffect(() => {
     makeAppointmentFeedback(currentCalendarWeekday.current)
     if (tokenData?.role === 'professional' && tokenData?.professionalId) {
-      console.log('Entrou aqui _________')
       makeFeedbackOfProfessionalAvailableHour(
         currentCalendarWeekday.current,
         tokenData?.professionalId,
