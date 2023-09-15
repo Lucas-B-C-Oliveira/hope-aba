@@ -8,9 +8,12 @@ import {
   getProfessionalScheduleAvailability,
 } from '@/utils/actions/action'
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
-import { Filter } from '@/types'
+import { Filter, TokenData } from '@/types'
 import { isEqual } from 'lodash'
 import { Toolbar } from './Toolbar'
+import { ACCESS_TOKEN } from '@/utils/functions/constants'
+import { getCookie } from 'cookies-next'
+import { tokenDecode } from '@/utils/functions/helpers'
 
 interface AppointmentCard {
   start: Date
@@ -123,23 +126,44 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   const [professionalScheduleAvailable, setProfessionalScheduleAvailable] =
     useState<any[] | undefined>(undefined)
 
+
+  const token = typeof getCookie(ACCESS_TOKEN) === 'string' ? getCookie(ACCESS_TOKEN) : null
+  const tokenData: TokenData | null = tokenDecode(token as string | undefined | null)
+
   async function makeFeedbackOfProfessionalAvailableHour(
     currentWeekday: string,
+    professionalId: string | undefined = undefined
   ) {
-    if (typeof professionalAvailable?.id !== 'undefined') {
+    if (professionalId) {
+      console.log("professionalId", professionalId)
+
       const data = await getProfessionalScheduleAvailability(
-        professionalAvailable?.id,
+        professionalId,
         dateAdapter(currentWeekday),
       )
       if (!isEqual(data, professionalScheduleAvailable) && data) {
+        console.log("data", data)
+
         setProfessionalScheduleAvailable(data)
       }
-    } else {
-      setProfessionalScheduleAvailable(undefined)
     }
+    else {
 
-    if (filterButtonStatusAvailable === 'clicked') {
-      setButtonStatusAvailable('idle')
+      if (typeof professionalAvailable?.id !== 'undefined') {
+        const data = await getProfessionalScheduleAvailability(
+          professionalAvailable?.id,
+          dateAdapter(currentWeekday),
+        )
+        if (!isEqual(data, professionalScheduleAvailable) && data) {
+          setProfessionalScheduleAvailable(data)
+        }
+      } else {
+        setProfessionalScheduleAvailable(undefined)
+      }
+
+      if (filterButtonStatusAvailable === 'clicked') {
+        setButtonStatusAvailable('idle')
+      }
     }
   }
 
@@ -151,9 +175,12 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
         firstWeekdayFormated,
         lastWeekdayFormated,
       )
+
+      const currentFilter = tokenData?.role === 'professional' && !professionalsAppointment ? { name: tokenData?.name, id: tokenData?.professionalId } : professionalsAppointment
+
       const filters = {
         patientsAppointment,
-        professionalsAppointment,
+        professionalsAppointment: currentFilter,
         therapiesAppointment,
         roomsAppointment,
       }
@@ -204,6 +231,10 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
 
   useEffect(() => {
     makeAppointmentFeedback(currentCalendarWeekday.current)
+    if (tokenData?.role === 'professional' && tokenData?.professionalId) {
+      console.log("Entrou aqui _________")
+      makeFeedbackOfProfessionalAvailableHour(currentCalendarWeekday.current, tokenData?.professionalId)
+    }
   }, [])
 
   useEffect(() => {

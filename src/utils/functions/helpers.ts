@@ -1,4 +1,4 @@
-export function tokenDecode(token: string) {
+export function tokenDecode(token: string | undefined | null) {
   if (!token) {
     return null;
   }

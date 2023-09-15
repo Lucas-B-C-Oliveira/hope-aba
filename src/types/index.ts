@@ -59,7 +59,7 @@ export type TokenData = {
   clinicIds: string
   name: string
   email: string
-  role: string
+  role: Role
   iat: string
   exp: string
   professionalId?: string
