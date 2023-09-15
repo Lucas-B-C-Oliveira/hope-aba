@@ -12,6 +12,7 @@ interface Props {
 export function useAutocompleteFilter(
   filterKey?: FilterKey,
   endPoint?: string,
+  disabled: boolean | undefined = false
 ) {
   const [selected, setSelected] = useState<any>(null)
   const [currentOptions, setCurrentOptions] = useState<any>([]) //! TODO: Trocar o tipo para o tipo correto
@@ -120,6 +121,19 @@ export function useAutocompleteFilter(
       }
     }
   }, [selected])
+
+
+  useEffect(() => {
+
+    if (disabled) {
+      setSelected({
+        name: 'Lcsbc123',
+        id: '64a3584840c4c876a77f8567'
+      })
+    }
+
+  }, [disabled])
+
 
   return {
     onSearchChange,

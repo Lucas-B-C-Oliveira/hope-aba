@@ -23,11 +23,13 @@ interface Props {
     currentOptions: any
     searchAllData: () => void
   }
+  disabled?: boolean
 }
 
 export const AutocompleteFilter = memo(function AutocompleteFilter({
   labelText,
   useAutocompleteLogic,
+  disabled = false
 }: Props) {
   const {
     ARE_THERE_OPTIONS_TO_SHOW,
@@ -37,22 +39,25 @@ export const AutocompleteFilter = memo(function AutocompleteFilter({
     selected,
     currentOptions,
     searchAllData,
-  } = useAutocompleteLogic()
+  } = useAutocompleteLogic(disabled)
 
   return (
-    <Combobox as="div" value={selected} onChange={setSelected}>
+    <Combobox as="div" value={selected} onChange={setSelected} disabled={disabled}>
       <div className="relative ">
-        <div className="absolute -top-[0.6rem] z-10 bg-white w-fit px-2 py-0 right-2">
-          <ActionButton
-            onClick={searchAllData}
-            classNameToMerge={
-              ' gap-[2px] bg-gray-500 hover:bg-gray-400 rounded-[4px] text-sm font-medium  w-fit h-fit px-[6px] py-[0px]'
-            }
-          >
-            <MagnifyingGlassIcon className="h-4 w-4" />
-            Todos
-          </ActionButton>
-        </div>
+        {!disabled && (
+          <div className="absolute -top-[0.6rem] z-10 bg-white w-fit px-2 py-0 right-2">
+            <ActionButton
+              onClick={searchAllData}
+              classNameToMerge={
+                ' gap-[2px] bg-gray-500 hover:bg-gray-400 rounded-[4px] text-sm font-medium  w-fit h-fit px-[6px] py-[0px]'
+              }
+            >
+              <MagnifyingGlassIcon className="h-4 w-4" />
+              Todos
+            </ActionButton>
+          </div>
+        )}
+
         <Combobox.Label className={MAGIC_LABEL_CLASSNAME}>
           {labelText}
         </Combobox.Label>
@@ -61,9 +66,10 @@ export const AutocompleteFilter = memo(function AutocompleteFilter({
           loading={loading}
           onSearchChange={onSearchChange}
           currentOptions={currentOptions}
+          disabled={disabled}
         />
 
-        {ARE_THERE_OPTIONS_TO_SHOW && (
+        {!disabled && ARE_THERE_OPTIONS_TO_SHOW && (
           <Combobox.Options className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             {currentOptions?.map((data: any) => (
               <Combobox.Option

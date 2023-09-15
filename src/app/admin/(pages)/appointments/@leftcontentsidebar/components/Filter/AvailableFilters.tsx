@@ -1,33 +1,39 @@
-import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
+import { memo } from 'react'
 import { Filter } from '.'
-import { ActionButton } from '@/components/ActionButton'
-import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
-import { useAutocompleteFilter } from './useAutocompleteFilter'
 
-export function AvailableFilters() {
-  // const { setButtonStatusAvailable } = useAppointmentFilterStore()
-  // function handleClick() {
-  //   setButtonStatusAvailable('clicked')
-  // }
+import { useAutocompleteFilter } from './useAutocompleteFilter'
+import { Role } from '@/types'
+
+interface Props {
+  role: Role
+}
+
+export const AvailableFilters = memo(function AvailableFilters({ role }: Props) {
 
   const useAvailableProfessionalLogic = () =>
-    useAutocompleteFilter('professionalAvailable', 'professionals')
+    useAutocompleteFilter('professionalAvailable', 'professionals', role === 'professional')
 
   return (
-    <div className="flex flex-col items-start gap-3">
-      <Filter.Autocomplete
-        useAutocompleteLogic={useAvailableProfessionalLogic}
-        labelText="Profissionais"
-      />
-      {/* <ActionButton onClick={handleClick}>
-        <AdjustmentsHorizontalIcon
-          className="pointer-events-none h-5 w-5 text-white"
-          aria-hidden="true"
-        />
-        Filtrar
-      </ActionButton> */}
-
-      <Filter.Labels filterType="Available" />
-    </div>
+    <>
+      {role === 'admin' && (
+        <div className="flex flex-col items-start gap-3">
+          <Filter.Autocomplete
+            useAutocompleteLogic={useAvailableProfessionalLogic}
+            labelText="Profissionais"
+          />
+          <Filter.Labels filterType="Available" />
+        </div>
+      )}
+      {role === 'professional' && (
+        <div className="flex flex-col items-start gap-3">
+          <Filter.Autocomplete
+            disabled={true}
+            useAutocompleteLogic={useAvailableProfessionalLogic}
+            labelText="Profissional"
+          />
+        </div>
+      )}
+      {role === 'user' && (<></>)}
+    </>
   )
-}
+})

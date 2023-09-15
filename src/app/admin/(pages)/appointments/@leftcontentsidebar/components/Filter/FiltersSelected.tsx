@@ -58,19 +58,21 @@ export const FiltersSelected = memo(function FiltersSelected({
   }, [patientsAppointment, professionalsAppointment])
 
   return (
-    <div className="flex flex-col gap-1">
-      {filtersSelected.length > 0 &&
-        filtersSelected &&
-        filtersSelected.map((filterSelected) => {
-          return (
-            <Filter.Label
-              key={`${filterSelected?.name}-${filterSelected?.filterKey}-${filterSelected?.tag}`}
-              filterKey={filterSelected?.filterKey}
-              name={filterSelected?.name}
-              tag={filterSelected?.tag}
-            />
-          )
-        })}
-    </div>
+    <>
+      {filtersSelected.length > 0 && filtersSelected && (
+        <div className="flex flex-col gap-1 h-fit p-0">
+          {filtersSelected.map((filterSelected) => {
+            return (
+              <Filter.Label
+                key={`${filterSelected?.name}-${filterSelected?.filterKey}-${filterSelected?.tag}`}
+                filterKey={filterSelected?.filterKey}
+                name={filterSelected?.name}
+                tag={filterSelected?.tag}
+              />
+            )
+          })}
+        </div>
+      )}
+    </>
   )
 })

@@ -123,27 +123,6 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   const [professionalScheduleAvailable, setProfessionalScheduleAvailable] =
     useState<any[] | undefined>(undefined)
 
-  async function makeAppointmentFeedbacka(
-    toScheduleDate: string,
-    fromScheduleDate: string,
-  ) {
-    const query = `appointments?to-scheduleDate=${toScheduleDate}&from-scheduleDate=${fromScheduleDate}`
-    const data = await getAppointmentsByRangeDate(query)
-
-    const newData = data.map((data) => {
-      return {
-        ...data,
-        start: new Date(data?.start),
-        end: new Date(data?.end),
-      }
-    })
-
-    if (!isEqual(newData, appointments) && newData) {
-      // console.log('getAppointmentsByRangeDate newData', newData)
-      setAppointments(newData)
-    }
-  }
-
   async function makeFeedbackOfProfessionalAvailableHour(
     currentWeekday: string,
   ) {
@@ -193,10 +172,10 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
           endpointWithQuery = endpointWithQuery + '&' + queryFilters
         }
       }
-      // console.log(
-      //   '______ endpointWithQuery',
-      //   endpointWithQuery + '&page=1&pageSize=90',
-      // )
+      console.log(
+        '______ endpointWithQuery',
+        endpointWithQuery + '&page=1&pageSize=90',
+      )
       const data = await getAppointmentsByRangeDate(
         endpointWithQuery + '&page=1&pageSize=90',
       )
@@ -237,7 +216,6 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
     makeFeedbackOfProfessionalAvailableHour(currentCalendarWeekday.current)
   }, [professionalAvailable?.id, filterButtonStatusAvailable])
 
-  // console.log('appointments', appointments)
 
   return (
     <div id="calendar" className="flex flex-col h-full rounded-md shadow-md">

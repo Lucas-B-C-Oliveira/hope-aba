@@ -3,30 +3,49 @@ import { Filter } from '.'
 import { ActionButton } from '@/components/ActionButton'
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { useAutocompleteFilter } from './useAutocompleteFilter'
+import { memo } from 'react'
+import { Role } from '@/types'
 
-export function AppointmentFilters() {
+interface Props {
+  role: Role
+}
+
+export const AppointmentFilters = memo(function AppointmentFilters({ role }: Props) {
   const { setButtonStatusAppointment } = useAppointmentFilterStore()
   function handleClick() {
     setButtonStatusAppointment('clicked')
   }
 
   const useProfessionalsLogic = () =>
-    useAutocompleteFilter('professionalsAppointment', 'professionals')
+    useAutocompleteFilter('professionalsAppointment', 'professionals', role === 'professional')
   const usePatientsLogic = () =>
     useAutocompleteFilter('patientsAppointment', 'patients')
 
   return (
-    <div className="flex flex-col items-start gap-3">
-      <div className="flex flex-col gap-6">
-        <Filter.Autocomplete
-          useAutocompleteLogic={useProfessionalsLogic}
-          labelText="Profissionais"
-        />
-        <Filter.Autocomplete
-          useAutocompleteLogic={usePatientsLogic}
-          labelText="Pacientes"
-        />
-      </div>
+    <div className="flex flex-col items-start gap-3 p-0 h-fit">
+
+      {role === 'admin' && (
+        <div className="flex flex-col gap-6">
+          <Filter.Autocomplete
+            useAutocompleteLogic={useProfessionalsLogic}
+            labelText="Profissionais"
+          />
+          <Filter.Autocomplete
+            useAutocompleteLogic={usePatientsLogic}
+            labelText="Pacientes"
+          />
+        </div>
+      )}
+
+      {role === 'professional' && (
+        <div className="flex flex-col gap-6">
+          <Filter.Autocomplete
+            useAutocompleteLogic={useProfessionalsLogic}
+            labelText="Profissional"
+            disabled={true}
+          />
+        </div>
+      )}
 
       <Filter.Checkboxes
         labelText="Terapias"
@@ -47,7 +66,10 @@ export function AppointmentFilters() {
         Filtrar
       </ActionButton>
 
-      <Filter.Labels filterType="Appointment" />
+      {role === 'admin' && (
+        <Filter.Labels filterType="Appointment" />
+      )}
+
     </div>
   )
-}
+})

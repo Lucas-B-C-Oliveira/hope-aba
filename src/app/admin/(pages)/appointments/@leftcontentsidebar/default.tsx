@@ -1,15 +1,17 @@
-'use client'
-import { useMainLayoutStore } from '@/store/mainLayoutStore'
+
+import { cookies } from 'next/headers'
 import { LeftContentSidebar } from './components/LeftContentSidebar'
-import { ContentSidebarContainer } from '../components/ContentSidebarContainer'
+import { ACCESS_TOKEN } from '@/utils/functions/constants'
+import { tokenDecode } from '@/utils/functions/helpers'
 
-export default function Default() {
-  const { leftContentSidebarIsOpen } = useMainLayoutStore()
+export default async function Default() {
+  const cookieStore = cookies()
+  const accessToken = cookieStore.get(ACCESS_TOKEN)?.value ?? ''
+  const tokenData = tokenDecode(accessToken)
 
-  return (
-    <ContentSidebarContainer
-      isOpen={leftContentSidebarIsOpen}
-      content={<LeftContentSidebar />}
-    />
-  )
+  console.log('tokenData', tokenData)
+
+  // const clinicsData = cookieStore.get('clinicsData')
+  // const currentClinicDataIndex = cookieStore.get('currentClinicDataIndex')?.value ?? 0
+  return <LeftContentSidebar role={tokenData?.role ?? 'user'} />
 }

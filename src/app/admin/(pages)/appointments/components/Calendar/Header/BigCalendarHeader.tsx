@@ -2,6 +2,9 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { ReactElement, memo } from 'react'
 import { useBigCalendarHeader } from './useBigCalendarHeader'
+import { getCookie } from 'cookies-next'
+import { tokenDecode } from '@/utils/functions/helpers'
+import { Role } from '@/types'
 
 interface CalendarHeaderProps {
   onNavigatePrev: () => void
@@ -21,6 +24,10 @@ export const BigCalendarHeader = memo(function BigCalendarHeader({
   openRightContentSidebarButton,
 }: CalendarHeaderProps) {
   const { dateLabel } = useBigCalendarHeader({ calendarDate })
+
+  const accessToken = typeof getCookie('accessToken') === 'string' ? getCookie('accessToken') : ''
+  const tokenData = tokenDecode(accessToken as string)
+  const role: Role = tokenData?.role ?? 'user'
 
   return (
     <header
@@ -69,8 +76,12 @@ export const BigCalendarHeader = memo(function BigCalendarHeader({
           </div>
         </div>
 
-        <div className="ml-6 mr-6 h-6 w-px bg-gray-300" />
-        {openRightContentSidebarButton && openRightContentSidebarButton}
+        {role === 'admin' && (
+          <>
+            <div className="ml-6 mr-6 h-6 w-px bg-gray-300" />
+            {openRightContentSidebarButton && openRightContentSidebarButton}
+          </>
+        )}
       </div>
     </header>
   )
