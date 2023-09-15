@@ -2,88 +2,90 @@ import { Filter, FilterKey } from '@/types'
 import { create } from 'zustand'
 
 interface AppointmentFilterStore {
-  professionals?: Filter
-  patients?: Filter
-  therapies?: Filter[]
-  rooms?: Filter[]
+  professionalsAppointment?: Filter
+  patientsAppointment?: Filter
+  therapiesAppointment?: Filter[]
+  roomsAppointment?: Filter[]
+
+  professionalAvailable?: Filter
 
   addFilter: (filterKey: FilterKey, newFilterValue: Filter) => void
   removeFilter: (filterKey: FilterKey, filterToRemoveId?: string) => void
 
-  filterButtonStatus: 'clicked' | 'idle'
-  setButtonStatus: (newStatus: 'clicked' | 'idle') => void
+  filterButtonStatusAppointment: 'clicked' | 'idle'
+  setButtonStatusAppointment: (newStatus: 'clicked' | 'idle') => void
 
-  getFilters: (filterKey: FilterKey) => Filter | Filter[] | undefined
+  filterButtonStatusAvailable: 'clicked' | 'idle'
+  setButtonStatusAvailable: (newStatus: 'clicked' | 'idle') => void //! TODO: Remover o estado do botão de Available, eu acho
 }
 
 export const useAppointmentFilterStore = create<AppointmentFilterStore>()(
   (set, get) => ({
-    professionals: undefined,
-    patients: undefined,
-    rooms: undefined,
-    therapies: undefined,
+    professionalsAppointment: undefined,
+    patientsAppointment: undefined,
+    roomsAppointment: undefined,
+    therapiesAppointment: undefined,
+
+    professionalAvailable: undefined,
+
     addFilter: (filterKey, newFilterValue) => {
-      if (filterKey === 'rooms') {
-        const currentRooms = get()?.rooms ?? []
+      if (filterKey === 'roomsAppointment') {
+        const currentRooms = get()?.roomsAppointment ?? []
         const newRoomAlreadyExist = currentRooms.some(
           (room) => room?.id === newFilterValue?.id,
         )
         const newRooms = newRoomAlreadyExist
           ? currentRooms
           : [...currentRooms, newFilterValue]
-        set(() => ({ rooms: newRooms }))
-      } else if (filterKey === 'therapies') {
-        const currentTherapies = get()?.therapies ?? []
+        set(() => ({ roomsAppointment: newRooms }))
+      } else if (filterKey === 'therapiesAppointment') {
+        const currentTherapies = get()?.therapiesAppointment ?? []
         const newTherapyAlreadyExist = currentTherapies.some(
           (therapy) => therapy?.id === newFilterValue?.id,
         )
         const newTherapies = newTherapyAlreadyExist
           ? currentTherapies
           : [...currentTherapies, newFilterValue]
-        set(() => ({ therapies: newTherapies }))
-      } else if (filterKey === 'patients') {
-        set(() => ({ patients: newFilterValue }))
-      } else if (filterKey === 'professionals') {
-        set(() => ({ professionals: newFilterValue }))
+        set(() => ({ therapiesAppointment: newTherapies }))
+      } else if (filterKey === 'patientsAppointment') {
+        set(() => ({ patientsAppointment: newFilterValue }))
+      } else if (filterKey === 'professionalsAppointment') {
+        set(() => ({ professionalsAppointment: newFilterValue }))
+      } else if (filterKey === 'professionalAvailable') {
+        set(() => ({ professionalAvailable: newFilterValue }))
       }
     },
     removeFilter: (filterKey, filterToRemoveId) => {
-      console.log('filterKey', filterKey)
-
-      if (filterKey === 'rooms') {
-        const currentRooms = get()?.rooms ?? []
+      if (filterKey === 'roomsAppointment') {
+        const currentRooms = get()?.roomsAppointment ?? []
         const newRooms = currentRooms.filter(
           (room) => room?.id !== filterToRemoveId,
         )
-        set(() => ({ rooms: [...newRooms] }))
-      } else if (filterKey === 'therapies') {
-        const currentTherapies = get()?.therapies ?? []
+        set(() => ({ roomsAppointment: [...newRooms] }))
+      } else if (filterKey === 'therapiesAppointment') {
+        const currentTherapies = get()?.therapiesAppointment ?? []
         const newTherapies = currentTherapies.filter(
           (therapy) => therapy?.id !== filterToRemoveId,
         )
-        set(() => ({ therapies: [...newTherapies] }))
-      } else if (filterKey === 'patients') {
-        set(() => ({ patients: undefined }))
-      } else if (filterKey === 'professionals') {
-        console.log('Entrei no Professionalls')
-        set((state) => ({ ...state, professionals: undefined }))
-      }
-    },
-    getFilters: (filterKey) => {
-      if (filterKey === 'rooms') {
-        return get().rooms
-      } else if (filterKey === 'therapies') {
-        return get().therapies
-      } else if (filterKey === 'patients') {
-        return get().patients
-      } else if (filterKey === 'professionals') {
-        return get().professionals
+        set(() => ({ therapiesAppointment: [...newTherapies] }))
+      } else if (filterKey === 'patientsAppointment') {
+        set(() => ({ patientsAppointment: undefined }))
+      } else if (filterKey === 'professionalsAppointment') {
+        set(() => ({ professionalsAppointment: undefined }))
+      } else if (filterKey === 'professionalAvailable') {
+        set(() => ({ professionalAvailable: undefined }))
       }
     },
 
-    filterButtonStatus: 'idle',
-    setButtonStatus: (newStatus) => {
-      set(() => ({ filterButtonStatus: newStatus }))
+    filterButtonStatusAppointment: 'idle',
+    setButtonStatusAppointment: (newStatus) => {
+      set(() => ({ filterButtonStatusAppointment: newStatus }))
     },
+
+    filterButtonStatusAvailable: 'idle',
+    setButtonStatusAvailable: (newStatus) => {
+      set(() => ({ filterButtonStatusAvailable: newStatus }))
+    },
+
   }),
 )

@@ -24,7 +24,7 @@ export const TimePickerAdapterStart = memo(function TimePickerAdapterStart({
   title,
   professionalField,
 }: Props) {
-  const { professionals } = useAppointmentFilterStore()
+  const { professionalAvailable } = useAppointmentFilterStore()
   const [availableTimeRanges, setAvailableTimeRanges] = useState<
     [] | { start: string; end: string }[]
   >([])
@@ -84,16 +84,16 @@ export const TimePickerAdapterStart = memo(function TimePickerAdapterStart({
 
   useEffect(() => {
     if (
-      typeof professionals?.id !== 'undefined' &&
+      typeof professionalAvailable?.id !== 'undefined' &&
       typeof observedField !== 'undefined'
     ) {
-      getAvailableScheduleTime(professionals?.id, observedField).then(
+      getAvailableScheduleTime(professionalAvailable?.id, observedField).then(
         async (data) => {
           setAvailableTimeRanges(data)
         },
       )
     }
-  }, [professionals?.id, observedField])
+  }, [professionalAvailable?.id, observedField])
 
   return (
     <Form.Field className="relative">

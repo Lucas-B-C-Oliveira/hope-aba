@@ -1,7 +1,7 @@
 'use client'
 import { Transition } from '@headlessui/react'
 import { useMainLayoutStore } from '@/store/mainLayoutStore'
-import { Fragment, ReactElement } from 'react'
+import { Fragment, ReactElement, ReactNode } from 'react'
 
 interface Props {
   isOpen: boolean
@@ -23,7 +23,7 @@ export function ContentSidebarContainer({ content, isOpen }: Props) {
       <div
         className={`
           pointer-events-auto transform  h-full rounded-2xl bg-white
-          p-6 text-left shadow-xl transition-all w-fit 
+           text-left shadow-xl transition-all w-fit 
         `}
       >
         {content && content}

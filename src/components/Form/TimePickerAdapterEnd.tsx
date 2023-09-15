@@ -2,7 +2,6 @@
 
 import { memo, useEffect, useState } from 'react'
 import {
-  MAGIC_INPUT_CLASSNAME,
   MAGIC_LABEL_CLASSNAME,
   MUI_INPUT_SX,
 } from '@/style/consts'
@@ -15,7 +14,6 @@ import { dateAdapter } from '@/utils/dateAdapter'
 import { HOUR_MIN_FORMAT } from '@/utils/globalConstants'
 
 import './styles.css'
-import { ThemeProvider, createTheme } from '@mui/material'
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 
 interface Props {
@@ -33,7 +31,7 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
   title,
   professionalField,
 }: Props) {
-  const { professionals } = useAppointmentFilterStore()
+  const { professionalAvailable } = useAppointmentFilterStore()
   const [availableTimeRanges, setAvailableTimeRanges] = useState<
     [] | { start: string; end: string }[]
   >([])
@@ -107,16 +105,16 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
 
   useEffect(() => {
     if (
-      typeof professionals?.id !== 'undefined' &&
+      typeof professionalAvailable?.id !== 'undefined' &&
       typeof observedField !== 'undefined'
     ) {
-      getAvailableScheduleTime(professionals?.id, observedField).then(
+      getAvailableScheduleTime(professionalAvailable?.id, observedField).then(
         async (data) => {
           setAvailableTimeRanges(data)
         },
       )
     }
-  }, [professionals?.id, observedField])
+  }, [professionalAvailable?.id, observedField])
 
   return (
     <Form.Field className="relative">

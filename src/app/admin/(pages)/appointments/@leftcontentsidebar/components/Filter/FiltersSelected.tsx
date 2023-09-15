@@ -1,62 +1,59 @@
 'use client'
 
-import { Form } from '@/components/Form'
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
-import {
-  CHECKBOX_INPUT_CLASSNAME,
-  TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
-} from '@/style/consts'
-import { FilterKey } from '@/types'
-import { doFetch } from '@/utils/actions/action'
+import { FilterKey, FilterType } from '@/types'
 import { memo, useEffect, useState } from 'react'
-import { FilterSelected } from './FilterSelected'
-import { isEqual } from 'lodash'
 import { Filter } from '.'
 
-export const FiltersSelected = memo(function FiltersSelected() {
+interface Props {
+  filterType: FilterType
+}
+
+export const FiltersSelected = memo(function FiltersSelected({ filterType }: Props) {
   const [filtersSelected, setFiltersSelected] = useState<
     { name: string; filterKey: FilterKey; tag: string }[] | []
   >([])
 
-  const { patients, rooms, professionals, therapies, getFilters } =
+  const { patientsAppointment, professionalsAppointment, professionalAvailable } =
     useAppointmentFilterStore()
 
-  console.log('Fora do useEffect professionals', getFilters('professionals'))
 
   useEffect(() => {
-    // console.log("Filters foi alterado")
-    // console.log("patients", patients)
-    // console.log("Dentro do UseEffect professionals", professionals)
-    console.log(
-      'Dentro do useEffect professionals',
-      getFilters('professionals'),
-    )
-
-    const newFilters = []
-
-    if (typeof patients !== 'undefined') {
-      newFilters.push({
-        name: patients?.name,
-        filterKey: 'patients' as FilterKey, // Adicione a conversão para FilterKey aqui
-        tag: 'Paciente',
-      })
-    }
-    if (typeof professionals !== 'undefined') {
-      newFilters.push({
-        name: professionals?.name,
-        filterKey: 'professionals' as FilterKey, // Adicione a conversão para FilterKey aqui
-        tag: 'Profissional',
-      })
+    if (filterType?.includes("Available")) {
+      const newFilters = []
+      if (typeof professionalAvailable !== 'undefined') {
+        newFilters.push({
+          name: professionalAvailable?.name,
+          filterKey: 'professionalAvailable' as FilterKey,
+          tag: 'Profissional',
+        })
+      }
+      setFiltersSelected(newFilters)
     }
 
-    setFiltersSelected(newFilters)
-    // if (!isEqual(newFilters, filtersSelected)) {
-    //   setFiltersSelected(newFilters)
-    // }
-  }, [patients, professionals])
+  }, [professionalAvailable])
 
-  // console.log('filters', filters)
-  // console.log('filtersSelected', filtersSelected)
+  useEffect(() => {
+    if (filterType?.includes("Appointment")) {
+      const newFilters = []
+      if (typeof patientsAppointment !== 'undefined') {
+        newFilters.push({
+          name: patientsAppointment?.name,
+          filterKey: 'patientsAppointment' as FilterKey,
+          tag: 'Paciente',
+        })
+      }
+      if (typeof professionalsAppointment !== 'undefined') {
+        newFilters.push({
+          name: professionalsAppointment?.name,
+          filterKey: 'professionalsAppointment' as FilterKey,
+          tag: 'Profissional',
+        })
+      }
+      setFiltersSelected(newFilters)
+    }
+
+  }, [patientsAppointment, professionalsAppointment])
 
   return (
     <div className="flex flex-col gap-1">

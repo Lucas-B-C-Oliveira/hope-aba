@@ -34,7 +34,9 @@ export type Filter = {
   id: string
 }
 
-export type FilterKey = 'patients' | 'professionals' | 'rooms' | 'therapies'
+// export type FilterKey = 'patients' | 'professionals' | 'rooms' | 'therapies'
+export type FilterKey = 'patientsAppointment' | 'professionalsAppointment' | 'roomsAppointment' | 'therapiesAppointment' | 'patientsAvailable' | 'professionalAvailable' | 'roomsAvailable' | 'therapiesAvailable'
+export type FilterType = 'Appointment' | 'Available'
 
 export type LoginParams = {
   email: string

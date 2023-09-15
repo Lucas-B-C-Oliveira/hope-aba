@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const Accordion = memo(function Accordion({ children }: Props) {
-  const titles = ['Filtros para Cadastro', 'Outros filtros']
+  const titles = ['Agendamento', 'Disponibilidade']
 
   return (
     <div className="flex flex-col  gap-4 w-56 rounded-2xl bg-white">
@@ -25,9 +25,8 @@ export const Accordion = memo(function Accordion({ children }: Props) {
                       {titles[index]}
                     </span>
                     <ChevronUpIcon
-                      className={`${
-                        open ? 'rotate-180' : ''
-                      } h-5 w-5 text-gray-600 font-bold stroke-2`}
+                      className={`${open ? 'rotate-180' : ''
+                        } h-5 w-5 text-gray-600 font-bold stroke-2`}
                     />
                   </Disclosure.Button>
 

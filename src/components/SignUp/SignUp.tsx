@@ -15,6 +15,7 @@ import Image from 'next/image'
 import { useSignUp } from './useSignUp'
 import { ColorRing } from 'react-loader-spinner'
 import { twMerge } from 'tailwind-merge'
+import { SpinnerLoading } from '../SpinnerLoading'
 
 export const SignUp = memo(function SignUp() {
   const {
@@ -198,23 +199,12 @@ export const SignUp = memo(function SignUp() {
               className={`flex w-full ${BUTTON_CLASSNAME}`}
             >
               {loading && (
-                <ColorRing
-                  visible={true}
-                  height="24"
-                  width="24"
-                  ariaLabel="blocks-loading"
-                  wrapperStyle={{}}
-                  wrapperClass="blocks-wrapper"
-                  colors={[
-                    '#f29849',
-                    '#bf6dd5',
-                    '#db6f91',
-                    '#f5a73c',
-                    '#fbbc30',
-                  ]}
-                />
+                <SpinnerLoading />
               )}
-              Cadastrar
+              {!loading && (
+                <p>Cadastrar</p>
+              )}
+
             </ActionButton>
 
             {createAccountData?.error && (

@@ -78,10 +78,10 @@ function getFirstAndLastWeekdayByCurrentWeekday(currentWeekDay: string) {
 }
 
 function getFiltersQuery(filters: any) {
-  const professionalId = makeQuery('professionalId', filters?.professionals)
-  const patientId = makeQuery('patientId', filters?.patients)
-  const roomId = makeQuery('roomId', filters?.rooms)
-  const therapyId = makeQuery('therapyId', filters?.therapies)
+  const professionalId = makeQuery('professionalId', filters?.professionalsAppointment)
+  const patientId = makeQuery('patientId', filters?.patientsAppointment)
+  const roomId = makeQuery('roomId', filters?.roomsAppointment)
+  const therapyId = makeQuery('therapyId', filters?.therapiesAppointment)
   const filterQuery = `${professionalId}${patientId}${roomId}${therapyId}`
 
   const filterQueryWithoutSpaces = filterQuery.replace(/__/g, '')
@@ -98,12 +98,15 @@ function getQueryRangeDate(firstWeekday: string, lastWeekday: string) {
 
 export const BigCalendarContainer = memo(function BigCalendarContainer() {
   const {
-    setButtonStatus,
-    patients,
-    professionals,
-    therapies,
-    rooms,
-    filterButtonStatus,
+    setButtonStatusAppointment,
+    patientsAppointment,
+    professionalsAppointment,
+    therapiesAppointment,
+    roomsAppointment,
+    filterButtonStatusAppointment,
+    professionalAvailable,
+    filterButtonStatusAvailable,
+    setButtonStatusAvailable
   } = useAppointmentFilterStore()
 
   const currentCalendarWeekday = useRef<string>(
@@ -133,7 +136,7 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
     })
 
     if (!isEqual(newData, appointments) && newData) {
-      console.log('getAppointmentsByRangeDate newData', newData)
+      // console.log('getAppointmentsByRangeDate newData', newData)
       setAppointments(newData)
     }
   }
@@ -141,14 +144,21 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   async function makeFeedbackOfProfessionalAvailableHour(
     currentWeekday: string,
   ) {
-    if (typeof professionals?.id !== 'undefined') {
+    if (typeof professionalAvailable?.id !== 'undefined') {
       const data = await getProfessionalScheduleAvailability(
-        professionals?.id,
+        professionalAvailable?.id,
         dateAdapter(currentWeekday),
       )
       if (!isEqual(data, professionalScheduleAvailable) && data) {
         setProfessionalScheduleAvailable(data)
       }
+    }
+    else {
+      setProfessionalScheduleAvailable(undefined)
+    }
+
+    if (filterButtonStatusAvailable === 'clicked') {
+      setButtonStatusAvailable('idle')
     }
   }
 
@@ -161,10 +171,10 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
         lastWeekdayFormated,
       )
       const filters = {
-        patients,
-        professionals,
-        therapies,
-        rooms,
+        patientsAppointment,
+        professionalsAppointment,
+        therapiesAppointment,
+        roomsAppointment,
       }
       const queryFilters = getFiltersQuery(filters)
       const endpoint = `appointments?`
@@ -181,10 +191,10 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
           endpointWithQuery = endpointWithQuery + '&' + queryFilters
         }
       }
-      console.log(
-        '______ endpointWithQuery',
-        endpointWithQuery + '&page=1&pageSize=90',
-      )
+      // console.log(
+      //   '______ endpointWithQuery',
+      //   endpointWithQuery + '&page=1&pageSize=90',
+      // )
       const data = await getAppointmentsByRangeDate(
         endpointWithQuery + '&page=1&pageSize=90',
       )
@@ -198,12 +208,12 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
       })
 
       // console.log('getAppointmentsByRangeDate newData', newData)
-      console.log('getAppointmentsByRangeDate newData', newData)
+      // console.log('getAppointmentsByRangeDate newData', newData)
 
       if (!isEqual(newData, appointments) && newData) {
         setAppointments(newData)
-        if (filterButtonStatus === 'clicked') {
-          setButtonStatus('idle')
+        if (filterButtonStatusAppointment === 'clicked') {
+          setButtonStatusAppointment('idle')
         }
       }
     } catch (error) {
@@ -216,16 +226,16 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   }, [])
 
   useEffect(() => {
-    if (filterButtonStatus !== 'idle') {
+    if (filterButtonStatusAppointment !== 'idle') {
       makeAppointmentFeedback(currentCalendarWeekday.current)
     }
-  }, [filterButtonStatus])
+  }, [filterButtonStatusAppointment])
 
   useEffect(() => {
     makeFeedbackOfProfessionalAvailableHour(currentCalendarWeekday.current)
-  }, [professionals?.id])
+  }, [professionalAvailable?.id, filterButtonStatusAvailable])
 
-  console.log('appointments', appointments)
+  // console.log('appointments', appointments)
 
   return (
     <div id="calendar" className="flex flex-col h-full rounded-md shadow-md">

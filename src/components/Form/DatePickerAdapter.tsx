@@ -1,14 +1,10 @@
 'use client'
 
-import { ChangeEvent, memo, useEffect, useState } from 'react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import { Combobox, Listbox } from '@headlessui/react'
+import { memo, useEffect, useState } from 'react'
 import {
-  MAGIC_INPUT_CLASSNAME,
   MAGIC_LABEL_CLASSNAME,
   MUI_INPUT_SX,
 } from '@/style/consts'
-import { isEqual } from 'lodash'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 import { getProfessionalScheduleAvailabilityWeekDays } from '@/utils/actions/action'
@@ -29,7 +25,7 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
   title,
   professionalField,
 }: Props) {
-  const { professionals } = useAppointmentFilterStore()
+  const { professionalAvailable } = useAppointmentFilterStore()
 
   const [weekDaysAvailable, setWeekDaysAvailable] = useState<number[]>([99])
 
@@ -80,14 +76,14 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
   }
 
   useEffect(() => {
-    if (typeof professionals?.id !== 'undefined') {
-      getProfessionalScheduleAvailabilityWeekDays(professionals?.id).then(
+    if (typeof professionalAvailable?.id !== 'undefined') {
+      getProfessionalScheduleAvailabilityWeekDays(professionalAvailable?.id).then(
         async (data) => {
           setWeekDaysAvailable(data)
         },
       )
     }
-  }, [professionals?.id])
+  }, [professionalAvailable?.id])
 
   return (
     <Form.Field className="relative">

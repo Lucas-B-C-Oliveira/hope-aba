@@ -15,6 +15,7 @@ import Image from 'next/image'
 import { ActionButton } from '../ActionButton'
 import { twMerge } from 'tailwind-merge'
 import { ColorRing } from 'react-loader-spinner'
+import { SpinnerLoading } from '../SpinnerLoading'
 
 export const SignIn = memo(function SignIn() {
   const {
@@ -99,23 +100,11 @@ export const SignIn = memo(function SignIn() {
               className={`flex w-full ${BUTTON_CLASSNAME}`}
             >
               {loading && (
-                <ColorRing
-                  visible={true}
-                  height="24"
-                  width="24"
-                  ariaLabel="blocks-loading"
-                  wrapperStyle={{}}
-                  wrapperClass="blocks-wrapper"
-                  colors={[
-                    '#f29849',
-                    '#bf6dd5',
-                    '#db6f91',
-                    '#f5a73c',
-                    '#fbbc30',
-                  ]}
-                />
+                <SpinnerLoading />
               )}
-              Entrar
+              {!loading && (
+                <p>Entrar</p>
+              )}
             </ActionButton>
 
             {error?.error && (

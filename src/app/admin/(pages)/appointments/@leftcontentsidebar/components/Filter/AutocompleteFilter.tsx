@@ -1,110 +1,58 @@
 'use client'
 
-import { ChangeEvent, memo, useState } from 'react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import { ChangeEvent, Dispatch, memo } from 'react'
+import { CheckIcon } from '@heroicons/react/20/solid'
 import { Combobox } from '@headlessui/react'
-import { MAGIC_INPUT_CLASSNAME, MAGIC_LABEL_CLASSNAME } from '@/style/consts'
-import { isEqual } from 'lodash'
+import { MAGIC_LABEL_CLASSNAME } from '@/style/consts'
 import { twMerge } from 'tailwind-merge'
-import { doFetch } from '@/utils/actions/action'
-import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 import { FilterKey } from '@/types'
-
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(' ')
-}
+import { ActionButton } from '@/components/ActionButton'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
+import { AutocompleteInput } from './AutocompleteInput'
 
 interface Props {
-  filterKey: FilterKey
-  endPoint: string
   labelText: string
+  useAutocompleteLogic: <T extends any[]>(...args: T) => {
+    onSearchChange: (event: ChangeEvent<HTMLInputElement>) => Promise<void>
+    ARE_THERE_OPTIONS_TO_SHOW: any
+    setSelected: Dispatch<any>
+    loading: boolean
+    selected: any
+    currentOptions: any
+    searchAllData: () => void
+  }
 }
 
 export const AutocompleteFilter = memo(function AutocompleteFilter({
-  filterKey,
-  endPoint,
   labelText,
+  useAutocompleteLogic,
 }: Props) {
-  const [selected, setSelected] = useState(null)
-  const [responseData, setResponseData] = useState<any>([]) //! TODO: Trocar o tipo para o tipo correto
-  const [isLoading, setIsLoading] = useState(false)
-  const { addFilter, patients, professionals } = useAppointmentFilterStore()
 
-  const ARE_THERE_OPTIONS_TO_SHOW =
-    typeof responseData?.data !== 'undefined' && responseData?.data.length > 0
-
-  async function onChangeHandle(event: ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value
-    if (value?.length > 3) {
-      setIsLoading(true)
-      try {
-        const data = await doFetch<any | { data: any }>(
-          `${endPoint}?search=${value}`,
-        )
-
-        if (typeof data?.data === 'undefined' && data?.data?.length <= 0) {
-          setSelected(null)
-        }
-
-        if (!isEqual(selected, data)) {
-          setResponseData(data)
-          setIsLoading(false)
-        }
-      } catch (error) {
-        console.error('SERVER ACTION ERROR - endPoint: ', endPoint, error)
-      }
-    }
-  }
+  const { ARE_THERE_OPTIONS_TO_SHOW, loading, onSearchChange, setSelected, selected, currentOptions, searchAllData } = useAutocompleteLogic()
 
   return (
     <Combobox as="div" value={selected} onChange={setSelected}>
+
       <div className="relative ">
+        <div className="absolute -top-[0.6rem] z-10 bg-white w-fit px-2 py-0 right-2">
+          <ActionButton onClick={searchAllData} classNameToMerge={" gap-[2px] bg-gray-500 hover:bg-gray-400 rounded-[4px] text-sm font-medium  w-fit h-fit px-[6px] py-[0px]"}>
+            <MagnifyingGlassIcon className="h-4 w-4" />Todos
+          </ActionButton>
+        </div>
         <Combobox.Label className={MAGIC_LABEL_CLASSNAME}>
           {labelText}
         </Combobox.Label>
 
-        <Combobox.Input
-          className={twMerge(
-            MAGIC_INPUT_CLASSNAME,
-            ' w-56 cursor-default text-left',
-          )}
-          onChange={onChangeHandle}
-          displayValue={(dataSelected: any) => {
-            if (dataSelected) {
-              const filterData = {
-                name: dataSelected.name,
-                id: dataSelected.id,
-              }
-
-              const isNewFilter =
-                professionals?.id !== dataSelected?.id &&
-                patients?.id !== dataSelected?.id
-
-              if (isNewFilter) {
-                addFilter(filterKey, filterData)
-              }
-            }
-
-            return dataSelected?.name
-          }}
-        />
-        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
-          {isLoading ? <span className="text-red-500 ">Loading...</span> : null}
-
-          <ChevronUpDownIcon
-            className="h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
-        </Combobox.Button>
+        <AutocompleteInput loading={loading} onSearchChange={onSearchChange} currentOptions={currentOptions} />
 
         {ARE_THERE_OPTIONS_TO_SHOW && (
           <Combobox.Options className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-            {responseData?.data.map((data: any) => (
+            {currentOptions?.map((data: any) => (
               <Combobox.Option
                 key={data.id}
                 value={data}
                 className={({ active }) =>
-                  classNames(
+                  twMerge(
                     'relative cursor-default select-none py-2 pl-8 pr-4',
                     active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                   )
@@ -113,7 +61,7 @@ export const AutocompleteFilter = memo(function AutocompleteFilter({
                 {({ active, selected }) => (
                   <>
                     <span
-                      className={classNames(
+                      className={twMerge(
                         'block truncate',
                         selected && 'font-semibold',
                       )}
@@ -123,7 +71,7 @@ export const AutocompleteFilter = memo(function AutocompleteFilter({
 
                     {selected && (
                       <span
-                        className={classNames(
+                        className={twMerge(
                           'absolute inset-y-0 left-0 flex items-center pl-1.5',
                           active ? 'text-white' : 'text-indigo-600',
                         )}

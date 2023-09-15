@@ -3,14 +3,10 @@
 import { ActionButton } from '@/components/ActionButton'
 import { Form } from '@/components/Form'
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
-import {
-  CHECKBOX_INPUT_CLASSNAME,
-  TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
-} from '@/style/consts'
+
 import { FilterKey } from '@/types'
-import { doFetch } from '@/utils/actions/action'
 import { TrashIcon } from '@heroicons/react/24/solid'
-import { memo, useEffect, useState } from 'react'
+import { memo, } from 'react'
 
 interface Props {
   filterKey: FilterKey
@@ -26,9 +22,7 @@ export const FilterSelected = memo(function FilterSelected({
   const { removeFilter } = useAppointmentFilterStore()
 
   function handleButton() {
-    // console.log('_____________filterKey QUE VOU REMOVER', filterKey)
     removeFilter(filterKey)
-    // clearFilters()
   }
 
   return (

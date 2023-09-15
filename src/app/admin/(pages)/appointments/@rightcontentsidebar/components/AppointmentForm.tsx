@@ -210,13 +210,13 @@ export const AppointmentForm = memo(function AppointmentForm({
   }
 
   function setProfessionalData(professionalData: Filter) {
-    const key: FilterKey = 'professionals'
+    const key: FilterKey = 'professionalAvailable'
     addFilter(key, professionalData)
   }
 
   return (
     <FormProvider {...createAppointmentForm}>
-      <form onSubmit={handleSubmit(schedule)} className="flex flex-col gap-5">
+      <form onSubmit={handleSubmit(schedule)} className="flex flex-col gap-5 p-6">
         <h2 className="text-left text-xl font-bold tracking-tight text-gray-600">
           {titleForm}
         </h2>
