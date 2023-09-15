@@ -1,9 +1,11 @@
 export function tokenDecode(token: string | undefined | null) {
   if (!token) {
-    return null;
+    return null
   }
-  const currentToken = token;
-  return JSON?.parse(Buffer?.from(currentToken?.split('.')[1], 'base64').toString())
+  const currentToken = token
+  return JSON?.parse(
+    Buffer?.from(currentToken?.split('.')[1], 'base64').toString(),
+  )
 }
 
 export function capitalizeFirstLetter(str: string) {

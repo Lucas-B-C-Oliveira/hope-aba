@@ -11,7 +11,6 @@ export async function middleware(request: NextResponse) {
     typeof accessToken?.value === 'string' &&
     typeof clinicsData?.value === 'string'
 
-
   // console.log(ACCESS_TOKEN, accessToken)
   // console.log(CLINICS_DATA, clinicsData)
 

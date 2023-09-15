@@ -10,8 +10,9 @@ interface Props {
   tokenData: TokenData
 }
 
-export const LeftContentSidebar = memo(function LeftContentSidebar({ tokenData }: Props) {
-
+export const LeftContentSidebar = memo(function LeftContentSidebar({
+  tokenData,
+}: Props) {
   const { leftContentSidebarIsOpen } = useMainLayoutStore()
 
   return (

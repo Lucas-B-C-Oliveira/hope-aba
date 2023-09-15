@@ -29,7 +29,7 @@ interface Props {
 export const AutocompleteFilter = memo(function AutocompleteFilter({
   labelText,
   useAutocompleteLogic,
-  disabled = false
+  disabled = false,
 }: Props) {
   const {
     ARE_THERE_OPTIONS_TO_SHOW,
@@ -42,7 +42,12 @@ export const AutocompleteFilter = memo(function AutocompleteFilter({
   } = useAutocompleteLogic(disabled)
 
   return (
-    <Combobox as="div" value={selected} onChange={setSelected} disabled={disabled}>
+    <Combobox
+      as="div"
+      value={selected}
+      onChange={setSelected}
+      disabled={disabled}
+    >
       <div className="relative ">
         {!disabled && (
           <div className="absolute -top-[0.6rem] z-10 bg-white w-fit px-2 py-0 right-2">

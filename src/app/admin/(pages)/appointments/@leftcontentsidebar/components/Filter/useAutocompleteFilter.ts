@@ -5,12 +5,11 @@ import { useQuery } from '@tanstack/react-query'
 import { isEqual } from 'lodash'
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 
-
 export function useAutocompleteFilter(
   filterKey?: FilterKey,
   endPoint?: string,
   disabled: boolean | undefined = false,
-  tokenData: TokenData | undefined = undefined
+  tokenData: TokenData | undefined = undefined,
 ) {
   const [selected, setSelected] = useState<any>(null)
   const [currentOptions, setCurrentOptions] = useState<any>([]) //! TODO: Trocar o tipo para o tipo correto
@@ -120,19 +119,19 @@ export function useAutocompleteFilter(
     }
   }, [selected])
 
-
   useEffect(() => {
     if (disabled) {
-      const newOption = [{
-        name: tokenData?.name,
-        id: tokenData?.professionalId
-      }]
+      const newOption = [
+        {
+          name: tokenData?.name,
+          id: tokenData?.professionalId,
+        },
+      ]
 
       setCurrentOptions(newOption)
       setSelected(newOption[0])
     }
   }, [disabled])
-
 
   return {
     onSearchChange,

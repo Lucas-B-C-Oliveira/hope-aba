@@ -8,13 +8,19 @@ interface Props {
   tokenData: TokenData
 }
 
-export const AvailableFilters = memo(function AvailableFilters({ tokenData }: Props) {
-
+export const AvailableFilters = memo(function AvailableFilters({
+  tokenData,
+}: Props) {
   const role = tokenData?.role
   const disabled = role === 'professional'
 
   const useAvailableProfessionalLogic = () =>
-    useAutocompleteFilter('professionalAvailable', 'professionals', disabled, tokenData)
+    useAutocompleteFilter(
+      'professionalAvailable',
+      'professionals',
+      disabled,
+      tokenData,
+    )
 
   return (
     <>
@@ -36,7 +42,7 @@ export const AvailableFilters = memo(function AvailableFilters({ tokenData }: Pr
           />
         </div>
       )}
-      {role === 'user' && (<></>)}
+      {role === 'user' && <></>}
     </>
   )
 })

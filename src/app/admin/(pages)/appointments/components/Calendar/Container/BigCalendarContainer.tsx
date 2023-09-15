@@ -126,29 +126,29 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   const [professionalScheduleAvailable, setProfessionalScheduleAvailable] =
     useState<any[] | undefined>(undefined)
 
-
-  const token = typeof getCookie(ACCESS_TOKEN) === 'string' ? getCookie(ACCESS_TOKEN) : null
-  const tokenData: TokenData | null = tokenDecode(token as string | undefined | null)
+  const token =
+    typeof getCookie(ACCESS_TOKEN) === 'string' ? getCookie(ACCESS_TOKEN) : null
+  const tokenData: TokenData | null = tokenDecode(
+    token as string | undefined | null,
+  )
 
   async function makeFeedbackOfProfessionalAvailableHour(
     currentWeekday: string,
-    professionalId: string | undefined = undefined
+    professionalId: string | undefined = undefined,
   ) {
     if (professionalId) {
-      console.log("professionalId", professionalId)
+      console.log('professionalId', professionalId)
 
       const data = await getProfessionalScheduleAvailability(
         professionalId,
         dateAdapter(currentWeekday),
       )
       if (!isEqual(data, professionalScheduleAvailable) && data) {
-        console.log("data", data)
+        console.log('data', data)
 
         setProfessionalScheduleAvailable(data)
       }
-    }
-    else {
-
+    } else {
       if (typeof professionalAvailable?.id !== 'undefined') {
         const data = await getProfessionalScheduleAvailability(
           professionalAvailable?.id,
@@ -176,7 +176,10 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
         lastWeekdayFormated,
       )
 
-      const currentFilter = tokenData?.role === 'professional' && !professionalsAppointment ? { name: tokenData?.name, id: tokenData?.professionalId } : professionalsAppointment
+      const currentFilter =
+        tokenData?.role === 'professional' && !professionalsAppointment
+          ? { name: tokenData?.name, id: tokenData?.professionalId }
+          : professionalsAppointment
 
       const filters = {
         patientsAppointment,
@@ -232,8 +235,11 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   useEffect(() => {
     makeAppointmentFeedback(currentCalendarWeekday.current)
     if (tokenData?.role === 'professional' && tokenData?.professionalId) {
-      console.log("Entrou aqui _________")
-      makeFeedbackOfProfessionalAvailableHour(currentCalendarWeekday.current, tokenData?.professionalId)
+      console.log('Entrou aqui _________')
+      makeFeedbackOfProfessionalAvailableHour(
+        currentCalendarWeekday.current,
+        tokenData?.professionalId,
+      )
     }
   }, [])
 
@@ -246,7 +252,6 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   useEffect(() => {
     makeFeedbackOfProfessionalAvailableHour(currentCalendarWeekday.current)
   }, [professionalAvailable?.id, filterButtonStatusAvailable])
-
 
   return (
     <div id="calendar" className="flex flex-col h-full rounded-md shadow-md">

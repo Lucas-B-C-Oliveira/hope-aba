@@ -8,7 +8,11 @@ import { ActionButton } from '@/components/ActionButton'
 import { useRouter } from 'next/navigation'
 import { capitalizeFirstLetter } from '@/utils/functions/helpers'
 import { SpinnerLoading } from '@/components/SpinnerLoading'
-import { ACCESS_TOKEN, CLINICS_DATA, CURRENT_CLINIC_DATA_INDEX } from '@/utils/functions/constants'
+import {
+  ACCESS_TOKEN,
+  CLINICS_DATA,
+  CURRENT_CLINIC_DATA_INDEX,
+} from '@/utils/functions/constants'
 
 interface LayoutHeaderProps {
   clinicsData: any
@@ -48,7 +52,7 @@ export function LayoutHeader({
     deleteCookie(CURRENT_CLINIC_DATA_INDEX)
     deleteCookie(CLINICS_DATA)
     deleteCookie(ACCESS_TOKEN)
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     setLoading(false)
     router.refresh()
   }

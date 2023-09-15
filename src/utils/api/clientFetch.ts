@@ -1,8 +1,11 @@
 import { getCookie } from 'cookies-next'
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
-import { ACCESS_TOKEN, CLINICS_DATA, CURRENT_CLINIC_DATA_INDEX } from '../functions/constants'
+import {
+  ACCESS_TOKEN,
+  CLINICS_DATA,
+  CURRENT_CLINIC_DATA_INDEX,
+} from '../functions/constants'
 // import { redirect } from 'next/navigation'
-
 
 export async function CSFetch<T = unknown>(
   input: RequestInfo | URL,

@@ -1,7 +1,11 @@
 import { cookies } from 'next/headers'
 import { LayoutHeader } from './LayoutHeader'
 import { tokenDecode } from '@/utils/functions/helpers'
-import { ACCESS_TOKEN, CLINICS_DATA, CURRENT_CLINIC_DATA_INDEX } from '@/utils/functions/constants'
+import {
+  ACCESS_TOKEN,
+  CLINICS_DATA,
+  CURRENT_CLINIC_DATA_INDEX,
+} from '@/utils/functions/constants'
 
 export default async function LayoutHeaderPage() {
   const cookieStore = cookies()
@@ -18,7 +22,6 @@ export default async function LayoutHeaderPage() {
 
   const userData = tokenDecode(accessToken?.value ?? '')
   console.log('_____________userData', userData)
-
 
   return (
     <LayoutHeader

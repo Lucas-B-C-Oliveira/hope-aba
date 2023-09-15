@@ -1,4 +1,3 @@
-
 import { cookies } from 'next/headers'
 import { LeftContentSidebar } from './components/LeftContentSidebar'
 import { tokenDecode } from '@/utils/functions/helpers'

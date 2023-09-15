@@ -25,7 +25,8 @@ export const BigCalendarHeader = memo(function BigCalendarHeader({
 }: CalendarHeaderProps) {
   const { dateLabel } = useBigCalendarHeader({ calendarDate })
 
-  const accessToken = typeof getCookie('accessToken') === 'string' ? getCookie('accessToken') : ''
+  const accessToken =
+    typeof getCookie('accessToken') === 'string' ? getCookie('accessToken') : ''
   const tokenData = tokenDecode(accessToken as string)
   const role: Role = tokenData?.role ?? 'user'
 

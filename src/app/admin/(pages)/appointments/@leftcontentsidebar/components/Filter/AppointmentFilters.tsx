@@ -10,11 +10,11 @@ interface Props {
   tokenData: TokenData
 }
 
-export const AppointmentFilters = memo(function AppointmentFilters({ tokenData }: Props) {
-
+export const AppointmentFilters = memo(function AppointmentFilters({
+  tokenData,
+}: Props) {
   const role = tokenData?.role
   const disabled = role === 'professional'
-
 
   const { setButtonStatusAppointment } = useAppointmentFilterStore()
   function handleClick() {
@@ -22,13 +22,17 @@ export const AppointmentFilters = memo(function AppointmentFilters({ tokenData }
   }
 
   const useProfessionalsLogic = () =>
-    useAutocompleteFilter('professionalsAppointment', 'professionals', disabled, tokenData)
+    useAutocompleteFilter(
+      'professionalsAppointment',
+      'professionals',
+      disabled,
+      tokenData,
+    )
   const usePatientsLogic = () =>
     useAutocompleteFilter('patientsAppointment', 'patients')
 
   return (
     <div className="flex flex-col items-start gap-3 p-0 h-fit">
-
       {role === 'admin' && (
         <div className="flex flex-col gap-6">
           <Filter.Autocomplete
@@ -71,10 +75,7 @@ export const AppointmentFilters = memo(function AppointmentFilters({ tokenData }
         Filtrar
       </ActionButton>
 
-      {role === 'admin' && (
-        <Filter.Labels filterType="Appointment" />
-      )}
-
+      {role === 'admin' && <Filter.Labels filterType="Appointment" />}
     </div>
   )
 })
