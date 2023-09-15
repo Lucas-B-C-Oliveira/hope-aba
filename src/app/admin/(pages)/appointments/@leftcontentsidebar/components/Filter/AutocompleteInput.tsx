@@ -42,6 +42,7 @@ export function AutocompleteInput({
         onBlur={() => setFocus(false)}
         displayValue={(dataSelected: any) => {
           console.log('dataSelected', dataSelected)
+          console.log('currentOptions', currentOptions)
           if (currentOptions && dataSelected?.name) {
             return dataSelected?.name
           }

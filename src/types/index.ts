@@ -52,3 +52,15 @@ export type LoginParams = {
 }
 
 export type Role = 'admin' | 'user' | 'professional'
+
+export type TokenData = {
+  id: string
+  accountId: string
+  clinicIds: string
+  name: string
+  email: string
+  role: string
+  iat: string
+  exp: string
+  professionalId?: string
+}

@@ -4,13 +4,13 @@ import { AppointmentFilters } from './Filter/AppointmentFilters'
 import { AvailableFilters } from './Filter/AvailableFilters'
 import { ContentSidebarContainer } from '../../components/ContentSidebarContainer'
 import { useMainLayoutStore } from '@/store/mainLayoutStore'
-import { Role } from '@/types'
+import { TokenData } from '@/types'
 
 interface Props {
-  role: Role
+  tokenData: TokenData
 }
 
-export const LeftContentSidebar = memo(function LeftContentSidebar({ role }: Props) {
+export const LeftContentSidebar = memo(function LeftContentSidebar({ tokenData }: Props) {
 
   const { leftContentSidebarIsOpen } = useMainLayoutStore()
 
@@ -29,14 +29,14 @@ export const LeftContentSidebar = memo(function LeftContentSidebar({ role }: Pro
                   <h4 className="absolute -top-[0.75rem] left-2 inline-block bg-white px-2 text-base font-bold text-gray-600">
                     Disponibilidade
                   </h4>
-                  <AvailableFilters role={role} />
+                  <AvailableFilters tokenData={tokenData} />
                 </div>
 
                 <div className="relative flex flex-col gap-3 px-3 pt-7 pb-3 w-fit rounded-md shadow-sm ring-1 ring-inset ring-gray-300">
                   <h4 className="absolute -top-[0.75rem] left-2 inline-block bg-white px-2 text-base font-bold text-gray-600">
                     Agendamento
                   </h4>
-                  <AppointmentFilters role={role} />
+                  <AppointmentFilters tokenData={tokenData} />
                 </div>
               </div>
             </div>

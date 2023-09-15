@@ -1,18 +1,16 @@
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
-import { FilterKey } from '@/types'
+import { FilterKey, TokenData } from '@/types'
 import { CSFetch } from '@/utils/api/clientFetch'
 import { useQuery } from '@tanstack/react-query'
 import { isEqual } from 'lodash'
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 
-interface Props {
-  filterKey?: FilterKey
-  endPoint?: string
-}
+
 export function useAutocompleteFilter(
   filterKey?: FilterKey,
   endPoint?: string,
-  disabled: boolean | undefined = false
+  disabled: boolean | undefined = false,
+  tokenData: TokenData | undefined = undefined
 ) {
   const [selected, setSelected] = useState<any>(null)
   const [currentOptions, setCurrentOptions] = useState<any>([]) //! TODO: Trocar o tipo para o tipo correto
@@ -124,14 +122,15 @@ export function useAutocompleteFilter(
 
 
   useEffect(() => {
-
     if (disabled) {
-      setSelected({
-        name: 'Lcsbc123',
-        id: '64a3584840c4c876a77f8567'
-      })
-    }
+      const newOption = [{
+        name: tokenData?.name,
+        id: tokenData?.professionalId
+      }]
 
+      setCurrentOptions(newOption)
+      setSelected(newOption[0])
+    }
   }, [disabled])
 
 

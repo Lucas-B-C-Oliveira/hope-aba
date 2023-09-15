@@ -4,20 +4,25 @@ import { ActionButton } from '@/components/ActionButton'
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { useAutocompleteFilter } from './useAutocompleteFilter'
 import { memo } from 'react'
-import { Role } from '@/types'
+import { TokenData } from '@/types'
 
 interface Props {
-  role: Role
+  tokenData: TokenData
 }
 
-export const AppointmentFilters = memo(function AppointmentFilters({ role }: Props) {
+export const AppointmentFilters = memo(function AppointmentFilters({ tokenData }: Props) {
+
+  const role = tokenData?.role
+  const disabled = role === 'professional'
+
+
   const { setButtonStatusAppointment } = useAppointmentFilterStore()
   function handleClick() {
     setButtonStatusAppointment('clicked')
   }
 
   const useProfessionalsLogic = () =>
-    useAutocompleteFilter('professionalsAppointment', 'professionals', role === 'professional')
+    useAutocompleteFilter('professionalsAppointment', 'professionals', disabled, tokenData)
   const usePatientsLogic = () =>
     useAutocompleteFilter('patientsAppointment', 'patients')
 
@@ -42,7 +47,7 @@ export const AppointmentFilters = memo(function AppointmentFilters({ role }: Pro
           <Filter.Autocomplete
             useAutocompleteLogic={useProfessionalsLogic}
             labelText="Profissional"
-            disabled={true}
+            disabled={disabled}
           />
         </div>
       )}
