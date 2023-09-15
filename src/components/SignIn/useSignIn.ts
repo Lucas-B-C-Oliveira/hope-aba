@@ -133,7 +133,7 @@ export function useSignIn() {
 
   useEffect(() => {
     if (signInStatus === 'success' && signInData && !getClinicsData) {
-      const token = signInData?.token as any
+      const token = signInData?.token as any ?? ''
       const value = `Bearer ${token}`
       const tokenData = tokenDecode(token as string)
       const expDefault = tokenData?.exp ?? 1 * 60 * 60 * 24 * 15
@@ -143,8 +143,8 @@ export function useSignIn() {
       })
       currentError.current = undefined
       getClinicsDataRefetch()
-    } else if (getClinicsDataStatus === 'success' && getClinicsData) {
-      const token = signInData?.token
+    } else if (getClinicsDataStatus === 'success' && getClinicsData && signInData) {
+      const token = signInData?.token ?? ''
       const tokenData = tokenDecode(token)
       const expDefault = tokenData?.exp ?? 1 * 60 * 60 * 24 * 15
       const expDate = new Date(expDefault * 1000)

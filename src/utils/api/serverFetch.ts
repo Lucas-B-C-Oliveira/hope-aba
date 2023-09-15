@@ -1,16 +1,16 @@
 /* eslint-disable prettier/prettier */
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 import { cookies } from 'next/headers'
-// import { redirect } from 'next/navigation'
+import { ACCESS_TOKEN, CLINICS_DATA, CURRENT_CLINIC_DATA_INDEX } from '../functions/constants'
 
 export async function SSFetch<T = unknown>(
   input: RequestInfo | URL,
   init?: RequestInit | undefined,
 ) {
   const cookieStore = cookies()
-  const accessToken = cookieStore.get('accessToken')
-  const clinicsData = cookieStore.get('clinicsData')
-  const currentClinicDataIndex = cookieStore.get('currentClinicDataIndex')?.value ?? 0
+  const accessToken = cookieStore.get(ACCESS_TOKEN)
+  const clinicsData = cookieStore.get(CLINICS_DATA)
+  const currentClinicDataIndex = cookieStore.get(CURRENT_CLINIC_DATA_INDEX)?.value ?? 0
 
   // if (
   //   typeof accessToken === 'undefined' ||

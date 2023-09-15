@@ -1,16 +1,18 @@
 import { getCookie } from 'cookies-next'
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
+import { ACCESS_TOKEN, CLINICS_DATA, CURRENT_CLINIC_DATA_INDEX } from '../functions/constants'
 // import { redirect } from 'next/navigation'
+
 
 export async function CSFetch<T = unknown>(
   input: RequestInfo | URL,
   init?: RequestInit | undefined,
 ) {
-  const accessToken = getCookie('accessToken')
-  const clinicsData = getCookie('clinicsData')
+  const accessToken = getCookie(ACCESS_TOKEN)
+  const clinicsData = getCookie(CLINICS_DATA)
   const currentClinicDataIndex =
-    typeof getCookie('currentClinicDataIndex') === 'string'
-      ? (getCookie('currentClinicDataIndex') as string)
+    typeof getCookie(CURRENT_CLINIC_DATA_INDEX) === 'string'
+      ? (getCookie(CURRENT_CLINIC_DATA_INDEX) as string)
       : 0
 
   const regex = /(clinics|sign-in)/

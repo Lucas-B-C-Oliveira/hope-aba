@@ -1,17 +1,14 @@
 'use client'
 
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
 import { setCookie, deleteCookie } from 'cookies-next'
 import { ActionButton } from '@/components/ActionButton'
 import { useRouter } from 'next/navigation'
 import { capitalizeFirstLetter } from '@/utils/functions/helpers'
-
-const userNavigation = [
-  { name: 'Your profile', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
+import { SpinnerLoading } from '@/components/SpinnerLoading'
+import { ACCESS_TOKEN, CLINICS_DATA, CURRENT_CLINIC_DATA_INDEX } from '@/utils/functions/constants'
 
 interface LayoutHeaderProps {
   clinicsData: any
@@ -36,20 +33,24 @@ export function LayoutHeader({
   userData,
 }: LayoutHeaderProps) {
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   function handleChange(value: { id: string; name: string }) {
     const currentIndex =
       clinicsData.findIndex(
         (clinicData: { id: string }) => clinicData?.id === value?.id,
       ) ?? 0
-    setCookie('currentClinicDataIndex', currentIndex)
+    setCookie(CURRENT_CLINIC_DATA_INDEX, currentIndex)
   }
 
-  function logout() {
-    deleteCookie('currentClinicDataIndex')
-    deleteCookie('clinicsData')
-    deleteCookie('accessToken')
-    router.replace('/login')
+  async function logout() {
+    setLoading(true)
+    deleteCookie(CURRENT_CLINIC_DATA_INDEX)
+    deleteCookie(CLINICS_DATA)
+    deleteCookie(ACCESS_TOKEN)
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    setLoading(false)
+    router.refresh()
   }
 
   return (
@@ -63,7 +64,8 @@ export function LayoutHeader({
             {capitalizeFirstLetter(userData?.name ?? '')}
           </span>
           <ActionButton onClick={logout} classNameToMerge="py-1">
-            Sair
+            {loading && <SpinnerLoading height="20" width="20" />}
+            {!loading && <span>Sair</span>}
           </ActionButton>
         </div>
 
