@@ -1,10 +1,7 @@
 'use client'
 
 import { memo, useEffect, useState } from 'react'
-import {
-  MAGIC_LABEL_CLASSNAME,
-  MUI_INPUT_SX,
-} from '@/style/consts'
+import { MAGIC_LABEL_CLASSNAME, MUI_INPUT_SX } from '@/style/consts'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 import { getAvailableScheduleTime } from '@/utils/actions/action'

@@ -1,19 +1,27 @@
-import { useAppointmentFilterStore } from "@/store/appointmentFilterStore"
-import { FilterKey } from "@/types"
-import { CSFetch } from "@/utils/api/clientFetch"
-import { useQuery } from "@tanstack/react-query"
-import { isEqual } from "lodash"
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react"
+import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
+import { FilterKey } from '@/types'
+import { CSFetch } from '@/utils/api/clientFetch'
+import { useQuery } from '@tanstack/react-query'
+import { isEqual } from 'lodash'
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 
 interface Props {
   filterKey?: FilterKey
   endPoint?: string
 }
-export function useAutocompleteFilter(filterKey?: FilterKey, endPoint?: string) {
+export function useAutocompleteFilter(
+  filterKey?: FilterKey,
+  endPoint?: string,
+) {
   const [selected, setSelected] = useState<any>(null)
   const [currentOptions, setCurrentOptions] = useState<any>([]) //! TODO: Trocar o tipo para o tipo correto
   const [loading, setLoading] = useState(false)
-  const { addFilter, patientsAppointment, professionalsAppointment, professionalAvailable } = useAppointmentFilterStore()
+  const {
+    addFilter,
+    patientsAppointment,
+    professionalsAppointment,
+    professionalAvailable,
+  } = useAppointmentFilterStore()
   const searchValue = useRef<undefined | string>(undefined)
 
   const ARE_THERE_OPTIONS_TO_SHOW = currentOptions && currentOptions?.length > 0
@@ -23,7 +31,7 @@ export function useAutocompleteFilter(filterKey?: FilterKey, endPoint?: string) 
     refetch: optionsRefetch,
     status: optionsStatus,
     error: optionsError,
-    fetchStatus
+    fetchStatus,
   } = useQuery({
     queryKey: ['get/useAutocompleteFilter/options'],
     queryFn: async () => {
@@ -31,7 +39,9 @@ export function useAutocompleteFilter(filterKey?: FilterKey, endPoint?: string) 
         if (!loading) {
           setLoading(true)
         }
-        const response = await CSFetch<any>(`${endPoint}?search=${searchValue?.current}`)
+        const response = await CSFetch<any>(
+          `${endPoint}?search=${searchValue?.current}`,
+        )
         setLoading(false)
         return response?.data
       } catch (error: unknown) {
@@ -40,7 +50,6 @@ export function useAutocompleteFilter(filterKey?: FilterKey, endPoint?: string) 
     },
     enabled: false,
   })
-
 
   async function onSearchChange(event: ChangeEvent<HTMLInputElement>) {
     const value = event.target.value
@@ -52,7 +61,7 @@ export function useAutocompleteFilter(filterKey?: FilterKey, endPoint?: string) 
   }
 
   function searchAllData() {
-    searchValue.current = ""
+    searchValue.current = ''
     optionsRefetch()
   }
 
@@ -70,22 +79,21 @@ export function useAutocompleteFilter(filterKey?: FilterKey, endPoint?: string) 
     }
   }, [optionsStatus, optionsError])
 
-
   useEffect(() => {
-    if (filterKey?.includes("Available") && !professionalAvailable) {
+    if (filterKey?.includes('Available') && !professionalAvailable) {
       setCurrentOptions(null)
       setSelected(null)
-    }
-    else if (filterKey === 'professionalsAppointment' && !professionalsAppointment) {
+    } else if (
+      filterKey === 'professionalsAppointment' &&
+      !professionalsAppointment
+    ) {
       setCurrentOptions(null)
       setSelected(null)
-    }
-    else if (filterKey === 'patientsAppointment' && !patientsAppointment) {
+    } else if (filterKey === 'patientsAppointment' && !patientsAppointment) {
       setCurrentOptions(null)
       setSelected(null)
     }
   }, [professionalAvailable, professionalsAppointment, patientsAppointment])
-
 
   useEffect(() => {
     if (selected) {
@@ -94,26 +102,23 @@ export function useAutocompleteFilter(filterKey?: FilterKey, endPoint?: string) 
         id: selected?.id,
       }
 
-      if (filterKey?.includes("Available")) {
+      if (filterKey?.includes('Available')) {
         const isNewFilter = professionalAvailable?.id !== selected?.id
         if (isNewFilter) {
           addFilter(filterKey as FilterKey, filterData)
         }
-      }
-      else if (filterKey === 'professionalsAppointment') {
+      } else if (filterKey === 'professionalsAppointment') {
         const isNewFilter = professionalsAppointment?.id !== selected?.id
         if (isNewFilter) {
           addFilter(filterKey as FilterKey, filterData)
         }
-      }
-      else if (filterKey === 'patientsAppointment') {
+      } else if (filterKey === 'patientsAppointment') {
         const isNewFilter = patientsAppointment?.id !== selected?.id
         if (isNewFilter) {
           addFilter(filterKey as FilterKey, filterData)
         }
       }
     }
-
   }, [selected])
 
   return {
@@ -125,5 +130,4 @@ export function useAutocompleteFilter(filterKey?: FilterKey, endPoint?: string) 
     currentOptions,
     searchAllData,
   }
-
 }

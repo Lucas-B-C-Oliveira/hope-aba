@@ -99,12 +99,8 @@ export const SignIn = memo(function SignIn() {
               disabled={isSubmitting}
               className={`flex w-full ${BUTTON_CLASSNAME}`}
             >
-              {loading && (
-                <SpinnerLoading />
-              )}
-              {!loading && (
-                <p>Entrar</p>
-              )}
+              {loading && <SpinnerLoading />}
+              {!loading && <p>Entrar</p>}
             </ActionButton>
 
             {error?.error && (

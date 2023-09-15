@@ -12,7 +12,9 @@ import { AutocompleteInput } from './AutocompleteInput'
 
 interface Props {
   labelText: string
-  useAutocompleteLogic: <T extends any[]>(...args: T) => {
+  useAutocompleteLogic: <T extends any[]>(
+    ...args: T
+  ) => {
     onSearchChange: (event: ChangeEvent<HTMLInputElement>) => Promise<void>
     ARE_THERE_OPTIONS_TO_SHOW: any
     setSelected: Dispatch<any>
@@ -27,23 +29,39 @@ export const AutocompleteFilter = memo(function AutocompleteFilter({
   labelText,
   useAutocompleteLogic,
 }: Props) {
-
-  const { ARE_THERE_OPTIONS_TO_SHOW, loading, onSearchChange, setSelected, selected, currentOptions, searchAllData } = useAutocompleteLogic()
+  const {
+    ARE_THERE_OPTIONS_TO_SHOW,
+    loading,
+    onSearchChange,
+    setSelected,
+    selected,
+    currentOptions,
+    searchAllData,
+  } = useAutocompleteLogic()
 
   return (
     <Combobox as="div" value={selected} onChange={setSelected}>
-
       <div className="relative ">
         <div className="absolute -top-[0.6rem] z-10 bg-white w-fit px-2 py-0 right-2">
-          <ActionButton onClick={searchAllData} classNameToMerge={" gap-[2px] bg-gray-500 hover:bg-gray-400 rounded-[4px] text-sm font-medium  w-fit h-fit px-[6px] py-[0px]"}>
-            <MagnifyingGlassIcon className="h-4 w-4" />Todos
+          <ActionButton
+            onClick={searchAllData}
+            classNameToMerge={
+              ' gap-[2px] bg-gray-500 hover:bg-gray-400 rounded-[4px] text-sm font-medium  w-fit h-fit px-[6px] py-[0px]'
+            }
+          >
+            <MagnifyingGlassIcon className="h-4 w-4" />
+            Todos
           </ActionButton>
         </div>
         <Combobox.Label className={MAGIC_LABEL_CLASSNAME}>
           {labelText}
         </Combobox.Label>
 
-        <AutocompleteInput loading={loading} onSearchChange={onSearchChange} currentOptions={currentOptions} />
+        <AutocompleteInput
+          loading={loading}
+          onSearchChange={onSearchChange}
+          currentOptions={currentOptions}
+        />
 
         {ARE_THERE_OPTIONS_TO_SHOW && (
           <Combobox.Options className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">

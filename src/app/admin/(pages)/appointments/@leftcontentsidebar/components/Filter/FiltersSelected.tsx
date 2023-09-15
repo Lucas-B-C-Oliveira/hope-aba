@@ -9,17 +9,21 @@ interface Props {
   filterType: FilterType
 }
 
-export const FiltersSelected = memo(function FiltersSelected({ filterType }: Props) {
+export const FiltersSelected = memo(function FiltersSelected({
+  filterType,
+}: Props) {
   const [filtersSelected, setFiltersSelected] = useState<
     { name: string; filterKey: FilterKey; tag: string }[] | []
   >([])
 
-  const { patientsAppointment, professionalsAppointment, professionalAvailable } =
-    useAppointmentFilterStore()
-
+  const {
+    patientsAppointment,
+    professionalsAppointment,
+    professionalAvailable,
+  } = useAppointmentFilterStore()
 
   useEffect(() => {
-    if (filterType?.includes("Available")) {
+    if (filterType?.includes('Available')) {
       const newFilters = []
       if (typeof professionalAvailable !== 'undefined') {
         newFilters.push({
@@ -30,11 +34,10 @@ export const FiltersSelected = memo(function FiltersSelected({ filterType }: Pro
       }
       setFiltersSelected(newFilters)
     }
-
   }, [professionalAvailable])
 
   useEffect(() => {
-    if (filterType?.includes("Appointment")) {
+    if (filterType?.includes('Appointment')) {
       const newFilters = []
       if (typeof patientsAppointment !== 'undefined') {
         newFilters.push({
@@ -52,7 +55,6 @@ export const FiltersSelected = memo(function FiltersSelected({ filterType }: Pro
       }
       setFiltersSelected(newFilters)
     }
-
   }, [patientsAppointment, professionalsAppointment])
 
   return (

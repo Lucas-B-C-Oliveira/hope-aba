@@ -12,7 +12,6 @@ export const LeftContentSidebar = memo(function LeftContentSidebar() {
             Filtros
           </h2>
           <div className=" flex flex-col items-center  gap-4 w-60 rounded-2xl">
-
             <div className="relative flex flex-col gap-3 px-3 pt-7 pb-3 w-fit rounded-md shadow-sm ring-1 ring-inset ring-gray-300">
               <h4 className="absolute -top-[0.75rem] left-2 inline-block bg-white px-2 text-base font-bold text-gray-600">
                 Disponibilidade
@@ -26,15 +25,9 @@ export const LeftContentSidebar = memo(function LeftContentSidebar() {
               </h4>
               <AppointmentFilters />
             </div>
-
           </div>
-
-
         </div>
       </div>
     </div>
-
   )
 })
-
-

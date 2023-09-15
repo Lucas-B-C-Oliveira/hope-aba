@@ -86,6 +86,5 @@ export const useAppointmentFilterStore = create<AppointmentFilterStore>()(
     setButtonStatusAvailable: (newStatus) => {
       set(() => ({ filterButtonStatusAvailable: newStatus }))
     },
-
   }),
 )

@@ -198,13 +198,8 @@ export const SignUp = memo(function SignUp() {
               disabled={isSubmitting}
               className={`flex w-full ${BUTTON_CLASSNAME}`}
             >
-              {loading && (
-                <SpinnerLoading />
-              )}
-              {!loading && (
-                <p>Cadastrar</p>
-              )}
-
+              {loading && <SpinnerLoading />}
+              {!loading && <p>Cadastrar</p>}
             </ActionButton>
 
             {createAccountData?.error && (

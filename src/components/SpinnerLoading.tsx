@@ -1,4 +1,4 @@
-import { ColorRing } from "react-loader-spinner";
+import { ColorRing } from 'react-loader-spinner'
 
 interface Props {
   colors?: [string, string, string, string, string]
@@ -12,20 +12,13 @@ interface Props {
 
 export function SpinnerLoading({
   visible = true,
-  height = "24",
-  width = "24",
-  ariaLabel = "blocks-loading",
+  height = '24',
+  width = '24',
+  ariaLabel = 'blocks-loading',
   wrapperStyle = {},
-  wrapperClass = "blocks-wrapper",
-  colors = [
-    '#f29849',
-    '#bf6dd5',
-    '#db6f91',
-    '#f5a73c',
-    '#fbbc30',
-  ]
+  wrapperClass = 'blocks-wrapper',
+  colors = ['#f29849', '#bf6dd5', '#db6f91', '#f5a73c', '#fbbc30'],
 }: Props) {
-
   return (
     <ColorRing
       visible={visible}
@@ -37,5 +30,4 @@ export function SpinnerLoading({
       colors={colors}
     />
   )
-
 }

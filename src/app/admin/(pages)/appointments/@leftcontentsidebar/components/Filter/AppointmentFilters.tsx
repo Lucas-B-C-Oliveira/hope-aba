@@ -1,9 +1,8 @@
-import { useAppointmentFilterStore } from "@/store/appointmentFilterStore";
-import { Filter } from ".";
-import { ActionButton } from "@/components/ActionButton";
-import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
-import { useAutocompleteFilter } from "./useAutocompleteFilter";
-
+import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
+import { Filter } from '.'
+import { ActionButton } from '@/components/ActionButton'
+import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
+import { useAutocompleteFilter } from './useAutocompleteFilter'
 
 export function AppointmentFilters() {
   const { setButtonStatusAppointment } = useAppointmentFilterStore()
@@ -11,16 +10,20 @@ export function AppointmentFilters() {
     setButtonStatusAppointment('clicked')
   }
 
-  return (
+  const useProfessionalsLogic = () =>
+    useAutocompleteFilter('professionalsAppointment', 'professionals')
+  const usePatientsLogic = () =>
+    useAutocompleteFilter('patientsAppointment', 'patients')
 
+  return (
     <div className="flex flex-col items-start gap-3">
       <div className="flex flex-col gap-6">
         <Filter.Autocomplete
-          useAutocompleteLogic={() => useAutocompleteFilter("professionalsAppointment", "professionals")}
+          useAutocompleteLogic={useProfessionalsLogic}
           labelText="Profissionais"
         />
         <Filter.Autocomplete
-          useAutocompleteLogic={() => useAutocompleteFilter("patientsAppointment", "patients")}
+          useAutocompleteLogic={usePatientsLogic}
           labelText="Pacientes"
         />
       </div>
@@ -46,6 +49,5 @@ export function AppointmentFilters() {
 
       <Filter.Labels filterType="Appointment" />
     </div>
-
   )
 }

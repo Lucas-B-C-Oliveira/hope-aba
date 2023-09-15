@@ -6,7 +6,7 @@ import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 
 import { FilterKey } from '@/types'
 import { TrashIcon } from '@heroicons/react/24/solid'
-import { memo, } from 'react'
+import { memo } from 'react'
 
 interface Props {
   filterKey: FilterKey

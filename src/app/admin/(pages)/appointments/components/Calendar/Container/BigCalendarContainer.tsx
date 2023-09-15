@@ -78,7 +78,10 @@ function getFirstAndLastWeekdayByCurrentWeekday(currentWeekDay: string) {
 }
 
 function getFiltersQuery(filters: any) {
-  const professionalId = makeQuery('professionalId', filters?.professionalsAppointment)
+  const professionalId = makeQuery(
+    'professionalId',
+    filters?.professionalsAppointment,
+  )
   const patientId = makeQuery('patientId', filters?.patientsAppointment)
   const roomId = makeQuery('roomId', filters?.roomsAppointment)
   const therapyId = makeQuery('therapyId', filters?.therapiesAppointment)
@@ -106,7 +109,7 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
     filterButtonStatusAppointment,
     professionalAvailable,
     filterButtonStatusAvailable,
-    setButtonStatusAvailable
+    setButtonStatusAvailable,
   } = useAppointmentFilterStore()
 
   const currentCalendarWeekday = useRef<string>(
@@ -152,8 +155,7 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
       if (!isEqual(data, professionalScheduleAvailable) && data) {
         setProfessionalScheduleAvailable(data)
       }
-    }
-    else {
+    } else {
       setProfessionalScheduleAvailable(undefined)
     }
 
