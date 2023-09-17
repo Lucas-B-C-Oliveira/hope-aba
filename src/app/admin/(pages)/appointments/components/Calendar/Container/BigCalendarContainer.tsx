@@ -177,8 +177,8 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
       )
 
       const professionalFilterByTokenData: Filter = {
-        id: tokenData?.name as string,
-        name: tokenData?.professionalId as string
+        id: tokenData?.professionalId as string,
+        name: tokenData?.name as string
       }
       const isProfessionalRole = tokenData?.role === 'professional'
 
