@@ -28,8 +28,8 @@ const scheduleSchema = z
   })
   .refine(
     (val) => {
-      const startDate = new Date(`${val?.day}T${val.start}:00`)
-      const endDate = new Date(`${val?.day}T${val.end}:00`)
+      const startDate = new Date(`${val?.day}T${val?.start}:00`)
+      const endDate = new Date(`${val?.day}T${val?.end}:00`)
       return startDate < endDate
     },
     {
