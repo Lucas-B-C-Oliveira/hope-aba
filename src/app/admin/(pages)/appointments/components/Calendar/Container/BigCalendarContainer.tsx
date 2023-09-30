@@ -13,7 +13,7 @@ import { isEqual } from 'lodash'
 import { Toolbar } from './Toolbar'
 import { ACCESS_TOKEN } from '@/utils/functions/constants'
 import { getCookie } from 'cookies-next'
-import { tokenDecode } from '@/utils/functions/helpers'
+import { makeQuery, removeFirstCharacter, removeSpacesOfString, tokenDecode } from '@/utils/functions/helpers'
 
 interface AppointmentCard {
   start: Date
@@ -54,16 +54,7 @@ const components = {
 
 const API_FORMAT_DEFAULT = 'YYYY-MM-DD'
 
-function makeQuery(queryKey: string, value: Filter | Filter[] | undefined) {
-  if (Array.isArray(value) && value.length > 0) {
-    const ids = value.map((val: { id: string; name: string }) => val?.id)
-    const values = ids.join(',')
-    return `&${queryKey}=${values}`
-  } else if (!Array.isArray(value) && typeof value?.id === 'string') {
-    return `&${queryKey}=${value?.id}`
-  }
-  return `__`
-}
+
 
 function getFirstAndLastWeekdayByCurrentWeekday(currentWeekDay: string) {
   const currentWeekdayMoment = dateAdapter(currentWeekDay)
@@ -90,8 +81,8 @@ function getFiltersQuery(filters: any) {
   const therapyId = makeQuery('therapyId', filters?.therapiesAppointment)
   const filterQuery = `${professionalId}${patientId}${roomId}${therapyId}`
 
-  const filterQueryWithoutSpaces = filterQuery.replace(/__/g, '')
-  const queryFilters = filterQueryWithoutSpaces.substring(1)
+  const filterQueryWithoutSpaces = removeSpacesOfString(filterQuery)
+  const queryFilters = removeFirstCharacter(filterQueryWithoutSpaces)
   return queryFilters
 }
 
