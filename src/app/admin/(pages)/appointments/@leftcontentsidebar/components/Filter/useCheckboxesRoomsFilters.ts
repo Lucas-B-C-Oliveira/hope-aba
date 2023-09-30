@@ -1,23 +1,27 @@
-import { useAppointmentFilterStore } from "@/store/appointmentFilterStore"
-import { FilterKey, TokenData } from "@/types"
-import { CSFetch } from "@/utils/api/clientFetch"
-import { makeQueryByArray, removeFirstCharacter, removeSpacesOfString } from "@/utils/functions/helpers"
-import { useQuery } from "@tanstack/react-query"
-import { isEqual } from "lodash"
-import { useEffect, useState } from "react"
-import { useFormContext, useWatch } from "react-hook-form"
+import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
+import { FilterKey, TokenData } from '@/types'
+import { CSFetch } from '@/utils/api/clientFetch'
+import {
+  makeQueryByArray,
+  removeFirstCharacter,
+  removeSpacesOfString,
+} from '@/utils/functions/helpers'
+import { useQuery } from '@tanstack/react-query'
+import { isEqual } from 'lodash'
+import { useEffect, useState } from 'react'
+import { useFormContext, useWatch } from 'react-hook-form'
 
-
-export function useCheckboxesRoomsFilters(endPoint?: string, tokenData?: TokenData, fieldToGetValue?: string, filterKey?: FilterKey) {
+export function useCheckboxesRoomsFilters(
+  endPoint?: string,
+  tokenData?: TokenData,
+  fieldToGetValue?: string,
+  filterKey?: FilterKey,
+) {
   const [loading, setLoading] = useState(false)
   const [checkboxes, setCheckboxes] = useState<any[] | []>([])
   const { addFilter, removeFilter } = useAppointmentFilterStore()
 
-  const {
-    setValue,
-    getValues,
-    control
-  } = useFormContext()
+  const { setValue, getValues, control } = useFormContext()
 
   const formValues = getValues()
 
@@ -28,7 +32,8 @@ export function useCheckboxesRoomsFilters(endPoint?: string, tokenData?: TokenDa
 
   const queryEnabledTherapies = endPoint === 'therapies'
   const therapiesIds: string[] = formValues[`${fieldToGetValue}`]
-  const queryEnabledRooms = tokenData?.role === 'professional' && endPoint === 'rooms'
+  const queryEnabledRooms =
+    tokenData?.role === 'professional' && endPoint === 'rooms'
 
   const {
     data: responseTherapiesData,
@@ -44,7 +49,7 @@ export function useCheckboxesRoomsFilters(endPoint?: string, tokenData?: TokenDa
           setLoading(true)
         }
 
-        const fetchQuery: string = `${endPoint}`
+        const fetchQuery = `${endPoint}`
         console.log('endPoint', endPoint)
         console.log('fetchQuery', fetchQuery)
         const response = await CSFetch<any>(fetchQuery)
@@ -72,12 +77,15 @@ export function useCheckboxesRoomsFilters(endPoint?: string, tokenData?: TokenDa
     }
   }
 
-
   useEffect(() => {
-    if (responseTherapiesData && responseTherapiesData.length > 0 && responseTherapiesStatus === 'success') {
+    if (
+      responseTherapiesData &&
+      responseTherapiesData.length > 0 &&
+      responseTherapiesStatus === 'success'
+    ) {
       if (tokenData?.role === 'professional') {
         setValue('rooms', {
-          responseTherapiesData
+          responseTherapiesData,
         })
       }
 
@@ -85,14 +93,11 @@ export function useCheckboxesRoomsFilters(endPoint?: string, tokenData?: TokenDa
         setCheckboxes(responseTherapiesData)
       }
     }
-
   }, [responseTherapiesData, therapiesFetchStatus])
-
-
 
   return {
     responseData: checkboxes,
     loading,
-    checkboxHandle
+    checkboxHandle,
   }
 }

@@ -5,6 +5,15 @@ import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { useAutocompleteFilter } from './useAutocompleteFilter'
 import { memo } from 'react'
 import { TokenData } from '@/types'
+import { FormProvider, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+
+const therapiesSchema = z.object({
+  therapies: z.array(z.string()),
+})
+
+export type TherapiesSchema = z.infer<typeof therapiesSchema>
 
 interface Props {
   tokenData: TokenData
@@ -15,6 +24,15 @@ export const AppointmentFilters = memo(function AppointmentFilters({
 }: Props) {
   const role = tokenData?.role
   const disabled = role === 'professional'
+
+  const createTherapiesSchema = useForm<TherapiesSchema>({
+    resolver: zodResolver(therapiesSchema),
+  })
+
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = createTherapiesSchema
 
   const { setButtonStatusAppointment } = useAppointmentFilterStore()
   function handleClick() {
@@ -56,16 +74,20 @@ export const AppointmentFilters = memo(function AppointmentFilters({
         </div>
       )}
 
-      <Filter.Checkboxes
-        labelText="Terapias"
-        filterKey="therapiesAppointment"
-        endPoint="therapies"
-      />
-      <Filter.Checkboxes
-        labelText="Salas"
-        filterKey="roomsAppointment"
-        endPoint="rooms"
-      />
+      <FormProvider {...createTherapiesSchema}>
+        <Filter.Checkboxes
+          labelText="Terapias"
+          filterKey="therapiesAppointment"
+          endPoint="therapies"
+          tokenData={tokenData}
+        />
+        <Filter.Checkboxes
+          labelText="Salas"
+          filterKey="roomsAppointment"
+          endPoint="rooms"
+          tokenData={tokenData}
+        />
+      </FormProvider>
 
       <ActionButton onClick={handleClick}>
         <AdjustmentsHorizontalIcon

@@ -1,21 +1,25 @@
-import { useAppointmentFilterStore } from "@/store/appointmentFilterStore"
-import { FilterKey, TokenData } from "@/types"
-import { CSFetch } from "@/utils/api/clientFetch"
-import { makeQueryByArray, removeFirstCharacter, removeSpacesOfString } from "@/utils/functions/helpers"
-import { useQuery } from "@tanstack/react-query"
-import { useEffect, useState } from "react"
-import { useFormContext, useWatch } from "react-hook-form"
+import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
+import { FilterKey, TokenData } from '@/types'
+import { CSFetch } from '@/utils/api/clientFetch'
+import {
+  makeQueryByArray,
+  removeFirstCharacter,
+  removeSpacesOfString,
+} from '@/utils/functions/helpers'
+import { useQuery } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
+import { useFormContext, useWatch } from 'react-hook-form'
 
-
-export function useCheckboxesFilters(endPoint?: string, tokenData?: TokenData, fieldToGetValue?: string, filterKey?: FilterKey) {
+export function useCheckboxesFilters(
+  endPoint?: string,
+  tokenData?: TokenData,
+  fieldToGetValue?: string,
+  filterKey?: FilterKey,
+) {
   const [loading, setLoading] = useState(false)
   const { addFilter, removeFilter } = useAppointmentFilterStore()
 
-  const {
-    setValue,
-    getValues,
-    control
-  } = useFormContext()
+  const { setValue, getValues, control } = useFormContext()
 
   const formValues = getValues()
 
@@ -25,7 +29,8 @@ export function useCheckboxesFilters(endPoint?: string, tokenData?: TokenData, f
   })
 
   const queryEnabledTherapies = endPoint === 'therapies'
-  const queryEnabledRooms = tokenData?.role === 'professional' && endPoint === 'rooms'
+  const queryEnabledRooms =
+    tokenData?.role === 'professional' && endPoint === 'rooms'
   const therapiesIds: string[] = formValues[`${fieldToGetValue}`]
 
   const {
@@ -42,7 +47,7 @@ export function useCheckboxesFilters(endPoint?: string, tokenData?: TokenData, f
           setLoading(true)
         }
 
-        const fetchQuery: string = `${endPoint}`
+        const fetchQuery = `${endPoint}`
         console.log('endPoint', endPoint)
         console.log('fetchQuery', fetchQuery)
         const response = await CSFetch<any>(fetchQuery)
@@ -55,10 +60,7 @@ export function useCheckboxesFilters(endPoint?: string, tokenData?: TokenData, f
     enabled: queryEnabledTherapies,
   })
 
-  const {
-    data: responseRoomsData,
-    refetch: roomsRefetch,
-  } = useQuery({
+  const { data: responseRoomsData, refetch: roomsRefetch } = useQuery({
     queryKey: ['get/useCheckboxesFilters/rooms'],
     queryFn: async () => {
       try {
@@ -70,7 +72,10 @@ export function useCheckboxesFilters(endPoint?: string, tokenData?: TokenData, f
         const filterQueryWithoutSpaces = removeSpacesOfString(therapyIds)
         const queryFilters = removeFirstCharacter(filterQueryWithoutSpaces)
 
-        const fetchQuery: string = tokenData?.role === 'admin' ? `${endPoint}` : `${endPoint}?${queryFilters}`
+        const fetchQuery: string =
+          tokenData?.role === 'admin'
+            ? `${endPoint}`
+            : `${endPoint}?${queryFilters}`
 
         console.log('endPoint', endPoint)
         console.log('fetchQuery', fetchQuery)
@@ -101,31 +106,37 @@ export function useCheckboxesFilters(endPoint?: string, tokenData?: TokenData, f
   }
 
   useEffect(() => {
-    if (responseTherapiesData && tokenData?.role === 'professional' && responseTherapiesData?.length > 0) {
+    if (
+      responseTherapiesData &&
+      tokenData?.role === 'professional' &&
+      responseTherapiesData?.length > 0
+    ) {
       const therapiesIds = responseTherapiesData?.map((data: any) => {
         return data?.id
       })
 
-      setValue("rooms", {
-        therapiesIds
+      setValue('rooms', {
+        therapiesIds,
       })
     }
   }, [responseTherapiesData, responseTherapiesStatus, therapiesFetchStatus])
 
-
   useEffect(() => {
-    if (tokenData?.role === 'professional' && therapiesIds && therapiesIds?.length > 0) {
+    if (
+      tokenData?.role === 'professional' &&
+      therapiesIds &&
+      therapiesIds?.length > 0
+    ) {
       roomsRefetch()
     }
-
   }, [observedField])
-
 
   console.log('responseData', responseTherapiesData)
 
   return {
-    responseData: endPoint === 'therapies' ? responseTherapiesData : responseRoomsData,
+    responseData:
+      endPoint === 'therapies' ? responseTherapiesData : responseRoomsData,
     loading,
-    checkboxHandle
+    checkboxHandle,
   }
 }

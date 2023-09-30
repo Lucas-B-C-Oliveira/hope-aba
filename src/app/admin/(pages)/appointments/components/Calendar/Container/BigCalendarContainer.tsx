@@ -13,7 +13,12 @@ import { isEqual } from 'lodash'
 import { Toolbar } from './Toolbar'
 import { ACCESS_TOKEN } from '@/utils/functions/constants'
 import { getCookie } from 'cookies-next'
-import { makeQuery, removeFirstCharacter, removeSpacesOfString, tokenDecode } from '@/utils/functions/helpers'
+import {
+  makeQuery,
+  removeFirstCharacter,
+  removeSpacesOfString,
+  tokenDecode,
+} from '@/utils/functions/helpers'
 
 interface AppointmentCard {
   start: Date
@@ -53,8 +58,6 @@ const components = {
 }
 
 const API_FORMAT_DEFAULT = 'YYYY-MM-DD'
-
-
 
 function getFirstAndLastWeekdayByCurrentWeekday(currentWeekDay: string) {
   const currentWeekdayMoment = dateAdapter(currentWeekDay)
@@ -169,13 +172,14 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
 
       const professionalFilterByTokenData: Filter = {
         id: tokenData?.professionalId as string,
-        name: tokenData?.name as string
+        name: tokenData?.name as string,
       }
       const isProfessionalRole = tokenData?.role === 'professional'
 
-      const currentFilter = isProfessionalRole && !professionalsAppointment
-        ? professionalFilterByTokenData
-        : professionalsAppointment
+      const currentFilter =
+        isProfessionalRole && !professionalsAppointment
+          ? professionalFilterByTokenData
+          : professionalsAppointment
 
       const filters = {
         patientsAppointment,

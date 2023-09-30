@@ -6,59 +6,34 @@ import {
   CHECKBOX_INPUT_CLASSNAME,
   TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
 } from '@/style/consts'
-import { FilterKey } from '@/types'
+import { FilterKey, TokenData } from '@/types'
 import { doFetch } from '@/utils/actions/action'
 import { memo, useEffect, useState } from 'react'
+import { useCheckboxesTherapiesFilters } from './useCheckboxesTherapiesFilters'
 
 interface Props {
   filterKey: FilterKey
   endPoint: string
   labelText: string
+  tokenData: TokenData
 }
 
 export const CheckboxesFilter = memo(function CheckboxesFilter({
   filterKey,
   endPoint,
   labelText,
+  tokenData,
 }: Props) {
-  const { addFilter, removeFilter } = useAppointmentFilterStore()
-  const [checkboxes, setCheckboxes] = useState<any>([])
-
-  function checkboxHandle(inputData: any, checboxSelectedData: any) {
-    const checked = inputData.target.checked
-    if (checked) {
-      const newFilter = {
-        name: checboxSelectedData?.name,
-        id: checboxSelectedData?.id,
-      }
-      addFilter(filterKey, newFilter)
-    } else {
-      removeFilter(filterKey, checboxSelectedData?.id)
-    }
-  }
-
-  async function onChangeHandle() {
-    try {
-      const data = await doFetch<any | { data: any }>(`${endPoint}?search`)
-      if (data?.data.length > 0) {
-        setCheckboxes(data?.data)
-      }
-    } catch (error) {
-      console.error('SERVER ACTION ERROR - endPoint: ', endPoint, error)
-    }
-  }
-
-  useEffect(() => {
-    onChangeHandle()
-  }, [])
+  const { checkboxHandle, loading, responseData } =
+    useCheckboxesTherapiesFilters(endPoint, tokenData, 'therapies', filterKey)
 
   return (
     <Form.Field className="flex flex-col gap-1">
       <Form.Label>{labelText}</Form.Label>
       <div className="flex flex-col gap-2">
-        {typeof checkboxes !== 'undefined' &&
-          checkboxes?.length > 0 &&
-          checkboxes.map((checkbox: any) => {
+        {typeof responseData !== 'undefined' &&
+          responseData?.length > 0 &&
+          responseData.map((checkbox: any) => {
             return (
               <Form.Field
                 key={checkbox.id}
