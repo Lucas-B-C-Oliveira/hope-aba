@@ -42,7 +42,7 @@ export function useCheckboxesTherapiesFilters(
     error: therapiesError,
     fetchStatus: therapiesFetchStatus,
   } = useQuery({
-    queryKey: ['get/useCheckboxesFilters/therapies'],
+    queryKey: ['get/useCheckboxesTherapiesFilters/therapies'],
     queryFn: async () => {
       try {
         if (!loading) {
@@ -83,7 +83,7 @@ export function useCheckboxesTherapiesFilters(
       responseTherapiesStatus === 'success'
     ) {
       if (tokenData?.role === 'professional') {
-        setValue('rooms', {
+        setValue('therapies', {
           responseTherapiesData,
         })
       }
