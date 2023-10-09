@@ -1,31 +1,29 @@
 'use client'
 
 import { Form } from '@/components/Form'
-import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 import {
   CHECKBOX_INPUT_CLASSNAME,
   TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
 } from '@/style/consts'
 import { FilterKey, TokenData } from '@/types'
-import { doFetch } from '@/utils/actions/action'
-import { memo, useEffect, useState } from 'react'
-import { useCheckboxesTherapiesFilters } from './useCheckboxesTherapiesFilters'
+import { memo } from 'react'
 
 interface Props {
-  filterKey: FilterKey
-  endPoint: string
   labelText: string
-  tokenData: TokenData
+  useCheckboxFilterLogic: <T extends any[]>(endPoint?: string, tokenData?: TokenData, fieldToGetValue?: string, filterKey?: FilterKey) => {
+    responseData: any[] | []
+    loading: boolean
+    checkboxHandle: (inputData: any, checboxSelectedData: any) => void;
+  }
 }
 
 export const CheckboxesFilter = memo(function CheckboxesFilter({
-  filterKey,
-  endPoint,
   labelText,
-  tokenData,
+  useCheckboxFilterLogic
 }: Props) {
+
   const { checkboxHandle, loading, responseData } =
-    useCheckboxesTherapiesFilters(endPoint, tokenData, 'therapies', filterKey)
+    useCheckboxFilterLogic()
 
   return (
     <Form.Field className="flex flex-col gap-1">
