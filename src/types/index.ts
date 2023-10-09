@@ -65,7 +65,6 @@ export type TokenData = {
   professionalId?: string
 }
 
-
 export type GetClinicsDataResponse = {
   id: string
   name: string

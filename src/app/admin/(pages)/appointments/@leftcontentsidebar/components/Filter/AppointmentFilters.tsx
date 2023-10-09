@@ -51,8 +51,20 @@ export const AppointmentFilters = memo(function AppointmentFilters({
   const usePatientsLogic = () =>
     useAutocompleteFilter('patientsAppointment', 'patients')
 
-  const useTherapiesLogic = () => useCheckboxesTherapiesFilters("therapies", tokenData, 'therapies', 'therapiesAppointment')
-  const useRoomsLogic = () => useCheckboxesRoomsFilters("rooms", tokenData, 'therapies', 'roomsAppointment')
+  const useTherapiesLogic = () =>
+    useCheckboxesTherapiesFilters(
+      'therapies',
+      tokenData,
+      'therapies',
+      'therapiesAppointment',
+    )
+  const useRoomsLogic = () =>
+    useCheckboxesRoomsFilters(
+      'rooms',
+      tokenData,
+      'therapies',
+      'roomsAppointment',
+    )
 
   return (
     <div className="flex flex-col items-start gap-3 p-0 h-fit">

@@ -10,20 +10,23 @@ import { memo } from 'react'
 
 interface Props {
   labelText: string
-  useCheckboxFilterLogic: <T extends any[]>(endPoint?: string, tokenData?: TokenData, fieldToGetValue?: string, filterKey?: FilterKey) => {
+  useCheckboxFilterLogic: <T extends any[]>(
+    endPoint?: string,
+    tokenData?: TokenData,
+    fieldToGetValue?: string,
+    filterKey?: FilterKey,
+  ) => {
     responseData: any[] | []
     loading: boolean
-    checkboxHandle: (inputData: any, checboxSelectedData: any) => void;
+    checkboxHandle: (inputData: any, checboxSelectedData: any) => void
   }
 }
 
 export const CheckboxesFilter = memo(function CheckboxesFilter({
   labelText,
-  useCheckboxFilterLogic
+  useCheckboxFilterLogic,
 }: Props) {
-
-  const { checkboxHandle, loading, responseData } =
-    useCheckboxFilterLogic()
+  const { checkboxHandle, loading, responseData } = useCheckboxFilterLogic()
 
   return (
     <Form.Field className="flex flex-col gap-1">

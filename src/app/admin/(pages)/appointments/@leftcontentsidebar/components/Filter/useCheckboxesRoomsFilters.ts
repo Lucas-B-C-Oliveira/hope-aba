@@ -47,7 +47,10 @@ export function useCheckboxesRoomsFilters(
           setLoading(true)
         }
 
-        const therapyIdsQuery = tokenData?.role === 'professional' ? `?${makeQueryByArray('therapyIds', therapiesIds)}` : ''
+        const therapyIdsQuery =
+          tokenData?.role === 'professional'
+            ? `?${makeQueryByArray('therapyIds', therapiesIds)}`
+            : ''
 
         const fetchQuery = `${endPoint}${therapyIdsQuery}`
         console.log('endPoint', endPoint)
@@ -89,14 +92,12 @@ export function useCheckboxesRoomsFilters(
     }
   }, [responseRoomsData, roomsFetchStatus])
 
-
   useEffect(() => {
     if (observedField && (checkboxes.length === 0 || !checkboxes)) {
       console.log('observedField', observedField)
       roomsRefetch()
     }
   }, [observedField])
-
 
   return {
     responseData: checkboxes,

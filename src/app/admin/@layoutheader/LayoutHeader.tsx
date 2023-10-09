@@ -92,7 +92,6 @@ export function LayoutHeader({
               /> */}
 
             {({ value }) => {
-
               return (
                 <>
                   <span className="hidden lg:flex lg:items-center">
@@ -112,7 +111,6 @@ export function LayoutHeader({
                 </>
               )
             }}
-
           </Listbox.Button>
 
           <Transition
