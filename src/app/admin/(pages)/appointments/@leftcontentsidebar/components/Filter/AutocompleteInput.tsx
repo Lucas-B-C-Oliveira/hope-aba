@@ -25,14 +25,12 @@ export function AutocompleteInput({
       className={twMerge(
         MAGIC_INPUT_CLASSNAME,
         'rounded-[0.290rem]  w-56 cursor-default pb-2 items-center flex flex-row gap-1 pr-2 pl-3 justify-between',
-        `${
-          !disabled
-            ? `${
-                isFocused
-                  ? 'ring-inset ring-2 ring-indigo-600'
-                  : 'hover:ring-2  hover:ring-inset hover:ring-indigo-600'
-              }`
-            : ''
+        `${!disabled
+          ? `${isFocused
+            ? 'ring-inset ring-2 ring-indigo-600'
+            : 'hover:ring-2  hover:ring-inset hover:ring-indigo-600'
+          }`
+          : ''
         }`,
       )}
     >
@@ -45,8 +43,8 @@ export function AutocompleteInput({
         onFocus={() => setFocus(!disabled)}
         onBlur={() => setFocus(false)}
         displayValue={(dataSelected: any) => {
-          console.log('dataSelected', dataSelected)
-          console.log('currentOptions', currentOptions)
+          // console.log('dataSelected', dataSelected)
+          // console.log('currentOptions', currentOptions)
           if (currentOptions && dataSelected?.name) {
             return dataSelected?.name
           }
