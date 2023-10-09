@@ -21,7 +21,6 @@ export default async function Default() {
   const accessToken = cookieStore.get(ACCESS_TOKEN)
 
   const userData = tokenDecode(accessToken?.value ?? '')
-  console.log('_____________userData', userData)
 
   return (
     <LayoutHeader
