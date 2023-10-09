@@ -64,3 +64,10 @@ export type TokenData = {
   exp: string
   professionalId?: string
 }
+
+
+export type GetClinicsDataResponse = {
+  id: string
+  name: string
+  document: string
+}
