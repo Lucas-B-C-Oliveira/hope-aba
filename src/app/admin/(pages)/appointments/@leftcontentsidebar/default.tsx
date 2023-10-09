@@ -7,7 +7,6 @@ export default async function Default() {
   const cookieStore = cookies()
   const accessToken = cookieStore.get(ACCESS_TOKEN)?.value ?? ''
   const tokenData = tokenDecode(accessToken)
-  console.log('tokenData', tokenData)
 
   return <LeftContentSidebar tokenData={tokenData} />
 }
