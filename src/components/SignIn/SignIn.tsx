@@ -14,7 +14,6 @@ import { useSignIn } from './useSignIn'
 import Image from 'next/image'
 import { ActionButton } from '../ActionButton'
 import { twMerge } from 'tailwind-merge'
-import { ColorRing } from 'react-loader-spinner'
 import { SpinnerLoading } from '../SpinnerLoading'
 
 export const SignIn = memo(function SignIn() {

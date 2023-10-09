@@ -72,7 +72,7 @@ export function useSignIn() {
         return await Promise.all(promises)
       } catch (error: unknown) {
         console.error('error', error)
-        // throw new Error(error)
+        throw new Error(`${error}`)
       }
     },
     enabled: false,

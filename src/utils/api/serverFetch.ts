@@ -12,13 +12,6 @@ export async function SSFetch<T = unknown>(
   const clinicsData = cookieStore.get(CLINICS_DATA)
   const currentClinicDataIndex = cookieStore.get(CURRENT_CLINIC_DATA_INDEX)?.value ?? 0
 
-  // if (
-  //   typeof accessToken === 'undefined' ||
-  //   typeof clinicsData === 'undefined'
-  // ) {
-  //   redirect('/login') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
-  // }
-
   const token = accessToken?.value
 
   let clinicsDataParsed
@@ -31,9 +24,6 @@ export async function SSFetch<T = unknown>(
   if (typeof currentClinic !== 'undefined') {
     clinicsDataParsed = currentClinic[currentClinicDataIndex]?.id
   }
-
-
-  console.log('clinicsDataParsed', clinicsDataParsed)
 
 
   const defaultHeaders = {

@@ -6,11 +6,11 @@ import {
   getAvailabilityTimeData,
   getAvailabilityWeekDays,
 } from '../functions'
-import { dateAdapter } from '../dateAdapter'
+
 
 export async function doFetch<T = unknown>(
   input: RequestInfo | URL,
-  init?: RequestInit | undefined,
+  init?: RequestInit | undefined | any,
 ) {
   try {
     const response = await SSFetch<T>(input, init)
@@ -27,41 +27,40 @@ interface Response {
 
 export async function getAppointmentsByRangeDate<T = unknown>(
   input: RequestInfo | URL,
-  init?: RequestInit | undefined,
+  init?: RequestInit | undefined | any,
 ) {
   try {
     const response = (await SSFetch<T>(input, init)) as Response
     const cardsAppointment = response?.data
       ? response?.data.map((appointmentData: any) => {
-          const { day, start, end } = appointmentData.schedule
+        const { day, start, end } = appointmentData.schedule
 
-          const { patient, therapy } = appointmentData
+        const { patient, therapy } = appointmentData
 
-          const patientNameSplited = patient.name.split(' ')
+        const patientNameSplited = patient.name.split(' ')
 
-          const patientNameLabel = `${patientNameSplited[0]} ${
-            patientNameSplited[patientNameSplited.length - 1]
+        const patientNameLabel = `${patientNameSplited[0]} ${patientNameSplited[patientNameSplited.length - 1]
           }` //! TODO: Format this name to First upercase first lether
 
-          //   const startDate = dateAdapter(`${day}T${start}:00`).local().toDate()
-          //   const endDate = dateAdapter(`${day}T${end}:00`).local().toDate()
+        //   const startDate = dateAdapter(`${day}T${start}:00`).local().toDate()
+        //   const endDate = dateAdapter(`${day}T${end}:00`).local().toDate()
 
-          //   const startDate = new Date(`${day}T${start}:00Z`)
-          // const endDate = new Date(`${day}T${end}:00Z`)
+        //   const startDate = new Date(`${day}T${start}:00Z`)
+        // const endDate = new Date(`${day}T${end}:00Z`)
 
-          const startDate = `${day}T${start}:00`
-          const endDate = `${day}T${end}:00`
+        const startDate = `${day}T${start}:00`
+        const endDate = `${day}T${end}:00`
 
-          return {
-            start: startDate,
-            end: endDate,
-            data: {
-              ...appointmentData,
-              patientNameLabel,
-              therapyNameLabel: therapy?.name,
-            },
-          }
-        })
+        return {
+          start: startDate,
+          end: endDate,
+          data: {
+            ...appointmentData,
+            patientNameLabel,
+            therapyNameLabel: therapy?.name,
+          },
+        }
+      })
       : []
 
     return cardsAppointment
@@ -144,3 +143,5 @@ export async function getProfessionalScheduleAvailabilityWeekDays(
     throw new Error(`${error}`)
   }
 }
+
+

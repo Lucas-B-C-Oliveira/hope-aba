@@ -91,24 +91,28 @@ export function LayoutHeader({
                 alt=""
               /> */}
 
-            {({ value }) => (
-              <>
-                <span className="hidden lg:flex lg:items-center">
-                  <span
-                    className=" text-sm font-semibold leading-6 text-gray-900"
-                    aria-hidden="true"
-                  >
-                    Clínica: {value?.name}
-                  </span>
-                  {clinicsData.length > 1 && (
-                    <ChevronDownIcon
-                      className="ml-2 h-5 w-5 text-gray-400"
+            {({ value }) => {
+
+              return (
+                <>
+                  <span className="hidden lg:flex lg:items-center">
+                    <span
+                      className=" text-sm font-semibold leading-6 text-gray-900"
                       aria-hidden="true"
-                    />
-                  )}
-                </span>
-              </>
-            )}
+                    >
+                      Clínica: {value?.name}
+                    </span>
+                    {clinicsData.length > 1 && (
+                      <ChevronDownIcon
+                        className="ml-2 h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </span>
+                </>
+              )
+            }}
+
           </Listbox.Button>
 
           <Transition
