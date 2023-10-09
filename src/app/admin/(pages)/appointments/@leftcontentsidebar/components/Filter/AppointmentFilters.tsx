@@ -8,6 +8,8 @@ import { TokenData } from '@/types'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useCheckboxesTherapiesFilters } from './useCheckboxesTherapiesFilters'
+import { useCheckboxesRoomsFilters } from './useCheckboxesRoomsFilters'
 
 const therapiesSchema = z.object({
   therapies: z.array(z.string()),
@@ -49,6 +51,9 @@ export const AppointmentFilters = memo(function AppointmentFilters({
   const usePatientsLogic = () =>
     useAutocompleteFilter('patientsAppointment', 'patients')
 
+  const useTherapiesLogic = () => useCheckboxesTherapiesFilters("therapies", tokenData, 'therapies', 'therapiesAppointment')
+  const useRoomsLogic = () => useCheckboxesRoomsFilters("rooms", tokenData, 'therapies', 'roomsAppointment')
+
   return (
     <div className="flex flex-col items-start gap-3 p-0 h-fit">
       {role === 'admin' && (
@@ -77,15 +82,11 @@ export const AppointmentFilters = memo(function AppointmentFilters({
       <FormProvider {...createTherapiesSchema}>
         <Filter.Checkboxes
           labelText="Terapias"
-          filterKey="therapiesAppointment"
-          endPoint="therapies"
-          tokenData={tokenData}
+          useCheckboxFilterLogic={useTherapiesLogic}
         />
         <Filter.Checkboxes
           labelText="Salas"
-          filterKey="roomsAppointment"
-          endPoint="rooms"
-          tokenData={tokenData}
+          useCheckboxFilterLogic={useRoomsLogic}
         />
       </FormProvider>
 
