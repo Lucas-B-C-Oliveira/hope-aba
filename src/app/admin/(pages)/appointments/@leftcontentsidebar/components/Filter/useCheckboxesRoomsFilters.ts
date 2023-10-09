@@ -30,26 +30,26 @@ export function useCheckboxesRoomsFilters(
     control,
   })
 
-  const queryEnabledTherapies = endPoint === 'therapies'
   const therapiesIds: string[] = formValues[`${fieldToGetValue}`]
-  const queryEnabledRooms =
-    tokenData?.role === 'professional' && endPoint === 'rooms'
+  const queryEnabledRooms = tokenData?.role === 'admin'
 
   const {
-    data: responseTherapiesData,
-    status: responseTherapiesStatus,
-    refetch: therapiesRefetch,
-    error: therapiesError,
-    fetchStatus: therapiesFetchStatus,
+    data: responseRoomsData,
+    status: responseRoomsStatus,
+    refetch: roomsRefetch,
+    error: roomsError,
+    fetchStatus: roomsFetchStatus,
   } = useQuery({
-    queryKey: ['get/useCheckboxesFilters/therapies'],
+    queryKey: ['get/useCheckboxesRoomsFilters/rooms'],
     queryFn: async () => {
       try {
         if (!loading) {
           setLoading(true)
         }
 
-        const fetchQuery = `${endPoint}`
+        const therapyIdsQuery = tokenData?.role === 'professional' ? `?${makeQueryByArray('therapyIds', therapiesIds)}` : ''
+
+        const fetchQuery = `${endPoint}${therapyIdsQuery}`
         console.log('endPoint', endPoint)
         console.log('fetchQuery', fetchQuery)
         const response = await CSFetch<any>(fetchQuery)
@@ -79,21 +79,24 @@ export function useCheckboxesRoomsFilters(
 
   useEffect(() => {
     if (
-      responseTherapiesData &&
-      responseTherapiesData.length > 0 &&
-      responseTherapiesStatus === 'success'
+      responseRoomsData &&
+      responseRoomsData.length > 0 &&
+      responseRoomsStatus === 'success'
     ) {
-      if (tokenData?.role === 'professional') {
-        setValue('rooms', {
-          responseTherapiesData,
-        })
-      }
-
-      if (!isEqual(responseTherapiesData, checkboxes)) {
-        setCheckboxes(responseTherapiesData)
+      if (!isEqual(responseRoomsData, checkboxes)) {
+        setCheckboxes(responseRoomsData)
       }
     }
-  }, [responseTherapiesData, therapiesFetchStatus])
+  }, [responseRoomsData, roomsFetchStatus])
+
+
+  useEffect(() => {
+    if (observedField && (checkboxes.length === 0 || !checkboxes)) {
+      console.log('observedField', observedField)
+      roomsRefetch()
+    }
+  }, [observedField])
+
 
   return {
     responseData: checkboxes,
