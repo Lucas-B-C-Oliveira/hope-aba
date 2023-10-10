@@ -2,7 +2,7 @@ import { CSFetch } from '@/utils/api/clientFetch'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -44,29 +44,26 @@ const signUpSchema = z
 export type SignUpData = z.infer<typeof signUpSchema>
 
 export function useSignUp() {
-  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const {
     data: createAccountData,
     mutateAsync,
     status,
+    isError,
+    isLoading,
+    error,
   } = useMutation({
-    mutationKey: ['post/signup'],
+    mutationKey: ['post/signup/useSignup'],
     mutationFn: async (data: SignUpData) => {
-      try {
-        setLoading(true)
-        const response = await CSFetch<any>('sign-up', {
-          method: 'POST',
-          body: JSON.stringify(data),
-        })
-        setLoading(false)
-
-        return response
-      } catch (error: unknown) {
-        console.error('error', error)
-      }
+      const response = await CSFetch<any>('sign-up', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        cache: 'no-store',
+      })
+      return response
     },
+    cacheTime: 0,
   })
 
   const signUpForm = useForm<SignUpData>({
@@ -88,26 +85,19 @@ export function useSignUp() {
   }
 
   useEffect(() => {
-    if (status === 'error') {
-      if (loading) {
-        setLoading(false)
-      }
-    }
-  }, [status])
-
-  useEffect(() => {
     if (status === 'success' && createAccountData) {
       handleGoToLogin()
     }
-  }, [createAccountData])
+  }, [status])
 
   return {
-    loading,
+    isError,
+    error: error as any,
+    loading: isLoading,
     handleGoToLogin,
     handleSignUp,
     isSubmitting,
     handleSubmit,
     signUpForm,
-    createAccountData,
   }
 }

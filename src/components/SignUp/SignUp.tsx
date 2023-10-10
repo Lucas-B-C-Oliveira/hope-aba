@@ -13,7 +13,6 @@ import { ActionButton } from '../ActionButton'
 import logo from '@/assets/hopeAbaLogo.png'
 import Image from 'next/image'
 import { useSignUp } from './useSignUp'
-import { ColorRing } from 'react-loader-spinner'
 import { twMerge } from 'tailwind-merge'
 import { SpinnerLoading } from '../SpinnerLoading'
 
@@ -25,7 +24,8 @@ export const SignUp = memo(function SignUp() {
     isSubmitting,
     signUpForm,
     loading,
-    createAccountData,
+    error,
+    isError,
   } = useSignUp()
 
   return (
@@ -202,7 +202,7 @@ export const SignUp = memo(function SignUp() {
               {!loading && <p>Cadastrar</p>}
             </ActionButton>
 
-            {createAccountData?.error && (
+            {isError && (
               <Form.Label
                 className={twMerge(
                   TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
@@ -210,7 +210,7 @@ export const SignUp = memo(function SignUp() {
                 )}
                 htmlFor="clinicDocument"
               >
-                {createAccountData?.error?.message}
+                {error?.message && error?.message}
               </Form.Label>
             )}
           </div>
