@@ -45,15 +45,23 @@ export async function CSFetch<T = unknown>(
     ? { ...defaultHeaders, ...init.headers }
     : defaultHeaders
 
-  const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/${input}`, {
-    ...init,
-    headers,
-  })
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API_URL}/${input}`,
+    {
+      ...init,
+      headers,
+    },
+  )
 
-  if (data?.statusText === 'No Content') {
-    return data
+  if (!response.ok) {
+    const errorDetails = await response.json()
+    throw new Error(`${errorDetails.message}`)
   }
 
-  const result = await data?.json()
+  if (response?.statusText === 'No Content') {
+    return response
+  }
+
+  const result = await response?.json()
   return result as T
 }

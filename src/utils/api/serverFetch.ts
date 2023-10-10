@@ -38,11 +38,16 @@ export async function SSFetch<T = unknown>(
     ? { ...defaultHeaders, ...init.headers }
     : defaultHeaders
 
-  const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/${input}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/${input}`, {
     ...init,
     headers,
   })
 
-  const result = await data.json()
+  if (!response.ok) {
+    const errorDetails = await response.json()
+    throw new Error(`${errorDetails.message}`)
+  }
+
+  const result = await response.json()
   return result as T
 }
