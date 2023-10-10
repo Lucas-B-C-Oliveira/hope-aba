@@ -19,6 +19,7 @@ import { SpinnerLoading } from '../SpinnerLoading'
 export const SignIn = memo(function SignIn() {
   const {
     handleGoToSignup,
+    isError,
     error,
     handleSignIn,
     handleSubmit,
@@ -102,7 +103,7 @@ export const SignIn = memo(function SignIn() {
               {!loading && <p>Entrar</p>}
             </ActionButton>
 
-            {error?.error && (
+            {isError && (
               <Form.Label
                 className={twMerge(
                   TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
@@ -110,7 +111,7 @@ export const SignIn = memo(function SignIn() {
                 )}
                 htmlFor="clinicDocument"
               >
-                {error?.error?.message}
+                {error}
               </Form.Label>
             )}
           </div>
