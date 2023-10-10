@@ -97,6 +97,7 @@ export function useSignIn() {
         return response
       } catch (error: unknown) {
         console.error('error', error)
+        throw new Error(error as any)
       }
     },
   })
