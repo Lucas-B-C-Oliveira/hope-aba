@@ -3,9 +3,7 @@ import { memo, useEffect, useRef, useState } from 'react'
 
 import { dateAdapter } from '@/utils/dateAdapter'
 import { Calendar } from '..'
-import {
-  getProfessionalScheduleAvailability,
-} from '@/utils/actions/action'
+import { getProfessionalScheduleAvailability } from '@/utils/actions/action'
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 import { Filter, TokenData } from '@/types'
 import { isEqual } from 'lodash'
@@ -39,34 +37,35 @@ export async function getAppointmentsByRangeDate<T = unknown>(
     const response = (await CSFetch<T>(input, init)) as Response
     const cardsAppointment = response?.data
       ? response?.data.map((appointmentData: any) => {
-        const { day, start, end } = appointmentData.schedule
+          const { day, start, end } = appointmentData.schedule
 
-        const { patient, therapy } = appointmentData
+          const { patient, therapy } = appointmentData
 
-        const patientNameSplited = patient.name.split(' ')
+          const patientNameSplited = patient.name.split(' ')
 
-        const patientNameLabel = `${patientNameSplited[0]} ${patientNameSplited[patientNameSplited.length - 1]
+          const patientNameLabel = `${patientNameSplited[0]} ${
+            patientNameSplited[patientNameSplited.length - 1]
           }` //! TODO: Format this name to First upercase first lether
 
-        //   const startDate = dateAdapter(`${day}T${start}:00`).local().toDate()
-        //   const endDate = dateAdapter(`${day}T${end}:00`).local().toDate()
+          //   const startDate = dateAdapter(`${day}T${start}:00`).local().toDate()
+          //   const endDate = dateAdapter(`${day}T${end}:00`).local().toDate()
 
-        //   const startDate = new Date(`${day}T${start}:00Z`)
-        // const endDate = new Date(`${day}T${end}:00Z`)
+          //   const startDate = new Date(`${day}T${start}:00Z`)
+          // const endDate = new Date(`${day}T${end}:00Z`)
 
-        const startDate = `${day}T${start}:00`
-        const endDate = `${day}T${end}:00`
+          const startDate = `${day}T${start}:00`
+          const endDate = `${day}T${end}:00`
 
-        return {
-          start: startDate,
-          end: endDate,
-          data: {
-            ...appointmentData,
-            patientNameLabel,
-            therapyNameLabel: therapy?.name,
-          },
-        }
-      })
+          return {
+            start: startDate,
+            end: endDate,
+            data: {
+              ...appointmentData,
+              patientNameLabel,
+              therapyNameLabel: therapy?.name,
+            },
+          }
+        })
       : []
 
     return cardsAppointment
@@ -250,15 +249,12 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
           endpointWithQuery = endpointWithQuery + '&' + queryFilters
         }
       }
-      console.log(
-        'query',
-        endpointWithQuery + '&page=1&pageSize=90',
-      )
+      console.log('query', endpointWithQuery + '&page=1&pageSize=90')
       const data = await getAppointmentsByRangeDate(
         endpointWithQuery + '&page=1&pageSize=90',
         {
-          cache: 'no-store'
-        }
+          cache: 'no-store',
+        },
       )
 
       const newData = data.map((data) => {
@@ -294,9 +290,15 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   }, [])
 
   useEffect(() => {
-    console.log('useEffect que verifica o filterButtonStatusAppointment', filterButtonStatusAppointment)
+    console.log(
+      'useEffect que verifica o filterButtonStatusAppointment',
+      filterButtonStatusAppointment,
+    )
     if (filterButtonStatusAppointment !== 'idle') {
-      console.log('currentCalendarWeekday.current', currentCalendarWeekday.current)
+      console.log(
+        'currentCalendarWeekday.current',
+        currentCalendarWeekday.current,
+      )
       makeAppointmentFeedback(currentCalendarWeekday.current)
     }
 
