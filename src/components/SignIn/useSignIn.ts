@@ -3,10 +3,10 @@ import { tokenDecode } from '@/utils/functions/helpers'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { setCookie, getCookie } from 'cookies-next'
+import { setCookie, getCookie, deleteCookie } from 'cookies-next'
 import {
   ACCESS_TOKEN,
   CLINICS_DATA,
@@ -39,42 +39,42 @@ type GetClinicsDataResponse = {
   document: string
 }
 
+function getTranslateError(error: { message: string } | any) {
+  if (
+    error?.message ===
+    'Invalid credentials please check your email or password is correct.'
+  )
+    return 'Credenciais inválidas, verifique se seu e-mail ou senha estão corretos.'
+  else return error?.message
+}
+
 export function useSignIn() {
-  const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const currentError = useRef(undefined)
 
   const {
     data: getClinicsData,
     refetch: getClinicsDataRefetch,
     status: getClinicsDataStatus,
     error: getClinicsError,
+    isFetching: isLoadingClinicsData,
+    isError: isErrorClinicsData,
   } = useQuery({
     queryKey: ['get/useSignIn/getClinicsData'],
     queryFn: async () => {
-      try {
-        const token = getCookie(ACCESS_TOKEN)
-
-        if (typeof token !== 'string') {
-          throw new Error('Invalid token')
-        }
-
-        const tokenData = tokenDecode(token)
-
-        const clinicsIds = tokenData?.clinicIds ?? []
-
-        const promises = clinicsIds.map((clinicId: string) => {
-          return CSFetch<{ data: GetClinicsDataResponse }>(
-            `clinics/${clinicId}`,
-          )
-        })
-
-        return await Promise.all(promises)
-      } catch (error: unknown) {
-        console.error('error', error)
-        throw new Error(`${error}`)
-      }
+      const token = getCookie(ACCESS_TOKEN)
+      const tokenData = tokenDecode(token as string)
+      const clinicsIds = tokenData?.clinicIds ?? []
+      const promises = clinicsIds.map((clinicId: string) => {
+        return CSFetch<{ data: GetClinicsDataResponse }>(
+          `clinics/${clinicId}`,
+          {
+            cache: 'no-store',
+          },
+        )
+      })
+      return await Promise.all(promises)
     },
+    cacheTime: 0,
     enabled: false,
   })
 
@@ -83,23 +83,19 @@ export function useSignIn() {
     mutateAsync: signInMutate,
     status: signInStatus,
     error: signInError,
+    isLoading: isLoadingSignInData,
+    isError: isErrorSignInData,
   } = useMutation({
-    mutationKey: ['post/signin'],
+    mutationKey: ['post/useSignin/signin'],
     mutationFn: async (data: SignInData) => {
-      try {
-        setLoading(true)
-        const response = await CSFetch<any>('sign-in', {
-          method: 'POST',
-          body: JSON.stringify(data),
-        })
-        setLoading(false)
-
-        return response
-      } catch (error: unknown) {
-        console.error('error', error)
-        throw new Error(error as any)
-      }
+      const response = await CSFetch<any>('sign-in', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        cache: 'no-store',
+      })
+      return response
     },
+    cacheTime: 0,
   })
 
   const signInForm = useForm<SignInData>({
@@ -124,31 +120,31 @@ export function useSignIn() {
     router.replace('/signup')
   }
 
-  useEffect(() => {
-    if (signInStatus === 'error' || getClinicsDataStatus === 'error') {
-      if (loading) {
-        setLoading(false)
-      }
-    }
-  }, [signInStatus, getClinicsDataStatus])
+  console.log('signInStatus', signInStatus)
+  console.log('getClinicsDataStatus', getClinicsDataStatus)
 
   useEffect(() => {
-    if (signInStatus === 'success' && signInData && !getClinicsData) {
+    if (signInStatus === 'success') {
       const token = (signInData?.token as any) ?? ''
       const value = `Bearer ${token}`
       const tokenData = tokenDecode(token as string)
       const expDefault = tokenData?.exp ?? 1 * 60 * 60 * 24 * 15
       const expDate = new Date(expDefault * 1000)
+      console.log('Setou o token')
+      const accessToken = getCookie(ACCESS_TOKEN)
+      if (typeof accessToken === 'string') {
+        deleteCookie(ACCESS_TOKEN)
+      }
       setCookie(ACCESS_TOKEN, value, {
         expires: expDate,
       })
-      currentError.current = undefined
+      console.log('token value', value)
       getClinicsDataRefetch()
-    } else if (
-      getClinicsDataStatus === 'success' &&
-      getClinicsData &&
-      signInData
-    ) {
+    }
+  }, [signInStatus])
+
+  useEffect(() => {
+    if (getClinicsDataStatus === 'success') {
       const token = signInData?.token ?? ''
       const tokenData = tokenDecode(token)
       const expDefault = tokenData?.exp ?? 1 * 60 * 60 * 24 * 15
@@ -161,19 +157,18 @@ export function useSignIn() {
         expires: expDate,
       })
       setCookie(CURRENT_CLINIC_DATA_INDEX, 0)
-
-      currentError.current = undefined
       handleGoToAppointments()
-    } else if (getClinicsDataStatus === 'error') {
-      currentError.current = getClinicsError as any
-    } else if (signInStatus === 'error') {
-      currentError.current = signInError as any
     }
-  }, [signInData, getClinicsDataStatus])
+  }, [getClinicsDataStatus])
 
   return {
-    error: currentError.current as any,
-    loading,
+    isError: isErrorClinicsData || isErrorSignInData,
+    error: isErrorSignInData
+      ? getTranslateError(signInError)
+      : isErrorClinicsData
+      ? getTranslateError(getClinicsError)
+      : (undefined as any | undefined),
+    loading: isLoadingClinicsData || isLoadingSignInData,
     handleSignIn,
     isSubmitting,
     handleSubmit,
