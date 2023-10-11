@@ -1,22 +1,13 @@
 'use client'
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-import { Button } from '@/components/Button'
-import { FormProvider, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
+import { FormProvider } from 'react-hook-form'
 import { Form } from '../Form'
-import { memo, useRef } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { CSFetch } from '@/utils/api/clientFetch'
+import { memo } from 'react'
+import { ActionButton } from '../ActionButton'
+import { useFilters } from './useFilters'
+import { SpinnerLoading } from '../SpinnerLoading'
 
-const searchSchema = z.object({
-  search: z
-    .string()
-    .nonempty({ message: 'Digite alguma coisa no campo de busca' }),
-})
-
-export type SearchData = z.infer<typeof searchSchema>
 
 interface Props {
   queryKey: string
@@ -24,48 +15,13 @@ interface Props {
 }
 
 export const Filters = memo(function Filters({ endPoint, queryKey }: Props) {
-  const inputSearchData = useRef<SearchData | undefined>(undefined)
-  const { refetch } = useQuery({
-    queryKey: [queryKey],
-    queryFn: async () => {
-      try {
-        if (typeof inputSearchData?.current === 'undefined')
-          throw new Error('searchData is undefined')
 
-        const response = await CSFetch<any>(
-          `${endPoint}?search=${inputSearchData?.current?.search}`,
-        )
+  const { createSearchForm, handleSearch, handleSearchAll, handleSubmit, isSubmitting, loading } = useFilters()
 
-        if (response?.error) {
-          throw new Error(response?.error)
-        }
-
-        return { ...response }
-      } catch (error) {
-        console.error(error)
-        return error
-      }
-    },
-    enabled: false,
-  })
-
-  const createSearchForm = useForm<SearchData>({
-    resolver: zodResolver(searchSchema),
-  })
-
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = createSearchForm
-
-  function search(data: SearchData) {
-    inputSearchData.current = data
-    refetch()
-  }
 
   return (
     <FormProvider {...createSearchForm}>
-      <form onSubmit={handleSubmit(search)} className="flex gap-6">
+      <form onSubmit={handleSubmit(handleSearch)} className="flex gap-6">
         <div className="flex flex-row items-center gap-1">
           <Form.Input
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -76,13 +32,18 @@ export const Filters = memo(function Filters({ endPoint, queryKey }: Props) {
           <Form.ErrorMessage field="search" />
         </div>
 
-        <Button type="submit" disabled={isSubmitting} queryKeys={[queryKey]}>
-          <MagnifyingGlassIcon
-            className="pointer-events-none h-full w-5 text-gray-400"
-            aria-hidden="true"
-          />
-          Pesquisar
-        </Button>
+        <ActionButton type="submit" disabled={isSubmitting}>
+          {loading && <SpinnerLoading />}
+          {!loading && (
+            <>
+              <MagnifyingGlassIcon
+                className="pointer-events-none h-full w-5 text-gray-400"
+                aria-hidden="true"
+              />
+              Pesquisar
+            </>
+          )}
+        </ActionButton>
       </form>
     </FormProvider>
   )
