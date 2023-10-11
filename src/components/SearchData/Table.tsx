@@ -1,33 +1,28 @@
 'use client'
 
 import { CHECKBOX_INPUT_CLASSNAME } from '@/style/consts'
-import { useQuery } from '@tanstack/react-query'
 import { ReactElement, cloneElement, memo } from 'react'
 import { Button } from '../Button'
 import { TrashIcon, PencilSquareIcon } from '@heroicons/react/20/solid'
 import { Modal } from '../Modal'
 
 interface Props {
-  queryKey: string
   endPoint: string
+  data: any[],
   editDataModal: ReactElement
   confirmRemoveDataModal: ReactElement
+  pagination: ReactElement
   tableHeaders: { key: string; value: string; id: string }[]
 }
 
 export const Table = memo(function Table({
-  queryKey,
+  data,
   endPoint,
   editDataModal,
   confirmRemoveDataModal,
+  pagination,
   tableHeaders,
 }: Props) {
-  //! TODO: No futuro, tem que definir bem esse Table, se ele é genérico ou não, pq nesse caso, ele não está sendo genérico, está?
-
-  //! TODO: Fazer um estado de loading para a table? Talvez?
-  const { data } = useQuery<{ data: any[] }>({
-    queryKey: [queryKey],
-  })
 
   return (
     <div className="w-full h-fit">
@@ -67,10 +62,10 @@ export const Table = memo(function Table({
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {typeof data?.data !== 'undefined' &&
-              data?.data?.length > 0 &&
-              data?.data?.map((register: any) => (
+          <tbody className="divide-y divide-gray-200 bg-white divide-y-reverse ">
+            {data &&
+              data?.length > 0 &&
+              data?.map((register: any) => (
                 <tr
                   className="divide-x divide-gray-200 even:bg-gray-50 "
                   key={register.id}
@@ -147,6 +142,11 @@ export const Table = memo(function Table({
               ))}
           </tbody>
         </table>
+
+        <div className="flex flex-row gap-1 py-2 items-center justify-center w-full h-fit bg-gray-50 ">
+          {pagination && pagination}
+        </div>
+
       </div>
     </div>
   )
