@@ -1,6 +1,7 @@
 import { Button } from '@/components/Button'
 import { Modal } from '@/components/Modal'
 import { ConfirmToRemoveDataModal } from '@/components/Modals/ConfirmToRemoveDataModal'
+import { Pagination } from '@/components/Pagination/Pagination'
 import { tableHeaders } from '@/components/Room'
 import { RoomForm } from '@/components/Room/RoomForm'
 import { SearchData } from '@/components/SearchData'
@@ -8,11 +9,13 @@ import { FetchTherapiesData, TherapyData } from '@/types'
 import { SSFetch } from '@/utils/api/serverFetch'
 import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
 import { PlusIcon } from '@heroicons/react/24/solid'
-// import { redirect } from 'next/navigation'
 
-export default async function Rooms() {
+interface Props {
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default async function Rooms({ searchParams }: Props) {
   const END_POINT = 'rooms'
-
   const CREATE_KEY = 'create-room'
   const READ_KEY = 'read-room'
   const UPDATE_KEY = 'update-room'
@@ -22,15 +25,13 @@ export default async function Rooms() {
     'therapies?active=true',
   )
 
-  // if (response?.error) {
-  //   redirect('/login')
-  // }
-
   const therapiesData = response.data?.map((therapy: TherapyData) => ({
     id: therapy.id,
     name: therapy.name,
     checked: false,
   }))
+
+  const roomsResponse = await SSFetch<any>(`${END_POINT}?search=${searchParams?.search}&page=${searchParams?.page ?? 1}`)
 
   return (
     <SearchData.Container>
@@ -98,7 +99,8 @@ export default async function Rooms() {
             text="Tem certeza que deseja deletar essa sala? (Essa ação é irreversível)"
           />
         }
-        queryKey={READ_KEY}
+        pagination={<Pagination meta={roomsResponse?.meta} />}
+        data={roomsResponse?.data}
         endPoint={END_POINT}
       />
     </SearchData.Container>

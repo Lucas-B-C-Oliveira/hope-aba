@@ -9,10 +9,14 @@ import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
 import { redirect } from 'next/navigation'
 import { ConfirmToRemoveDataModal } from '@/components/Modals/ConfirmToRemoveDataModal'
 import { tableHeaders } from '@/components/Professional'
+import { Pagination } from '@/components/Pagination/Pagination'
 
-export default async function Professionals() {
+interface Props {
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default async function Professionals({ searchParams }: Props) {
   const END_POINT = 'professionals'
-
   const CREATE_KEY = 'create-professional'
   const READ_KEY = 'read-professional'
   const UPDATE_KEY = 'update-professional'
@@ -31,6 +35,8 @@ export default async function Professionals() {
     name: therapy.name,
     checked: false,
   }))
+
+  const professionalsResponse = await SSFetch<any>(`${END_POINT}?search=${searchParams?.search}&page=${searchParams?.page ?? 1}`)
 
   return (
     <SearchData.Container>
@@ -98,7 +104,8 @@ export default async function Professionals() {
             text="Tem certeza que deseja deletar esse cadastro? (Essa ação é irreversível"
           />
         }
-        queryKey={READ_KEY}
+        pagination={<Pagination meta={professionalsResponse?.meta} />}
+        data={professionalsResponse?.data}
         endPoint={END_POINT}
       />
     </SearchData.Container>
