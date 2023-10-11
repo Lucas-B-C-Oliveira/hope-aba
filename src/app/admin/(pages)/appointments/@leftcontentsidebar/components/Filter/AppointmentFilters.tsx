@@ -48,6 +48,7 @@ export const AppointmentFilters = memo(function AppointmentFilters({
       disabled,
       tokenData,
     )
+
   const usePatientsLogic = () =>
     useAutocompleteFilter('patientsAppointment', 'patients')
 

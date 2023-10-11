@@ -10,10 +10,15 @@ import { DatePickerAdapter } from '@/components/Form/DatePickerAdapter'
 import { TimePickerAdapterEnd } from '@/components/Form/TimePickerAdapterEnd'
 import { TimePickerAdapterStart } from '@/components/Form/TimePickerAdapterStart'
 import { ContentSidebarContainer } from '../../components/ContentSidebarContainer'
+import { AutocompleteFilter } from '../../components/Filter/AutocompleteFilter'
+import { useAutocompleteLogic } from './useAutocompleteLogic'
 
 export const RightContentSidebar = memo(function RightContentSidebar() {
-  const { openAndCloseRightContentSidebar, rightContentSidebarIsOpen } =
+  const { rightContentSidebarIsOpen } =
     useMainLayoutStore()
+
+  const usePatientLogic = () =>
+    useAutocompleteLogic('patients', 'patient')
 
   return (
     <ContentSidebarContainer
@@ -21,7 +26,10 @@ export const RightContentSidebar = memo(function RightContentSidebar() {
       content={
         <AppointmentForm
           titleForm="Cadastrar Agendamento"
-          patients={<Form.Autocomplete endPoint="patients" />}
+          patients={<AutocompleteFilter
+            useAutocompleteLogic={usePatientLogic}
+            labelText="Nome do Paciente"
+          />}
           therapy={<Form.SelectByFormData />}
           professional={
             <Form.SelectFetchOptionsById endPoint="professionals" />
