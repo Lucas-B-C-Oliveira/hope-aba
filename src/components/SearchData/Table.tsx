@@ -143,7 +143,7 @@ export const Table = memo(function Table({
           </tbody>
         </table>
 
-        <div className="flex flex-row gap-1 py-2 items-center justify-center w-full h-fit bg-gray-50 ">
+        <div className="flex flex-row gap-1 py-1 items-center justify-center w-full h-fit bg-gray-50 ">
           {pagination && pagination}
         </div>
 
