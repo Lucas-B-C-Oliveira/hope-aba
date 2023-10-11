@@ -70,3 +70,9 @@ export type GetClinicsDataResponse = {
   name: string
   document: string
 }
+
+export interface Meta {
+  page: number | string
+  perPage: number | string
+  total: number | string
+}
