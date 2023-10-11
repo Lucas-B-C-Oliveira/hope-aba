@@ -62,7 +62,7 @@ export const Table = memo(function Table({
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 bg-white divide-y-reverse ">
+          <tbody className="divide-y divide-gray-200 bg-white ">
             {data &&
               data?.length > 0 &&
               data?.map((register: any) => (
@@ -143,7 +143,7 @@ export const Table = memo(function Table({
           </tbody>
         </table>
 
-        <div className="flex flex-row gap-1 py-1 items-center justify-center w-full h-fit bg-gray-50 ">
+        <div className="flex flex-row gap-1 py-1 items-center justify-center w-full h-fit bg-gray-50 border-t border-gray-300 ">
           {pagination && pagination}
         </div>
 
