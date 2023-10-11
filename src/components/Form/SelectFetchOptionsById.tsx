@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useState, Fragment, useRef } from 'react'
+import { memo, useState, Fragment, useRef, useEffect } from 'react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { Listbox, Transition } from '@headlessui/react'
 import { MAGIC_INPUT_CLASSNAME, MAGIC_LABEL_CLASSNAME } from '@/style/consts'
@@ -57,20 +57,6 @@ export const SelectFetchOptionsById = memo(function SelectFetchOptionsById({
   const ARE_THERE_OPTIONS_TO_SHOW =
     typeof responseData?.data !== 'undefined' && responseData?.data.length > 0
 
-  if (typeof observedField?.id !== 'undefined') {
-    if (idFetchSaved.current !== observedField?.id) {
-      idFetchSaved.current = observedField?.id
-      getResponseData(observedField?.id)
-    }
-  } else {
-    if (typeof currentFieldValue !== 'undefined') {
-      setValue(`${name}`, undefined)
-    }
-
-    if (!isEqual(selected, defaultSelected)) {
-      setSelected(defaultSelected)
-    }
-  }
 
   async function getResponseData(id: string) {
     setIsLoading(true)
@@ -106,6 +92,25 @@ export const SelectFetchOptionsById = memo(function SelectFetchOptionsById({
       }
     }
   }
+
+  useEffect(() => {
+    if (typeof observedField?.id !== 'undefined') {
+      if (idFetchSaved.current !== observedField?.id) {
+        idFetchSaved.current = observedField?.id
+        getResponseData(observedField?.id)
+      }
+    } else {
+      if (typeof currentFieldValue !== 'undefined') {
+        setValue(`${name}`, undefined)
+      }
+
+      if (!isEqual(selected, defaultSelected)) {
+        setSelected(defaultSelected)
+      }
+    }
+
+  }, [observedField])
+
 
   return (
     <Listbox
