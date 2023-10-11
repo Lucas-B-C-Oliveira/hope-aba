@@ -28,7 +28,7 @@ export const RightContentSidebar = memo(function RightContentSidebar() {
           titleForm="Cadastrar Agendamento"
           patients={<AutocompleteFilter
             useAutocompleteLogic={usePatientLogic}
-            labelText="Nome do Paciente"
+            labelText="Paciente"
           />}
           therapy={<Form.SelectByFormData />}
           professional={
