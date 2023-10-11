@@ -1,5 +1,5 @@
 'use client'
-import { memo, useState, Fragment } from 'react'
+import { memo, useState, Fragment, useEffect } from 'react'
 
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
@@ -11,78 +11,22 @@ import { useFormContext, useWatch } from 'react-hook-form'
 import { TherapyData } from '@/types'
 import { twMerge } from 'tailwind-merge'
 import { isEqual } from 'lodash'
+import { useSelectByFormData } from './useSelectByFormData'
 
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(' ')
-}
+
 
 interface Props {
   name?: string
   fieldNameToObserve?: string
 }
 
-const defaultSelected = { name: 'Selecione', id: '123123' }
 
 export const SelectByFormData = memo(function SelectByFormData({
   name,
   fieldNameToObserve,
 }: Props) {
-  const {
-    setValue,
-    setError,
-    clearErrors,
-    formState: { errors },
-    control,
-    getValues,
-  } = useFormContext()
 
-  const [selected, setSelected] = useState(defaultSelected)
-
-  const observedField = useWatch({
-    name: `${fieldNameToObserve}`,
-    control,
-  })
-
-  const formValues = getValues()
-  const currentFieldValue = formValues[`${name}`]
-
-  if (observedField === 'undefined') {
-    if (typeof currentFieldValue !== 'undefined') {
-      setValue(`${name}`, undefined)
-    }
-
-    if (!isEqual(selected, defaultSelected)) {
-      setSelected(defaultSelected)
-    }
-  }
-
-  // if (currentOptions.current !== options) {
-  //   setSelected(defaultSelected)
-  //   currentOptions.current = options
-  // }
-
-  function handleClick() {
-    if (!(observedField?.allowTherapies?.length > 0)) {
-      setError(`${name}`, {
-        message: 'Selecione um paciente primeiro',
-        type: 'string',
-      })
-    } else {
-      if (typeof errors[`${name}`]?.message !== 'undefined') {
-        clearErrors()
-      }
-    }
-  }
-
-  function handleOnSelected(newData: any) {
-    if (!isEqual(currentFieldValue, newData)) {
-      setValue(`${name}`, newData)
-    }
-
-    if (!isEqual(selected, newData)) {
-      setSelected(newData)
-    }
-  }
+  const { classNames, handleClick, handleOnSelected, observedField, selected } = useSelectByFormData({ name, fieldNameToObserve })
 
   return (
     <Listbox value={selected} onChange={handleOnSelected}>
