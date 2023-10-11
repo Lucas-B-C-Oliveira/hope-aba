@@ -15,11 +15,9 @@ export function useAutocompleteLogic(
 
   const ARE_THERE_OPTIONS_TO_SHOW = currentOptions && currentOptions?.length > 0
 
-
-
   const { setValue, getValues } = useFormContext()
   const formValues = getValues()
-  const currentFieldValue = formValues[`${name}`]
+  const currentFieldValue = formValues[`${fieldName}`]
 
   const {
     data: optionsData,
