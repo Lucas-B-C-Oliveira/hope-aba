@@ -8,14 +8,6 @@ import { SelectByFormData } from './SelectByFormData'
 import { SelectFetchOptionsById } from './SelectFetchOptionsById'
 import { SelectByData } from './SelectByData'
 
-// import dynamic from 'next/dynamic'
-// import type { ComponentType } from 'react'
-
-// const SelectByFormData = dynamic<ComponentType>(
-//   () => import('./SelectByFormData'),
-//   { ssr: false },
-// )
-
 export const Form = {
   Label,
   Input,
