@@ -9,15 +9,8 @@ import { useFilters } from './useFilters'
 import { SpinnerLoading } from '../SpinnerLoading'
 
 
-interface Props {
-  queryKey: string
-  endPoint: string
-}
-
-export const Filters = memo(function Filters({ endPoint, queryKey }: Props) {
-
+export const Filters = memo(function Filters() {
   const { createSearchForm, handleSearch, handleSearchAll, handleSubmit, isSubmitting, loading } = useFilters()
-
 
   return (
     <FormProvider {...createSearchForm}>

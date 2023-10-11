@@ -36,7 +36,7 @@ export default async function Rooms({ searchParams }: Props) {
   return (
     <SearchData.Container>
       <div className="flex flex-row h-fit w-full justify-between">
-        <SearchData.Filters endPoint={END_POINT} queryKey={READ_KEY} />
+        <SearchData.Filters />
 
         <Modal.Container
           openModalButton={
