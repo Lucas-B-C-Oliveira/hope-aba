@@ -25,7 +25,7 @@ export function Sidebar() {
   return (
     <div
       id="main-sidebar"
-      className="lg:z-40 lg:flex lg:w-fit lg:flex-col h-screen"
+      className="lg:z-40 lg:flex lg:w-fit lg:flex-col h-full"
     >
       <div className="flex flex-col gap-y-5 overflow-y-auto bg-gray-900 h-full px-2 pb-4">
         <div className="flex h-16 shrink-0 items-center px-2">

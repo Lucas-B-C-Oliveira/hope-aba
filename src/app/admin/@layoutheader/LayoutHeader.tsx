@@ -58,7 +58,7 @@ export function LayoutHeader({
   }
 
   return (
-    <div className="z-40 flex h-11  justify-end gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:px-6 ">
+    <div className="z-40 flex h-11 justify-end gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:px-6 ">
       <div className="flex items-center gap-x-4 lg:gap-x-6 al">
         <div className="flex flex-row gap-3 items-center">
           <span

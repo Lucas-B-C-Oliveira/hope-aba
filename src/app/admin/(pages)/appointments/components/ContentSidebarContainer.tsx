@@ -22,8 +22,8 @@ export function ContentSidebarContainer({ content, isOpen }: Props) {
     >
       <div
         className={`
-          pointer-events-auto transform  h-full rounded-2xl bg-white
-           text-left shadow-xl transition-all w-fit 
+          pointer-events-auto transform h-full rounded-2xl bg-white
+          text-left shadow-xl transition-all w-fit 
         `}
       >
         {content && content}
