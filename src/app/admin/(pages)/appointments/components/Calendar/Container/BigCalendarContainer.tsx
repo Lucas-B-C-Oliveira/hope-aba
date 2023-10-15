@@ -37,34 +37,35 @@ export async function getAppointmentsByRangeDate<T = unknown>(
     const response = (await CSFetch<T>(input, init)) as Response
     const cardsAppointment = response?.data
       ? response?.data.map((appointmentData: any) => {
-        const { day, start, end } = appointmentData.schedule
+          const { day, start, end } = appointmentData.schedule
 
-        const { patient, therapy } = appointmentData
+          const { patient, therapy } = appointmentData
 
-        const patientNameSplited = patient.name.split(' ')
+          const patientNameSplited = patient.name.split(' ')
 
-        const patientNameLabel = `${patientNameSplited[0]} ${patientNameSplited[patientNameSplited.length - 1]
+          const patientNameLabel = `${patientNameSplited[0]} ${
+            patientNameSplited[patientNameSplited.length - 1]
           }` //! TODO: Format this name to First upercase first lether
 
-        //   const startDate = dateAdapter(`${day}T${start}:00`).local().toDate()
-        //   const endDate = dateAdapter(`${day}T${end}:00`).local().toDate()
+          //   const startDate = dateAdapter(`${day}T${start}:00`).local().toDate()
+          //   const endDate = dateAdapter(`${day}T${end}:00`).local().toDate()
 
-        //   const startDate = new Date(`${day}T${start}:00Z`)
-        // const endDate = new Date(`${day}T${end}:00Z`)
+          //   const startDate = new Date(`${day}T${start}:00Z`)
+          // const endDate = new Date(`${day}T${end}:00Z`)
 
-        const startDate = `${day}T${start}:00`
-        const endDate = `${day}T${end}:00`
+          const startDate = `${day}T${start}:00`
+          const endDate = `${day}T${end}:00`
 
-        return {
-          start: startDate,
-          end: endDate,
-          data: {
-            ...appointmentData,
-            patientNameLabel,
-            therapyNameLabel: therapy?.name,
-          },
-        }
-      })
+          return {
+            start: startDate,
+            end: endDate,
+            data: {
+              ...appointmentData,
+              patientNameLabel,
+              therapyNameLabel: therapy?.name,
+            },
+          }
+        })
       : []
 
     return cardsAppointment
@@ -315,8 +316,7 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
 
   useEffect(() => {
     if (window && startComponent) {
-
-      const main = document.getElementById("main")
+      const main = document.getElementById('main')
       const mainRef = main?.getBoundingClientRect()
 
       if (mainRef?.height) {
@@ -324,8 +324,7 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
         setContentHeight(newContentHeight)
       }
     }
-
-  }, [startComponent]);
+  }, [startComponent])
 
   useEffect(() => {
     setStartComponent(true)
@@ -333,13 +332,11 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
 
   return (
     <div
-
       style={{
-        maxHeight: contentHeight
+        maxHeight: contentHeight,
       }}
       id="calendar"
       className="flex flex-col h-full rounded-md shadow-md"
-
     >
       <Calendar.Content
         view={'week'}

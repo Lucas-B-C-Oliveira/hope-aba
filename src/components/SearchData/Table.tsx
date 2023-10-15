@@ -8,7 +8,7 @@ import { Modal } from '../Modal'
 
 interface Props {
   endPoint: string
-  data: any[],
+  data: any[]
   editDataModal: ReactElement
   confirmRemoveDataModal: ReactElement
   pagination: ReactElement
@@ -23,7 +23,6 @@ export const Table = memo(function Table({
   pagination,
   tableHeaders,
 }: Props) {
-
   return (
     <div className="w-full h-fit">
       <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">

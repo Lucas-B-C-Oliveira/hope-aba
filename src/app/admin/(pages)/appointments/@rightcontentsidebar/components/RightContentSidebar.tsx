@@ -14,16 +14,14 @@ import { AutocompleteFilter } from '../../components/Filter/AutocompleteFilter'
 import { useAutocompleteLogic } from './useAutocompleteLogic'
 
 export const RightContentSidebar = memo(function RightContentSidebar() {
-  const { rightContentSidebarIsOpen } =
-    useMainLayoutStore()
+  const { rightContentSidebarIsOpen } = useMainLayoutStore()
 
   const [contentHeight, setContentHeight] = useState('0rem')
   const [startComponent, setStartComponent] = useState(false)
 
   useEffect(() => {
     if (window && startComponent) {
-
-      const main = document.getElementById("main")
+      const main = document.getElementById('main')
       const mainRef = main?.getBoundingClientRect()
 
       if (mainRef?.height) {
@@ -31,15 +29,13 @@ export const RightContentSidebar = memo(function RightContentSidebar() {
         setContentHeight(newContentHeight)
       }
     }
-
-  }, [startComponent]);
+  }, [startComponent])
 
   useEffect(() => {
     setStartComponent(true)
   }, [])
 
-  const usePatientLogic = () =>
-    useAutocompleteLogic('patients', 'patient')
+  const usePatientLogic = () => useAutocompleteLogic('patients', 'patient')
 
   return (
     <ContentSidebarContainer
@@ -47,16 +43,18 @@ export const RightContentSidebar = memo(function RightContentSidebar() {
       content={
         <div
           style={{
-            maxHeight: contentHeight
+            maxHeight: contentHeight,
           }}
           className={`h-full overflow-y-auto py-2 `}
         >
           <AppointmentForm
             titleForm="Cadastrar Agendamento"
-            patients={<AutocompleteFilter
-              useAutocompleteLogic={usePatientLogic}
-              labelText="Paciente"
-            />}
+            patients={
+              <AutocompleteFilter
+                useAutocompleteLogic={usePatientLogic}
+                labelText="Paciente"
+              />
+            }
             therapy={<Form.SelectByFormData />}
             professional={
               <Form.SelectFetchOptionsById endPoint="professionals" />

@@ -13,20 +13,17 @@ import { twMerge } from 'tailwind-merge'
 import { isEqual } from 'lodash'
 import { useSelectByFormData } from './useSelectByFormData'
 
-
-
 interface Props {
   name?: string
   fieldNameToObserve?: string
 }
 
-
 export const SelectByFormData = memo(function SelectByFormData({
   name,
   fieldNameToObserve,
 }: Props) {
-
-  const { classNames, handleClick, handleOnSelected, observedField, selected } = useSelectByFormData({ name, fieldNameToObserve })
+  const { classNames, handleClick, handleOnSelected, observedField, selected } =
+    useSelectByFormData({ name, fieldNameToObserve })
 
   return (
     <Listbox value={selected} onChange={handleOnSelected}>

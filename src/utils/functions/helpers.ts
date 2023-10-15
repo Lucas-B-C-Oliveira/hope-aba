@@ -50,16 +50,16 @@ export function removeFirstCharacter(query: string) {
 }
 
 export function getPageValue(str: string) {
-  const match = str.match(/page=(\d+)/);
-  return match ? match[1] : undefined;
-};
+  const match = str.match(/page=(\d+)/)
+  return match ? match[1] : undefined
+}
 
 export function hasParamsInUrl(url: string): boolean {
-  const regex = /\?/;
-  return regex.test(url);
+  const regex = /\?/
+  return regex.test(url)
 }
 
 export function removeSearchParam(url: string): string {
-  const regex = /&search=[^&]*/;
-  return url.replace(regex, '');
+  const regex = /&search=[^&]*/
+  return url.replace(regex, '')
 }

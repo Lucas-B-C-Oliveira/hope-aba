@@ -1,6 +1,6 @@
-import { isEqual } from "lodash"
-import { useEffect, useState } from "react"
-import { useFormContext, useWatch } from "react-hook-form"
+import { isEqual } from 'lodash'
+import { useEffect, useState } from 'react'
+import { useFormContext, useWatch } from 'react-hook-form'
 
 const defaultSelected = { name: 'Selecione', id: '123123' }
 
@@ -14,7 +14,6 @@ interface Props {
 }
 
 export function useSelectByFormData({ fieldNameToObserve, name }: Props) {
-
   const {
     setValue,
     setError,
@@ -65,15 +64,13 @@ export function useSelectByFormData({ fieldNameToObserve, name }: Props) {
     if (!isEqual(selected, defaultSelected)) {
       setSelected(defaultSelected)
     }
-
   }, [observedField])
-
 
   return {
     selected,
     handleOnSelected,
     handleClick,
     observedField,
-    classNames
+    classNames,
   }
 }

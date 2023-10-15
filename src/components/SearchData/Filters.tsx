@@ -8,9 +8,15 @@ import { ActionButton } from '../ActionButton'
 import { useFilters } from './useFilters'
 import { SpinnerLoading } from '../SpinnerLoading'
 
-
 export const Filters = memo(function Filters() {
-  const { createSearchForm, handleSearch, handleSearchAll, handleSubmit, isSubmitting, loading } = useFilters()
+  const {
+    createSearchForm,
+    handleSearch,
+    handleSearchAll,
+    handleSubmit,
+    isSubmitting,
+    loading,
+  } = useFilters()
 
   return (
     <FormProvider {...createSearchForm}>

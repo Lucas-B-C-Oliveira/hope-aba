@@ -36,7 +36,11 @@ export default async function Professionals({ searchParams }: Props) {
     checked: false,
   }))
 
-  const professionalsResponse = await SSFetch<any>(`${END_POINT}?search=${searchParams?.search}&page=${searchParams?.page ?? 1}`)
+  const professionalsResponse = await SSFetch<any>(
+    `${END_POINT}?search=${searchParams?.search}&page=${
+      searchParams?.page ?? 1
+    }`,
+  )
 
   return (
     <SearchData.Container>

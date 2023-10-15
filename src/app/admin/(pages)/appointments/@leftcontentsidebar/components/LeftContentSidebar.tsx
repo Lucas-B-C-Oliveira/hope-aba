@@ -19,8 +19,7 @@ export const LeftContentSidebar = memo(function LeftContentSidebar({
 
   useEffect(() => {
     if (window && startComponent) {
-
-      const main = document.getElementById("main")
+      const main = document.getElementById('main')
       const mainRef = main?.getBoundingClientRect()
 
       if (mainRef?.height) {
@@ -28,13 +27,11 @@ export const LeftContentSidebar = memo(function LeftContentSidebar({
         setContentHeight(newContentHeight)
       }
     }
-
-  }, [startComponent]);
+  }, [startComponent])
 
   useEffect(() => {
     setStartComponent(true)
   }, [])
-
 
   return (
     <ContentSidebarContainer
@@ -42,10 +39,10 @@ export const LeftContentSidebar = memo(function LeftContentSidebar({
       content={
         <div
           style={{
-            maxHeight: contentHeight
+            maxHeight: contentHeight,
           }}
-
-          className={`h-full overflow-y-auto py-2 `}>
+          className={`h-full overflow-y-auto py-2 `}
+        >
           <div className="flex flex-col gap-3 p-4">
             <h2 className="text-left text-xl font-bold tracking-tight text-gray-600">
               Filtros

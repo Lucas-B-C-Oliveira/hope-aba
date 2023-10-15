@@ -31,7 +31,11 @@ export default async function Rooms({ searchParams }: Props) {
     checked: false,
   }))
 
-  const roomsResponse = await SSFetch<any>(`${END_POINT}?search=${searchParams?.search}&page=${searchParams?.page ?? 1}`)
+  const roomsResponse = await SSFetch<any>(
+    `${END_POINT}?search=${searchParams?.search}&page=${
+      searchParams?.page ?? 1
+    }`,
+  )
 
   return (
     <SearchData.Container>

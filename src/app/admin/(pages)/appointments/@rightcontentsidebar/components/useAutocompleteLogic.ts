@@ -4,10 +4,7 @@ import { isEqual } from 'lodash'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-export function useAutocompleteLogic(
-  endPoint?: string,
-  fieldName?: string
-) {
+export function useAutocompleteLogic(endPoint?: string, fieldName?: string) {
   const [selected, setSelected] = useState<any>(null)
   const [currentOptions, setCurrentOptions] = useState<any>([]) //! TODO: Trocar o tipo para o tipo correto
 
@@ -25,15 +22,15 @@ export function useAutocompleteLogic(
     error,
     status,
     isError,
-    isFetching
+    isFetching,
   } = useQuery({
-    queryKey: [`get/useAutocompleteLogic/${endPoint}`],
+    queryKey: [`get/useAutocompleteLogic/${endPoint}`, searchValue?.current],
     queryFn: async () => {
       const response = await CSFetch<any>(
         `${endPoint}?search=${searchValue?.current}`,
         {
-          cache: 'no-cache'
-        }
+          cache: 'no-cache',
+        },
       )
       return response?.data
     },
@@ -64,12 +61,10 @@ export function useAutocompleteLogic(
     }
   }, [status, optionsData])
 
-
   useEffect(() => {
     if (selected) {
       setValue(`${fieldName}`, selected)
-    }
-    else {
+    } else {
       setValue(`${fieldName}`, undefined)
     }
   }, [selected])

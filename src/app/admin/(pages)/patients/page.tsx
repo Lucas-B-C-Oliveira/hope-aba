@@ -31,7 +31,11 @@ export default async function Patient({ searchParams }: Props) {
     checked: false,
   }))
 
-  const patientsResponse = await SSFetch<any>(`${END_POINT}?search=${searchParams?.search}&page=${searchParams?.page ?? 1}`)
+  const patientsResponse = await SSFetch<any>(
+    `${END_POINT}?search=${searchParams?.search}&page=${
+      searchParams?.page ?? 1
+    }`,
+  )
 
   return (
     <SearchData.Container>
