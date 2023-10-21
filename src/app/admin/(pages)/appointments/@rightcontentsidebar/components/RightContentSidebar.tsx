@@ -12,9 +12,14 @@ import { TimePickerAdapterStart } from '@/components/Form/TimePickerAdapterStart
 import { ContentSidebarContainer } from '../../components/ContentSidebarContainer'
 import { AutocompleteFilter } from '../../components/Filter/AutocompleteFilter'
 import { useAutocompleteLogic } from './useAutocompleteLogic'
+import { SelectOptionsByFetch } from '@/components/Form/SelectOptionsByFetch'
+import { useSelectOptionsByFetch } from '@/components/Form/useSelectOptionsByFetch'
+import { Filter, FilterKey } from '@/types'
+import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 
 export const RightContentSidebar = memo(function RightContentSidebar() {
   const { rightContentSidebarIsOpen } = useMainLayoutStore()
+  const { addFilter } = useAppointmentFilterStore()
 
   const [contentHeight, setContentHeight] = useState('0rem')
   const [startComponent, setStartComponent] = useState(false)
@@ -37,6 +42,29 @@ export const RightContentSidebar = memo(function RightContentSidebar() {
 
   const usePatientLogic = () => useAutocompleteLogic('patients', 'patient')
 
+  function setProfessionalData(professionalData: Filter) {
+    const key: FilterKey = 'professionalAvailable'
+    addFilter(key, professionalData)
+  }
+
+  const useSelectOptionsByFetchProfessionalLogic = () =>
+    useSelectOptionsByFetch({
+      currentFieldName: 'professional',
+      endpointToFetch: 'professionals',
+      mainFieldNameToObserve: 'therapy',
+      firstFieldNameToObserveToCleanFormData: 'patient',
+      setProfessionalData,
+    })
+
+  const useSelectOptionsByFetchRoomlLogic = () =>
+    useSelectOptionsByFetch({
+      currentFieldName: 'room',
+      endpointToFetch: 'rooms',
+      mainFieldNameToObserve: 'therapy',
+      firstFieldNameToObserveToCleanFormData: 'patient',
+      setProfessionalData,
+    })
+
   return (
     <ContentSidebarContainer
       isOpen={rightContentSidebarIsOpen}
@@ -57,9 +85,17 @@ export const RightContentSidebar = memo(function RightContentSidebar() {
             }
             therapy={<Form.SelectByFormData />}
             professional={
-              <Form.SelectFetchOptionsById endPoint="professionals" />
+              <SelectOptionsByFetch
+                labelText="Profissional"
+                useLogic={useSelectOptionsByFetchProfessionalLogic}
+              />
             }
-            room={<Form.SelectFetchOptionsById endPoint="rooms" />}
+            room={
+              <SelectOptionsByFetch
+                labelText="Sala"
+                useLogic={useSelectOptionsByFetchRoomlLogic}
+              />
+            }
             datePicker={<DatePickerAdapter />}
             timePickerStart={<TimePickerAdapterStart />}
             timePickerEnd={<TimePickerAdapterEnd />}
