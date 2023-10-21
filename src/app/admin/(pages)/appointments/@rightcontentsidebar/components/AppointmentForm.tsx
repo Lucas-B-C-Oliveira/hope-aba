@@ -8,8 +8,6 @@ import { Form } from '@/components/Form'
 import { twMerge } from 'tailwind-merge'
 import { MAGIC_INPUT_CLASSNAME, MAGIC_LABEL_CLASSNAME } from '@/style/consts'
 import { doFetch } from '@/utils/actions/action'
-import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
-import { Filter, FilterKey } from '@/types'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/navigation'
@@ -155,7 +153,7 @@ export const AppointmentForm = memo(function AppointmentForm({
   datePicker,
 }: Props) {
   const router = useRouter()
-  const { addFilter } = useAppointmentFilterStore()
+
   const createAppointmentForm = useForm<AppointmentData>({
     resolver: zodResolver(appointmentSchema),
   })
@@ -209,11 +207,6 @@ export const AppointmentForm = memo(function AppointmentForm({
     // refetch()
   }
 
-  function setProfessionalData(professionalData: Filter) {
-    const key: FilterKey = 'professionalAvailable'
-    addFilter(key, professionalData)
-  }
-
   return (
     <FormProvider {...createAppointmentForm}>
       <form
@@ -234,19 +227,8 @@ export const AppointmentForm = memo(function AppointmentForm({
               name: 'therapy',
               fieldNameToObserve: 'patient',
             })}
-          {professional &&
-            cloneElement(professional, {
-              name: 'professional',
-              title: 'Profissional',
-              fieldNameToObserve: 'therapy',
-              setProfessionalData,
-            })}
-          {room &&
-            cloneElement(room, {
-              name: 'room',
-              title: 'Salas',
-              fieldNameToObserve: 'therapy',
-            })}
+          {professional && cloneElement(professional)}
+          {room && cloneElement(room)}
 
           {datePicker &&
             cloneElement(datePicker, {
