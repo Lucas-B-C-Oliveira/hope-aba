@@ -106,7 +106,6 @@ export function useSelectOptionsByFetch({
 
   useEffect(() => {
     cleanCurrentFormData()
-    console.log('mainObservedField', mainObservedField)
     if (typeof mainObservedField?.id !== 'undefined') {
       therapyIds.current = mainObservedField?.id
       refetch()
