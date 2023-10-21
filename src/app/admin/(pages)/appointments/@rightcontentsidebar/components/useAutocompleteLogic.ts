@@ -20,11 +20,12 @@ export function useAutocompleteLogic(endPoint?: string, fieldName?: string) {
     data: optionsData,
     refetch: optionsRefetch,
     error,
+    fetchStatus,
     status,
     isError,
     isFetching,
   } = useQuery({
-    queryKey: [`get/useAutocompleteLogic/${endPoint}`, searchValue?.current],
+    queryKey: [`get/useAutocompleteLogic/${endPoint}`],
     queryFn: async () => {
       const response = await CSFetch<any>(
         `${endPoint}?search=${searchValue?.current}`,
@@ -40,7 +41,7 @@ export function useAutocompleteLogic(endPoint?: string, fieldName?: string) {
 
   async function onSearchChange(event: ChangeEvent<HTMLInputElement>) {
     const value = event.target.value
-    if (value?.length > 2 && value !== searchValue.current) {
+    if (value?.length > 1) {
       searchValue.current = value
       setCurrentOptions(null)
       optionsRefetch()
@@ -52,20 +53,29 @@ export function useAutocompleteLogic(endPoint?: string, fieldName?: string) {
     optionsRefetch()
   }
 
+  function clearSomeData() {
+    if (selected !== null) {
+      setSelected(null)
+    }
+    if (currentFieldValue !== undefined) {
+      setValue(`${fieldName}`, undefined)
+    }
+  }
+
   useEffect(() => {
-    if (optionsData && status === 'success') {
+    if (optionsData && status === 'success' && optionsData?.length > 0) {
       if (!isEqual(optionsData, currentOptions)) {
         setCurrentOptions(optionsData)
-        setSelected(null)
+        clearSomeData()
       }
     }
-  }, [status, optionsData])
+  }, [status, optionsData?.length, fetchStatus])
 
   useEffect(() => {
     if (selected) {
       setValue(`${fieldName}`, selected)
     } else {
-      setValue(`${fieldName}`, undefined)
+      clearSomeData()
     }
   }, [selected])
 
