@@ -50,8 +50,6 @@ export function useCheckboxesTherapiesFilters(
         }
 
         const fetchQuery = `${endPoint}`
-        console.log('endPoint', endPoint)
-        console.log('fetchQuery', fetchQuery)
         const response = await CSFetch<any>(fetchQuery)
         setLoading(false)
         return response?.data

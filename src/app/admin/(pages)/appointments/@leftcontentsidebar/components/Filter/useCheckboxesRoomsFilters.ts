@@ -53,8 +53,6 @@ export function useCheckboxesRoomsFilters(
             : ''
 
         const fetchQuery = `${endPoint}${therapyIdsQuery}`
-        console.log('endPoint', endPoint)
-        console.log('fetchQuery', fetchQuery)
         const response = await CSFetch<any>(fetchQuery)
         setLoading(false)
         return response?.data
@@ -94,7 +92,6 @@ export function useCheckboxesRoomsFilters(
 
   useEffect(() => {
     if (observedField && (checkboxes.length === 0 || !checkboxes)) {
-      console.log('observedField', observedField)
       roomsRefetch()
     }
   }, [observedField])
