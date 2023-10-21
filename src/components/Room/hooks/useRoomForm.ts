@@ -4,6 +4,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { formFields, RoomFormData, roomFormSchema, UseRoomFormProps } from '..'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
 
 export const useRoomForm = ({
   mutateAsync,
@@ -15,6 +16,7 @@ export const useRoomForm = ({
   })
 
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   const {
     handleSubmit,
@@ -39,7 +41,10 @@ export const useRoomForm = ({
         type: 'all',
       })
 
-      if (setOpen) setOpen(false)
+      if (setOpen) {
+        setOpen(false)
+        router.refresh()
+      }
     } catch (error) {
       console.error(error)
     }

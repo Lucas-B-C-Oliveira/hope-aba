@@ -5,6 +5,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { memo } from 'react'
 import { Button } from '../Button'
+import { useRouter } from 'next/navigation'
 
 interface Props {
   endPoint?: string
@@ -24,6 +25,7 @@ export const ConfirmToRemoveDataModal = memo(function ConfirmToRemoveDataModal({
   queryKeys,
 }: Props) {
   const queryClient = useQueryClient()
+  const router = useRouter()
   const { mutateAsync, status } = useMutation({
     mutationKey: [mutationKey],
     mutationFn: async () => {
@@ -53,7 +55,10 @@ export const ConfirmToRemoveDataModal = memo(function ConfirmToRemoveDataModal({
         type: 'all',
       })
 
-      if (setOpen) setOpen(false)
+      if (setOpen) {
+        setOpen(false)
+        router.refresh()
+      }
     } catch (error) {
       console.log('error dentro do catch do deleteHandle')
       console.error(error)

@@ -10,6 +10,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { documentMask } from '@/utils/functions'
+import { useRouter } from 'next/navigation'
 
 export const usePatientForm = ({
   mutateAsync,
@@ -21,6 +22,7 @@ export const usePatientForm = ({
   })
 
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   const {
     handleSubmit,
@@ -76,7 +78,10 @@ export const usePatientForm = ({
         type: 'all',
       })
 
-      if (setOpen) setOpen(false)
+      if (setOpen) {
+        setOpen(false)
+        router.refresh()
+      }
     } catch (error) {
       console.error(error)
     }
