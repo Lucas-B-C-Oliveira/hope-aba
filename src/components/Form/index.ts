@@ -3,9 +3,7 @@ import { Field } from './Field'
 import { Input } from './Input'
 import { Label } from './Label'
 import { Select } from './Select'
-import { Autocomplete } from './Autocomplete'
 import { SelectByFormData } from './SelectByFormData'
-import { SelectFetchOptionsById } from './SelectFetchOptionsById'
 import { SelectByData } from './SelectByData'
 
 export const Form = {
@@ -14,8 +12,6 @@ export const Form = {
   ErrorMessage,
   Field,
   Select,
-  Autocomplete,
   SelectByFormData,
-  SelectFetchOptionsById,
   SelectByData,
 }
