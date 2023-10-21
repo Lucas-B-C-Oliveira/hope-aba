@@ -218,10 +218,7 @@ export const AppointmentForm = memo(function AppointmentForm({
         </h2>
 
         <div className="flex flex-col items-start gap-4">
-          {patients &&
-            cloneElement(patients, {
-              name: 'patient',
-            })}
+          {patients && cloneElement(patients)}
           {therapy &&
             cloneElement(therapy, {
               name: 'therapy',
