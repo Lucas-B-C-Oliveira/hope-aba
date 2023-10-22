@@ -25,8 +25,8 @@ export default async function Professionals({ searchParams }: Props) {
   const response = await SSFetch<FetchTherapiesData | any>(
     'therapies?active=true',
     {
-      cache: 'no-cache'
-    }
+      cache: 'no-cache',
+    },
   )
 
   if (response?.error) {
