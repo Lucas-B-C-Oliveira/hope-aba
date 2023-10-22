@@ -23,6 +23,9 @@ export default async function Rooms({ searchParams }: Props) {
 
   const response = await SSFetch<FetchTherapiesData | any>(
     'therapies?active=true',
+    {
+      cache: 'no-cache',
+    },
   )
 
   const therapiesData = response.data?.map((therapy: TherapyData) => ({
