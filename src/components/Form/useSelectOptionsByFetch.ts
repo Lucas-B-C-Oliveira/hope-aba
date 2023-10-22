@@ -1,3 +1,4 @@
+/* eslint-disable @tanstack/query/exhaustive-deps */
 import { CSFetch } from '@/utils/api/clientFetch'
 import { useQuery } from '@tanstack/react-query'
 import { isEqual } from 'lodash'
