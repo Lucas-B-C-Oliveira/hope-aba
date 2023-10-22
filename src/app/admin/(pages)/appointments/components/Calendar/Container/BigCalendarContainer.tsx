@@ -3,7 +3,10 @@ import { memo, useEffect, useRef, useState } from 'react'
 
 import { dateAdapter } from '@/utils/dateAdapter'
 import { Calendar } from '..'
-import { getProfessionalScheduleAvailability } from '@/utils/actions/action'
+import {
+  getAppointmentsByRangeDate,
+  getProfessionalScheduleAvailability,
+} from '@/utils/actions/action'
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 import { Filter, TokenData } from '@/types'
 import { isEqual } from 'lodash'
@@ -17,6 +20,7 @@ import {
   tokenDecode,
 } from '@/utils/functions/helpers'
 import { CSFetch } from '@/utils/api/clientFetch'
+import { useQuery } from '@tanstack/react-query'
 
 interface AppointmentCard {
   start: Date
@@ -29,50 +33,44 @@ interface Response {
   data?: any[]
 }
 
-export async function getAppointmentsByRangeDate<T = unknown>(
-  input: RequestInfo | URL,
-  init?: RequestInit | undefined | any,
-) {
-  try {
-    const response = (await CSFetch<T>(input, init)) as Response
-    const cardsAppointment = response?.data
-      ? response?.data.map((appointmentData: any) => {
-          const { day, start, end } = appointmentData.schedule
+// export async function getAppointmentsByRangeDate<T = unknown>(
+//   input: RequestInfo | URL,
+//   init?: RequestInit | undefined | any,
+// ) {
+//   try {
+//     const response = (await CSFetch<T>(input, init)) as Response
+//     const cardsAppointment = response?.data
+//       ? response?.data.map((appointmentData: any) => {
+//           const { day, start, end } = appointmentData.schedule
 
-          const { patient, therapy } = appointmentData
+//           const { patient, therapy } = appointmentData
 
-          const patientNameSplited = patient.name.split(' ')
+//           const patientNameSplited = patient.name.split(' ')
 
-          const patientNameLabel = `${patientNameSplited[0]} ${
-            patientNameSplited[patientNameSplited.length - 1]
-          }` //! TODO: Format this name to First upercase first lether
+//           const patientNameLabel = `${patientNameSplited[0]} ${
+//             patientNameSplited[patientNameSplited.length - 1]
+//           }`
 
-          //   const startDate = dateAdapter(`${day}T${start}:00`).local().toDate()
-          //   const endDate = dateAdapter(`${day}T${end}:00`).local().toDate()
+//           const startDate = `${day}T${start}:00`
+//           const endDate = `${day}T${end}:00`
 
-          //   const startDate = new Date(`${day}T${start}:00Z`)
-          // const endDate = new Date(`${day}T${end}:00Z`)
+//           return {
+//             start: startDate,
+//             end: endDate,
+//             data: {
+//               ...appointmentData,
+//               patientNameLabel,
+//               therapyNameLabel: therapy?.name,
+//             },
+//           }
+//         })
+//       : []
 
-          const startDate = `${day}T${start}:00`
-          const endDate = `${day}T${end}:00`
-
-          return {
-            start: startDate,
-            end: endDate,
-            data: {
-              ...appointmentData,
-              patientNameLabel,
-              therapyNameLabel: therapy?.name,
-            },
-          }
-        })
-      : []
-
-    return cardsAppointment
-  } catch (error: unknown | string | undefined) {
-    throw new Error(`${error}`)
-  }
-}
+//     return cardsAppointment
+//   } catch (error: unknown | string | undefined) {
+//     throw new Error(`${error}`)
+//   }
+// }
 
 const components = {
   event: (props: any) => {
@@ -183,6 +181,8 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
     if (professionalId) {
       console.log('professionalId', professionalId)
 
+      console.log('Vou chamar o getProfessionalScheduleAvailability')
+
       const data = await getProfessionalScheduleAvailability(
         professionalId,
         dateAdapter(currentWeekday),
@@ -194,6 +194,7 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
       }
     } else {
       if (typeof professionalAvailable?.id !== 'undefined') {
+        console.log('Vou chamar o getProfessionalScheduleAvailability')
         const data = await getProfessionalScheduleAvailability(
           professionalAvailable?.id,
           dateAdapter(currentWeekday),
@@ -267,9 +268,6 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
           end: new Date(data?.end),
         }
       })
-
-      // console.log('getAppointmentsByRangeDate newData', newData)
-      // console.log('getAppointmentsByRangeDate newData', newData)
 
       if (!isEqual(newData, appointments) && newData) {
         setAppointments(newData)
