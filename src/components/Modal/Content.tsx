@@ -3,6 +3,7 @@ import { Fragment, ReactNode, memo, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useMainLayoutStore } from '@/store/mainLayoutStore'
 import { XMarkIcon } from '@heroicons/react/24/solid'
+import { twMerge } from 'tailwind-merge'
 
 interface Props {
   open?: boolean
@@ -45,6 +46,9 @@ export const Content = memo(function Content({
 
   const [sizeClass, setSizeClass] = useState<Size | undefined>(undefined)
 
+  // const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  // const [windowHeight, setWindowHeight] = useState(window.innerHeight)
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const refMainElement = document?.getElementById('main')
@@ -55,6 +59,22 @@ export const Content = memo(function Content({
       }
     }
   }, [sidebarIsOpen])
+
+  // useEffect(() => {
+  //   // Função a ser executada quando a janela for redimensionada
+  //   const handleResize = () => {
+  //     setWindowWidth(window.innerWidth)
+  //     setWindowHeight(window.innerHeight)
+  //   }
+
+  //   // Adicione um ouvinte de evento de redimensionamento quando o componente for montado
+  //   window.addEventListener('resize', handleResize)
+
+  //   // Remova o ouvinte de evento quando o componente for desmontado para evitar vazamentos de memória
+  //   return () => {
+  //     window.removeEventListener('resize', handleResize)
+  //   }
+  // }, [])
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -81,7 +101,7 @@ export const Content = memo(function Content({
           <div className="fixed inset-0 z-0 bg-gray-500 bg-opacity-25 transition-opacity" />
         </Transition.Child>
 
-        <div className={` fixed inset-0 z-10 overflow-y-auto `}>
+        <div className={` fixed inset-0 z-10  `}>
           <div
             className={`flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0`}
           >
@@ -102,12 +122,17 @@ export const Content = memo(function Content({
                   bottom: '0px',
                   right: '0px',
                 }}
-                className={`pointer-events-none p-6 flex flex-row items-center justify-center`}
+                className={`pointer-events-none p-6 flex flex-row items-center justify-center `}
               >
                 <Dialog.Panel
-                  className={`
-                    pointer-events-auto transform  flex gap-1 flex-col rounded-lg bg-white p-6 text-left shadow-xl transition-all w-fit h-fit
-                `}
+                  style={{
+                    maxWidth: `${sizeClass?.width}`,
+                    maxHeight: `${sizeClass?.height}`,
+                  }}
+                  className={twMerge(
+                    'pointer-events-auto transform  flex gap-1 flex-col rounded-lg bg-white p-6 text-left shadow-xl transition-all',
+                    ` overflow-y-auto`,
+                  )}
                 >
                   {!noExitButton && (
                     <button
