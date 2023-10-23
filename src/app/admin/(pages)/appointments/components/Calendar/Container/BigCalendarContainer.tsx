@@ -177,37 +177,47 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
     currentWeekday: string,
     professionalId: string | undefined = undefined,
   ) {
-    if (professionalId) {
-      console.log('professionalId', professionalId)
+    try {
+      if (professionalId) {
+        console.log('professionalId', professionalId)
 
-      console.log('Vou chamar o getProfessionalScheduleAvailability')
+        console.log(
+          'professionalId Vou chamar o getProfessionalScheduleAvailability',
+          professionalId,
+        )
 
-      const data = await getProfessionalScheduleAvailability(
-        professionalId,
-        dateAdapter(currentWeekday),
-      )
-      if (!isEqual(data, professionalScheduleAvailable) && data) {
-        console.log('data', data)
-
-        setProfessionalScheduleAvailable(data)
-      }
-    } else {
-      if (typeof professionalAvailable?.id !== 'undefined') {
-        console.log('Vou chamar o getProfessionalScheduleAvailability')
         const data = await getProfessionalScheduleAvailability(
-          professionalAvailable?.id,
+          professionalId,
           dateAdapter(currentWeekday),
         )
         if (!isEqual(data, professionalScheduleAvailable) && data) {
+          console.log('data', data)
+
           setProfessionalScheduleAvailable(data)
         }
       } else {
-        setProfessionalScheduleAvailable(undefined)
-      }
+        if (typeof professionalAvailable?.id !== 'undefined') {
+          console.log(
+            'Vou chamar o getProfessionalScheduleAvailability professionalId',
+            professionalId,
+          )
+          const data = await getProfessionalScheduleAvailability(
+            professionalAvailable?.id,
+            dateAdapter(currentWeekday),
+          )
+          if (!isEqual(data, professionalScheduleAvailable) && data) {
+            setProfessionalScheduleAvailable(data)
+          }
+        } else {
+          setProfessionalScheduleAvailable(undefined)
+        }
 
-      if (filterButtonStatusAvailable === 'clicked') {
-        setButtonStatusAvailable('idle')
+        if (filterButtonStatusAvailable === 'clicked') {
+          setButtonStatusAvailable('idle')
+        }
       }
+    } catch (error) {
+      console.log('error on makeFeedbackOfProfessionalAvailableHour', error)
     }
   }
 
