@@ -3,10 +3,7 @@ import { memo, useEffect, useRef, useState } from 'react'
 
 import { dateAdapter } from '@/utils/dateAdapter'
 import { Calendar } from '..'
-import {
-  getAppointmentsByRangeDate,
-  getProfessionalScheduleAvailability,
-} from '@/utils/actions/action'
+import { getProfessionalScheduleAvailability } from '@/utils/actions/action'
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 import { Filter, TokenData } from '@/types'
 import { isEqual } from 'lodash'
@@ -20,7 +17,6 @@ import {
   tokenDecode,
 } from '@/utils/functions/helpers'
 import { CSFetch } from '@/utils/api/clientFetch'
-import { useQuery } from '@tanstack/react-query'
 
 interface AppointmentCard {
   start: Date
@@ -33,51 +29,54 @@ interface Response {
   data?: any[]
 }
 
-// export async function getAppointmentsByRangeDate<T = unknown>(
-//   input: RequestInfo | URL,
-//   init?: RequestInit | undefined | any,
-// ) {
-//   try {
-//     const response = (await CSFetch<T>(input, init)) as Response
-//     const cardsAppointment = response?.data
-//       ? response?.data.map((appointmentData: any) => {
-//           const { day, start, end } = appointmentData.schedule
+export async function getAppointmentsByRangeDate<T = unknown>(
+  input: RequestInfo | URL,
+  init?: RequestInit | undefined | any,
+) {
+  try {
+    const response = (await CSFetch<T>(input, init)) as Response
+    const cardsAppointment = response?.data
+      ? response?.data.map((appointmentData: any) => {
+          const { day, start, end } = appointmentData.schedule
 
-//           const { patient, therapy } = appointmentData
+          const { patient, therapy } = appointmentData
 
-//           const patientNameSplited = patient.name.split(' ')
+          const patientNameSplited = patient.name.split(' ')
 
-//           const patientNameLabel = `${patientNameSplited[0]} ${
-//             patientNameSplited[patientNameSplited.length - 1]
-//           }`
+          const patientNameLabel = `${patientNameSplited[0]} ${
+            patientNameSplited[patientNameSplited.length - 1]
+          }`
 
-//           const startDate = `${day}T${start}:00`
-//           const endDate = `${day}T${end}:00`
+          const startDate = `${day}T${start}:00`
+          const endDate = `${day}T${end}:00`
 
-//           return {
-//             start: startDate,
-//             end: endDate,
-//             data: {
-//               ...appointmentData,
-//               patientNameLabel,
-//               therapyNameLabel: therapy?.name,
-//             },
-//           }
-//         })
-//       : []
+          return {
+            start: startDate,
+            end: endDate,
+            data: {
+              ...appointmentData,
+              patientNameLabel,
+              therapyNameLabel: therapy?.name,
+            },
+          }
+        })
+      : []
 
-//     return cardsAppointment
-//   } catch (error: unknown | string | undefined) {
-//     throw new Error(`${error}`)
-//   }
-// }
+    return cardsAppointment
+  } catch (error: unknown | string | undefined) {
+    throw new Error(`${error}`)
+  }
+}
 
 const components = {
   event: (props: any) => {
     const { event } = props
     const type = event?.type
 
-    // console.log('props', props)
+    console.log('EVENTS ######### props', props)
+    console.log('EVENTS ######### event', event)
+    console.log('EVENTS ######### type', type)
+
     switch (type) {
       case 'filter':
         return <Calendar.FilterView />
@@ -328,6 +327,8 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
     setStartComponent(true)
   }, [])
 
+  console.log('appointments', appointments)
+
   return (
     <div
       style={{
@@ -347,7 +348,10 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
         onView={(onViewData) => {
           // console.log('onViewData', onViewData)
         }}
-        onNavigate={(currentWeekDate) => {
+        onNavigate={(currentWeekDate, a, b) => {
+          console.log('######## #### #### a', a)
+          console.log('######## #### #### b', b)
+          console.log('######## #### #### currentWeekDate', currentWeekDate)
           const currentDayOfTheWeek =
             dateAdapter(currentWeekDate).format(API_FORMAT_DEFAULT)
           currentCalendarWeekday.current = currentDayOfTheWeek
