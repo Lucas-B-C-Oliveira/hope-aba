@@ -8,8 +8,6 @@ import './adapterCalendarStyles.css'
 
 const localizer = momentLocalizer(dateAdapter)
 
-export const AdapterCalendar = memo(function AdapterCalendar(
-  props: Omit<CalendarProps, 'localizer'>,
-) {
+export function AdapterCalendar(props: Omit<CalendarProps, 'localizer'>) {
   return <Calendar {...props} localizer={localizer} />
-})
+}

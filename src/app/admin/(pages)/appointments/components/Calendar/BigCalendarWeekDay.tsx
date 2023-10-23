@@ -11,7 +11,7 @@ interface BigCalendarWeekDayProps {
   dateProps: any
 }
 
-export const BigCalendarWeekDay = memo(function BigCalendarWeekDay({
+export function BigCalendarWeekDay({
   currentDate,
   dateProps,
 }: BigCalendarWeekDayProps) {
@@ -45,4 +45,4 @@ export const BigCalendarWeekDay = memo(function BigCalendarWeekDay({
       )}
     </>
   )
-})
+}

@@ -15,7 +15,7 @@ interface CalendarHeaderProps {
   openRightContentSidebarButton?: ReactElement
 }
 
-export const BigCalendarHeader = memo(function BigCalendarHeader({
+export function BigCalendarHeader({
   onNavigateNext,
   onNavigatePrev,
   onNavigateToday,
@@ -86,4 +86,4 @@ export const BigCalendarHeader = memo(function BigCalendarHeader({
       </div>
     </header>
   )
-})
+}
