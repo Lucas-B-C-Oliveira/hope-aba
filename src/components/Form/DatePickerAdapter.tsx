@@ -9,7 +9,6 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { Form } from '.'
 import { dateAdapter } from '@/utils/dateAdapter'
 import { DATE_FORMAT } from '@/utils/globalConstants'
-import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 
 interface Props {
   name?: string
@@ -22,8 +21,6 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
   title,
   professionalField,
 }: Props) {
-  const { professionalAvailable } = useAppointmentFilterStore()
-
   const [weekDaysAvailable, setWeekDaysAvailable] = useState<number[]>([99])
 
   const {
@@ -73,14 +70,14 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
   }
 
   useEffect(() => {
-    if (typeof professionalAvailable?.id !== 'undefined') {
+    if (typeof observedProfessionalField?.id !== 'undefined') {
       getProfessionalScheduleAvailabilityWeekDays(
-        professionalAvailable?.id,
+        observedProfessionalField?.id,
       ).then(async (data) => {
         setWeekDaysAvailable(data)
       })
     }
-  }, [professionalAvailable?.id])
+  }, [observedProfessionalField?.id])
 
   return (
     <Form.Field className="relative">
