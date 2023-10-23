@@ -86,6 +86,7 @@ export async function getProfessionalScheduleAvailability(
 
     return professionalScheduleAvailability.flat()
   } catch (error: unknown | string | undefined) {
+    console.log('error on getProfessionalScheduleAvailability', error)
     throw new Error(error as any)
   }
 }
