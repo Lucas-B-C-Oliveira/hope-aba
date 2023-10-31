@@ -49,7 +49,7 @@ export const formFields: FormPatientFieldSettings[] = [
     placeholder: 'Selecione',
     type: 'select',
     options: [
-      { key: 'male', value: 'Másculino' },
+      { key: 'male', value: 'Masculino' },
       { key: 'female', value: 'Feminino' },
     ],
     key: uuidv4(),
@@ -104,7 +104,7 @@ export const formFields: FormPatientFieldSettings[] = [
     name: 'responsibleDocument',
     field: 'responsibleDocument',
     labelText: 'CPF do Responsável',
-    placeholder: 'Arthur Figueiredo',
+    placeholder: '000.000.000-00',
     type: 'text',
     key: uuidv4(),
   },
