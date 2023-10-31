@@ -29,38 +29,48 @@ interface Response {
   data?: any[]
 }
 
+const formatPatientName = (name: string) => {
+  const nameParts = name.split(' ')
+
+  if (nameParts.length > 1) {
+    return `${nameParts[0]} ${nameParts[nameParts.length - 1]}`
+  }
+
+  return nameParts[0]
+}
+
 export async function getAppointmentsByRangeDate<T = unknown>(
   input: RequestInfo | URL,
   init?: RequestInit | undefined | any,
 ) {
   try {
     const response = (await CSFetch<T>(input, init)) as Response
-    const cardsAppointment = response?.data
-      ? response?.data.map((appointmentData: any) => {
-          const { day, start, end } = appointmentData.schedule
 
-          const { patient, therapy } = appointmentData
+    const cardsAppointment = (response?.data || []).map(
+      (appointmentData: any) => {
+        const {
+          schedule: { day, start, end },
+          patient,
+          therapy,
+        } = appointmentData
 
-          const patientNameSplited = patient.name.split(' ')
+        const patientNameLabel = formatPatientName(patient.name)
+        const therapyNameLabel = therapy?.name
 
-          const patientNameLabel = `${patientNameSplited[0]} ${
-            patientNameSplited[patientNameSplited.length - 1]
-          }`
+        const startDate = `${day}T${start}:00`
+        const endDate = `${day}T${end}:00`
 
-          const startDate = `${day}T${start}:00`
-          const endDate = `${day}T${end}:00`
-
-          return {
-            start: startDate,
-            end: endDate,
-            data: {
-              ...appointmentData,
-              patientNameLabel,
-              therapyNameLabel: therapy?.name,
-            },
-          }
-        })
-      : []
+        return {
+          start: startDate,
+          end: endDate,
+          data: {
+            ...appointmentData,
+            patientNameLabel,
+            therapyNameLabel,
+          },
+        }
+      },
+    )
 
     return cardsAppointment
   } catch (error: unknown | string | undefined) {
