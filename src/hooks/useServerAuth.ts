@@ -10,5 +10,7 @@ export function useServerAuth() {
     typeof clinicsData?.value === 'string'
   return {
     authenticatedUser,
+    accessToken,
+    clinicsData,
   }
 }
