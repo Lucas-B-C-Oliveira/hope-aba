@@ -10,6 +10,7 @@ import { twMerge } from 'tailwind-merge'
 import { AppointmentEvent } from './AppointmentEvent'
 import { isEqual } from 'lodash'
 import { CSFetch } from '@/utils/api/clientFetch'
+import { dateAdapter } from '@/utils/dateAdapter'
 
 export const TEXT_INPUT_STYLE = `block ${TEXT_INPUT_CLASSNAME}`
 
@@ -162,7 +163,9 @@ export function BigCalendarAppointmentCard({ dataAppointment }: Props) {
                     type="text"
                     name={appointmentData?.schedule?.day}
                     disabled={true}
-                    value={appointmentData?.schedule?.day}
+                    value={dateAdapter(appointmentData?.schedule?.day).format(
+                      'DD-MM-YYYY',
+                    )}
                   />
                 </Form.Field>
 
