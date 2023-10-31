@@ -77,7 +77,7 @@ export function useSignUp() {
   } = signUpForm
 
   async function handleSignUp(data: SignUpData) {
-    await mutateAsync(data)
+    mutateAsync(data)
   }
 
   function handleGoToLogin() {
