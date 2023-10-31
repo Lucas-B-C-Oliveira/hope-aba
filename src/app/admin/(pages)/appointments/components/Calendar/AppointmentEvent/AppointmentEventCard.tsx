@@ -31,7 +31,9 @@ export function AppointmentEventCard({
         )}
       >
         <p className="text-xs font-bold text-white">{patientNameLabel}</p>
-        <p className="font-bold text-gray-700">{therapyNameLabel}</p>
+        <p className="text-xs marker:font-bold text-white">
+          {therapyNameLabel}
+        </p>
       </a>
     </div>
   )
