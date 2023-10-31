@@ -19,10 +19,12 @@ const navigation = [
   { name: 'Salas', href: '/admin/rooms', icon: HomeIcon },
 ]
 
-export function LayoutLeftSidebar() {
-  const { sidebarIsOpen, openAndCloseSidebar } = useMainLayoutStore()
+interface Props {
+  tokenData: any
+}
 
-  // console.log('sidebarIsOpen', sidebarIsOpen)
+export function LayoutLeftSidebar({ tokenData }: Props) {
+  const { sidebarIsOpen, openAndCloseSidebar } = useMainLayoutStore()
 
   return (
     <div
@@ -49,12 +51,23 @@ export function LayoutLeftSidebar() {
         <nav className="flex flex-1 flex-col ">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
             {navigation.length > 0 &&
-              navigation.map((item) => (
-                <LinkNav key={item.name} href={item.href}>
-                  <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
-                  {sidebarIsOpen && item.name}
-                </LinkNav>
-              ))}
+              navigation.map((item) => {
+                if (
+                  tokenData?.role === 'professional' &&
+                  item.name !== 'Agendamentos'
+                )
+                  return null
+
+                return (
+                  <LinkNav key={item.name} href={item.href}>
+                    <item.icon
+                      className="h-6 w-6 shrink-0"
+                      aria-hidden="true"
+                    />
+                    {sidebarIsOpen && item.name}
+                  </LinkNav>
+                )
+              })}
           </ul>
         </nav>
 
