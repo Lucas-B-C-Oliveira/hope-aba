@@ -29,8 +29,8 @@ export const SignUp = memo(function SignUp() {
   } = useSignUp()
 
   return (
-    <div className="w-full h-full flex flex-col items-center gap-4">
-      <div className="flex flex-col gap-2 items-center">
+    <div className="w-fit h-fit flex flex-col items-center gap-2">
+      <div className="flex flex-col gap-1 items-center">
         <Image src={logo} alt="logo" height={100} width={100} />
         <h2 className=" leading-9 tracking-tight  text-xl font-bold text-gray-600 ">
           Cadastro
@@ -40,7 +40,7 @@ export const SignUp = memo(function SignUp() {
       <FormProvider {...signUpForm}>
         <form
           onSubmit={handleSubmit(handleSignUp)}
-          className="flex flex-col px-6 py-3 w-fit h-fit gap-6 shadow-md rounded-2xl bg-white min-w-56"
+          className="flex flex-col px-6 py-3 w-fit h-fit gap-5 shadow-md rounded-2xl bg-white min-w-56"
         >
           <Form.Field className="relative w-fit h-fit">
             <Form.Label
