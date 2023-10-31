@@ -47,6 +47,7 @@ const emailSchema = z
     required_error: REQUIRED_ERROR_MESSAGE,
   })
   .email({ message: 'Digite um e-mail válido' })
+  .transform((value) => value.toLowerCase())
 
 const addressSchema = z.string().nonempty({ message: REQUIRED_ERROR_MESSAGE })
 

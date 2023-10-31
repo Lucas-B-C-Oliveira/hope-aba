@@ -17,6 +17,8 @@ const emailSchema = z
   .string()
   .nonempty({ message: 'Esse campo não pode ficar vazio' })
   .email({ message: 'Digite um e-mail válido' })
+  .transform((value) => value.toLowerCase())
+
 const passwordSchema = z
   .string()
   .nonempty({ message: 'Esse campo não pode ficar vazio' })
