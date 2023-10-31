@@ -109,7 +109,7 @@ export function useSignIn() {
   } = signInForm
 
   async function handleSignIn(data: SignInData) {
-    await signInMutate(data)
+    signInMutate(data)
   }
 
   function handleGoToAppointments() {
