@@ -12,6 +12,9 @@ import { useQueryClient } from '@tanstack/react-query'
 import { documentMask } from '@/utils/functions'
 import { useRouter } from 'next/navigation'
 
+const START_TIME_DEFAULT = '07:00'
+const END_TIME_DEFAULT = '18:00'
+
 export const useProfessionalForm = ({
   mutateAsync,
   queryKeys,
@@ -79,8 +82,8 @@ export const useProfessionalForm = ({
     const availabilityField = scheduleAvailabilityFields[availabilityFieldIndex]
     if (availabilityField.day.length < 3) {
       availabilityField.day.push({
-        start: '03:00',
-        end: '13:00',
+        start: START_TIME_DEFAULT,
+        end: END_TIME_DEFAULT,
       })
 
       scheduleAvailabilityUpdate(availabilityFieldIndex, availabilityField)
