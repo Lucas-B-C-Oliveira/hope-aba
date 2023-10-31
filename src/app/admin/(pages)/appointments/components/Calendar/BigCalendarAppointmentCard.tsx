@@ -1,11 +1,10 @@
 import { ActionButton } from '@/components/ActionButton'
-import { Button } from '@/components/Button'
 import { Form } from '@/components/Form'
 import { Modal } from '@/components/Modal'
 import { MAGIC_LABEL_CLASSNAME, TEXT_INPUT_CLASSNAME } from '@/style/consts'
 import { doFetch } from '@/utils/actions/action'
 import { useQuery } from '@tanstack/react-query'
-import { memo, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { AppointmentEvent } from './AppointmentEvent'
 import { isEqual } from 'lodash'
@@ -23,6 +22,13 @@ function getStatusName(status: 'canceled' | 'confirmed' | 'done' | 'pending') {
   else if (status === 'confirmed') return 'Confirmado'
   else if (status === 'pending') return 'Pendente'
   else if (status === 'done') return 'Concluído'
+}
+
+function getStatusColor(status: 'canceled' | 'confirmed' | 'done' | 'pending') {
+  if (status === 'canceled') return 'bg-red-600 hover:bg-red-500'
+  else if (status === 'confirmed') return 'bg-sky-500 hover:bg-sky-400'
+  else if (status === 'pending') return 'bg-yellow-500 hover:bg-yellow-400'
+  else if (status === 'done') return 'bg-emerald-500 hover:bg-emerald-400'
 }
 
 interface Data {
@@ -77,6 +83,8 @@ export function BigCalendarAppointmentCard({ dataAppointment }: Props) {
     setCurrentAppointmentData(newData)
   }
 
+  console.log('dataAppointment', dataAppointment)
+
   useEffect(() => {
     if (!isEqual(appointmentData, currentAppointmentData)) {
       setCurrentAppointmentData(appointmentData)
@@ -89,6 +97,9 @@ export function BigCalendarAppointmentCard({ dataAppointment }: Props) {
         onClick={() => setOpenModalCallback(true)}
         patientNameLabel={dataAppointment?.patientNameLabel}
         therapyNameLabel={dataAppointment?.therapyNameLabel}
+        status={dataAppointment?.status}
+        statusLabel={getStatusName(dataAppointment?.status)}
+        classNameToMerge={getStatusColor(dataAppointment?.status)}
       />
 
       <Modal.Content open={openModal} setOpen={setOpenModalCallback}>
