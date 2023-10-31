@@ -275,15 +275,15 @@ export const AppointmentForm = memo(function AppointmentForm({
               )}
               options={[
                 {
-                  key: 'dont_repeat',
+                  key: 'Agendamento único',
                   value: 'dont_repeat',
                 },
                 {
-                  key: 'weekly_for_the_whole_year',
+                  key: 'Agendamento Anual',
                   value: 'weekly_for_the_whole_year',
                 },
                 {
-                  key: 'weekly_for_current_month',
+                  key: 'Agendamento Mensal',
                   value: 'weekly_for_current_month',
                 },
               ]}
