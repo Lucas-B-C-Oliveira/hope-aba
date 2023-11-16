@@ -67,11 +67,13 @@ export function BigCalendarAppointmentCard({ dataAppointment }: Props) {
     obs = '',
   ) {
     setLoading(true)
+
+    const body = obs !== '' ? JSON.stringify({ obs }) : {}
     const response = await doFetch<any>(
       `appointments/${appointmentData?.id}/${newStatus}`,
       {
         method: 'PATCH',
-        body: JSON.stringify({ obs }),
+        body,
       },
     )
     setLoading(false)
@@ -89,7 +91,7 @@ export function BigCalendarAppointmentCard({ dataAppointment }: Props) {
     if (!isEqual(appointmentData, currentAppointmentData)) {
       setCurrentAppointmentData(appointmentData)
     }
-  }, [appointmentData])
+  }, [appointmentData, currentAppointmentData])
 
   return (
     <>
