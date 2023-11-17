@@ -69,7 +69,7 @@ export const AppointmentFilters = memo(function AppointmentFilters({
 
   return (
     <div className="flex flex-col items-start gap-3 p-0 h-fit">
-      {role === 'admin' && (
+      {(role === 'admin' || role === 'attendant') && (
         <div className="flex flex-col gap-6">
           <Filter.Autocomplete
             useAutocompleteLogic={useProfessionalsLogic}
@@ -111,7 +111,9 @@ export const AppointmentFilters = memo(function AppointmentFilters({
         Filtrar
       </ActionButton>
 
-      {role === 'admin' && <Filter.Labels filterType="Appointment" />}
+      {(role === 'admin' || role === 'attendant') && (
+        <Filter.Labels filterType="Appointment" />
+      )}
     </div>
   )
 })

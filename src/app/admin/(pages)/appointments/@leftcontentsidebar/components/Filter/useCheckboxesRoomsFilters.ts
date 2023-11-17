@@ -31,7 +31,8 @@ export function useCheckboxesRoomsFilters(
   })
 
   const therapiesIds: string[] = formValues[`${fieldToGetValue}`]
-  const queryEnabledRooms = tokenData?.role === 'admin'
+  const queryEnabledRooms =
+    tokenData?.role === 'admin' || tokenData?.role === 'attendant'
 
   const {
     data: responseRoomsData,

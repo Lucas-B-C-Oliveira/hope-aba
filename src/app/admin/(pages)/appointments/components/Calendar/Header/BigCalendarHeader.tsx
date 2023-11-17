@@ -77,7 +77,7 @@ export function BigCalendarHeader({
           </div>
         </div>
 
-        {role === 'admin' && (
+        {(role === 'admin' || role === 'attendant') && (
           <>
             <div className="ml-6 mr-6 h-6 w-px bg-gray-300" />
             {openRightContentSidebarButton && openRightContentSidebarButton}

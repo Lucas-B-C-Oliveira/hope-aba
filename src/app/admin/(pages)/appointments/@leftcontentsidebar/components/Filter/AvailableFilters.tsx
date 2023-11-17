@@ -24,7 +24,7 @@ export const AvailableFilters = memo(function AvailableFilters({
 
   return (
     <>
-      {role === 'admin' && (
+      {(role === 'admin' || role === 'attendant') && (
         <div className="flex flex-col items-start gap-3">
           <Filter.Autocomplete
             useAutocompleteLogic={useAvailableProfessionalLogic}
