@@ -19,6 +19,13 @@ const passwordSchema = z
   .string()
   .nonempty({ message: 'Esse campo não pode ficar vazio' })
   .min(6, { message: 'A senha precisa ter pelo menos 6 caracteres' })
+  .regex(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$/,
+    {
+      message:
+        'A senha precisa ter: pelo menos uma letra minúscula, pelo menos uma letra maiúscula,  pelo menos um número, pelo menos um caractere especial e ter um tamanho de 6 ou mais digitos',
+    },
+  )
 const confirmPasswordSchema = z
   .string()
   .nonempty({ message: 'Esse campo não pode ficar vazio' })
