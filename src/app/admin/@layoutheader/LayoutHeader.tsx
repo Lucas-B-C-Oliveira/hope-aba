@@ -96,10 +96,13 @@ export function LayoutHeader({
                 <>
                   <span className="hidden lg:flex lg:items-center">
                     <span
-                      className=" text-sm font-semibold leading-6 text-gray-900"
+                      className="text-sm font-semibold leading-6 text-gray-900"
                       aria-hidden="true"
                     >
-                      Clínica: {value?.name}
+                      <span className="text-sm font-bold leading-6 text-gray-900">
+                        Clínica:
+                      </span>{' '}
+                      {value?.name}
                     </span>
                     {clinicsData.length > 1 && (
                       <ChevronDownIcon
@@ -121,8 +124,9 @@ export function LayoutHeader({
             leave="transition ease-in duration-75"
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
+            afterLeave={() => router.refresh()}
           >
-            <Listbox.Options className="absolute right-0 z-10 mt-2.5 w-fit origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+            <Listbox.Options className="absolute right-0 z-50 mt-2.5 w-fit origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
               {clinicsData &&
                 clinicsData.length > 1 &&
                 clinicsData.map((clinic: { id: string; name: string }) => (
