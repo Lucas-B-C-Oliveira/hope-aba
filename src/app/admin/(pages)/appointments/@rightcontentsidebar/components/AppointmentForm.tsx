@@ -16,6 +16,8 @@ const recurrenceSchema = z.enum([
   'dont_repeat',
   'weekly_for_the_whole_year',
   'weekly_for_current_month',
+  'weekly_for_three_months',
+  'weekly_for_six_months',
 ])
 
 const scheduleSchema = z
@@ -281,6 +283,14 @@ export const AppointmentForm = memo(function AppointmentForm({
                 {
                   key: 'weekly_for_current_month',
                   value: 'Recorrência Mensal',
+                },
+                {
+                  key: 'weekly_for_three_months',
+                  value: 'Recorrência Trimestral',
+                },
+                {
+                  key: 'weekly_for_six_months',
+                  value: 'Recorrência Semestral',
                 },
                 {
                   key: 'weekly_for_the_whole_year',
