@@ -51,7 +51,7 @@ export type LoginParams = {
   password: string
 }
 
-export type Role = 'admin' | 'user' | 'professional'
+export type Role = 'admin' | 'user' | 'professional' | 'attendant'
 
 export type TokenData = {
   id: string
