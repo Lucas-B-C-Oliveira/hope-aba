@@ -189,10 +189,10 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   ) {
     try {
       if (professionalId) {
-        console.log('professionalId', professionalId)
+        console.log('#################### professionalId', professionalId)
 
         console.log(
-          'professionalId Vou chamar o getProfessionalScheduleAvailability',
+          '################ professionalId Vou chamar o getProfessionalScheduleAvailability',
           professionalId,
         )
 
@@ -208,7 +208,7 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
       } else {
         if (typeof professionalAvailable?.id !== 'undefined') {
           console.log(
-            'Vou chamar o getProfessionalScheduleAvailability professionalId',
+            '###################### Vou chamar o getProfessionalScheduleAvailability professionalId',
             professionalId,
           )
           const data = await getProfessionalScheduleAvailability(
