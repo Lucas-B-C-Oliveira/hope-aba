@@ -129,12 +129,12 @@ export const SignIn = memo(function SignIn() {
           Entre grátis por 7 dias
         </button>
 
-        <button
+        {/* <button
           onClick={() => console.log('Need to implement that')}
           className="font-semibold mt-2 text-sm leading-6 text-indigo-600 hover:text-indigo-500"
         >
           Esqueceu a senha?
-        </button>
+        </button> */}
       </div>
     </div>
   )
