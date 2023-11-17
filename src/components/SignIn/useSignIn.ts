@@ -111,6 +111,7 @@ export function useSignIn() {
   } = signInForm
 
   async function handleSignIn(data: SignInData) {
+    console.log('data', data)
     signInMutate(data)
   }
 
