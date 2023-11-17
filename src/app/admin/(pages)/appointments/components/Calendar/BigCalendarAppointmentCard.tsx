@@ -10,6 +10,7 @@ import { AppointmentEvent } from './AppointmentEvent'
 import { isEqual } from 'lodash'
 import { CSFetch } from '@/utils/api/clientFetch'
 import { dateAdapter } from '@/utils/dateAdapter'
+import { useRouter } from 'next/navigation'
 
 export const TEXT_INPUT_STYLE = `block ${TEXT_INPUT_CLASSNAME}`
 
@@ -43,13 +44,19 @@ export function BigCalendarAppointmentCard({ dataAppointment }: Props) {
   const [loading, setLoading] = useState(false)
   const [openModal, setOpenModal] = useState(false)
 
+  const router = useRouter()
+
   const setOpenModalCallback = useCallback(
     (newValue: boolean) => setOpenModal(newValue),
     [],
   )
 
   const { data: appointmentData, refetch } = useQuery({
-    queryKey: ['getAppointmentData', appointmentId],
+    queryKey: [
+      'getAppointmentData',
+      appointmentId,
+      currentAppointmentData?.status,
+    ],
     queryFn: async () => {
       const response = (await CSFetch<Data>(
         `appointments/${appointmentId}`,
@@ -66,32 +73,37 @@ export function BigCalendarAppointmentCard({ dataAppointment }: Props) {
     newStatus: 'cancel' | 'confirm' | 'done',
     obs = '',
   ) {
-    setLoading(true)
+    try {
+      setLoading(true)
 
-    const body = obs !== '' ? JSON.stringify({ obs }) : {}
-    const response = await doFetch<any>(
-      `appointments/${appointmentData?.id}/${newStatus}`,
-      {
-        method: 'PATCH',
-        body,
-      },
-    )
-    setLoading(false)
+      const body = obs !== '' ? JSON.stringify({ obs }) : JSON.stringify({})
+      const response = await doFetch<any>(
+        `appointments/${appointmentData?.id}/${newStatus}`,
+        {
+          method: 'PATCH',
+          body,
+        },
+      )
 
-    const newData = {
-      ...response?.data,
-      labelStatus: getStatusName(response?.data?.status),
+      // const newData = {
+      //   ...response?.data,
+      //   labelStatus: getStatusName(response?.data?.status),
+      // }
+
+      setOpenModalCallback(false)
+      router.refresh()
+    } catch (error) {
+      console.log('error on handleChangeStatus => ', error)
+    } finally {
+      setLoading(false)
     }
-    setCurrentAppointmentData(newData)
   }
-
-  console.log('dataAppointment', dataAppointment)
 
   useEffect(() => {
     if (!isEqual(appointmentData, currentAppointmentData)) {
       setCurrentAppointmentData(appointmentData)
     }
-  }, [appointmentData, currentAppointmentData])
+  }, [appointmentData])
 
   return (
     <>
