@@ -118,7 +118,7 @@ export const SignIn = memo(function SignIn() {
         </form>
       </FormProvider>
 
-      <div className="flex flex-col gap-0  items-center">
+      {/* <div className="flex flex-col gap-0  items-center">
         <p className="text-center text-sm text-gray-500">
           Ainda não tem uma conta?
         </p>
@@ -129,13 +129,13 @@ export const SignIn = memo(function SignIn() {
           Entre grátis por 7 dias
         </button>
 
-        {/* <button
+        <button
           onClick={() => console.log('Need to implement that')}
           className="font-semibold mt-2 text-sm leading-6 text-indigo-600 hover:text-indigo-500"
         >
           Esqueceu a senha?
-        </button> */}
-      </div>
+        </button>
+      </div> */}
     </div>
   )
 })
