@@ -13,6 +13,7 @@ interface Props {
   confirmRemoveDataModal: ReactElement
   pagination: ReactElement
   tableHeaders: { key: string; value: string; id: string }[]
+  dataOptions?: any[]
 }
 
 export const Table = memo(function Table({
@@ -22,6 +23,7 @@ export const Table = memo(function Table({
   confirmRemoveDataModal,
   pagination,
   tableHeaders,
+  dataOptions,
 }: Props) {
   return (
     <div className="w-full h-fit">
@@ -71,6 +73,21 @@ export const Table = memo(function Table({
                   {tableHeaders.length > 0 &&
                     tableHeaders.map((header) => {
                       const value = register[header?.key]
+
+                      if (header?.key === 'profession' && dataOptions) {
+                        const labelValue = dataOptions?.find(
+                          (option: any) => option?.key === value,
+                        )
+
+                        return (
+                          <td
+                            key={header.id + register.id}
+                            className=" py-4 pl-4 pr-3 text-sm font-medium text-gray-900 "
+                          >
+                            {labelValue?.value}
+                          </td>
+                        )
+                      }
 
                       if (typeof value !== 'object') {
                         return (
