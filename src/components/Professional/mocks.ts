@@ -26,6 +26,18 @@ export const weekdayName = [
   'Domingo',
 ]
 
+export const PROFESSIONAL_OPTIONS = [
+  { key: 'psychologist', value: 'Psicólogo(a)' },
+  { key: 'speechTherapist', value: 'Fonoaudiólogo(a)' },
+  { key: 'occupationalTherapist', value: 'Terapeuta Ocupacional' },
+  { key: 'psychopedagogue', value: 'Psicopedagogo(a)' },
+  { key: 'pedagogue', value: 'Pedagogo(a)' },
+  { key: 'therapeuticCompanion', value: 'Acompanhante Terapêutico' },
+  { key: 'musicTherapist', value: 'Musicoterapeuta' },
+  { key: 'psychomotorTherapist', value: 'Psicomotricista' },
+  { key: 'physiotherapist', value: 'Fisioterapeuta' },
+]
+
 export const formFields: FormProfessionalFieldSettings[] = [
   {
     className: TEXT_INPUT_STYLE,
@@ -83,16 +95,7 @@ export const formFields: FormProfessionalFieldSettings[] = [
     labelText: 'Profissão',
     placeholder: 'Selecione',
     type: 'select',
-    options: [
-      { key: 'psychologist', value: 'Psicólogo(a)' },
-      { key: 'speechTherapist', value: 'Fonoaudiólogo(a)' },
-      { key: 'occupationalTherapist', value: 'Terapeuta Ocupacional' },
-      { key: 'psychopedagogue', value: 'Psicopedagogo(a)' },
-      { key: 'pedagogue', value: 'Pedagogo(a)' },
-      { key: 'therapeuticCompanion', value: 'Acompanhante Terapêutico' },
-      { key: 'musicTherapist', value: 'Musicoterapeuta' },
-      { key: 'psychomotorTherapist', value: 'Psicomotricista' },
-    ],
+    options: PROFESSIONAL_OPTIONS,
     key: uuidv4(),
   },
 
