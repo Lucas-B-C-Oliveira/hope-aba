@@ -8,7 +8,7 @@ import { PlusIcon } from '@heroicons/react/24/solid'
 import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
 import { redirect } from 'next/navigation'
 import { ConfirmToRemoveDataModal } from '@/components/Modals/ConfirmToRemoveDataModal'
-import { tableHeaders } from '@/components/Professional'
+import { PROFESSIONAL_OPTIONS, tableHeaders } from '@/components/Professional'
 import { Pagination } from '@/components/Pagination/Pagination'
 
 interface Props {
@@ -84,6 +84,7 @@ export default async function Professionals({ searchParams }: Props) {
 
       <SearchData.Table
         tableHeaders={tableHeaders}
+        dataOptions={PROFESSIONAL_OPTIONS}
         editDataModal={
           <ProfessionalForm
             endPoint={END_POINT}
