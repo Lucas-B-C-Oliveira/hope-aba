@@ -61,6 +61,7 @@ const professionSchema = z.enum(
     'therapeuticCompanion',
     'musicTherapist',
     'psychomotorTherapist',
+    'physiotherapist',
   ],
   {
     errorMap: () => {
