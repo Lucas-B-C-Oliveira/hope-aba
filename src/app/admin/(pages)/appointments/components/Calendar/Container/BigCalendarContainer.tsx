@@ -83,10 +83,6 @@ const components = {
     const { event } = props
     const type = event?.type
 
-    console.log('EVENTS ######### props', props)
-    console.log('EVENTS ######### event', event)
-    console.log('EVENTS ######### type', type)
-
     switch (type) {
       case 'filter':
         return <Calendar.FilterView />
@@ -189,28 +185,15 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   ) {
     try {
       if (professionalId) {
-        console.log('#################### professionalId', professionalId)
-
-        console.log(
-          '################ professionalId Vou chamar o getProfessionalScheduleAvailability',
-          professionalId,
-        )
-
         const data = await getProfessionalScheduleAvailability(
           professionalId,
           dateAdapter(currentWeekday),
         )
         if (!isEqual(data, professionalScheduleAvailable) && data) {
-          console.log('data', data)
-
           setProfessionalScheduleAvailable(data)
         }
       } else {
         if (typeof professionalAvailable?.id !== 'undefined') {
-          console.log(
-            '###################### Vou chamar o getProfessionalScheduleAvailability professionalId',
-            professionalId,
-          )
           const data = await getProfessionalScheduleAvailability(
             professionalAvailable?.id,
             dateAdapter(currentWeekday),
@@ -272,9 +255,8 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
           endpointWithQuery = endpointWithQuery + '&' + queryFilters
         }
       }
-      console.log('query', endpointWithQuery + '&page=1&pageSize=90')
       const data = await getAppointmentsByRangeDate(
-        endpointWithQuery + '&page=1&pageSize=90',
+        endpointWithQuery + '&page=1&perPage=1000',
         {
           cache: 'no-store',
         },
@@ -287,6 +269,8 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
           end: new Date(data?.end),
         }
       })
+
+      console.log('###### newData.length', newData.length)
 
       if (!isEqual(newData, appointments) && newData) {
         setAppointments(newData)
@@ -310,15 +294,7 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
   }, [])
 
   useEffect(() => {
-    console.log(
-      'useEffect que verifica o filterButtonStatusAppointment',
-      filterButtonStatusAppointment,
-    )
     if (filterButtonStatusAppointment !== 'idle') {
-      console.log(
-        'currentCalendarWeekday.current',
-        currentCalendarWeekday.current,
-      )
       makeAppointmentFeedback(currentCalendarWeekday.current)
     }
 
@@ -347,8 +323,6 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
     setStartComponent(true)
   }, [])
 
-  console.log('appointments', appointments)
-
   return (
     <div
       style={{
@@ -369,9 +343,6 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
           // console.log('onViewData', onViewData)
         }}
         onNavigate={(currentWeekDate, a, b) => {
-          console.log('######## #### #### a', a)
-          console.log('######## #### #### b', b)
-          console.log('######## #### #### currentWeekDate', currentWeekDate)
           const currentDayOfTheWeek =
             dateAdapter(currentWeekDate).format(API_FORMAT_DEFAULT)
           currentCalendarWeekday.current = currentDayOfTheWeek
