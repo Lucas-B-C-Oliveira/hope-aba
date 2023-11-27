@@ -1,4 +1,4 @@
-import { HTMLProps } from 'react'
+import { HTMLProps, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 interface Props extends HTMLProps<HTMLDivElement> {
@@ -9,7 +9,7 @@ interface Props extends HTMLProps<HTMLDivElement> {
   classNameToMerge?: string
 }
 
-export function AppointmentEventCard({
+export const AppointmentEventCard = memo(function AppointmentEventCard({
   patientNameLabel,
   therapyNameLabel,
   status,
@@ -35,4 +35,4 @@ export function AppointmentEventCard({
       </a>
     </div>
   )
-}
+})
