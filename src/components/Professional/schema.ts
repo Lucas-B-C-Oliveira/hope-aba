@@ -2,6 +2,10 @@ import { z } from 'zod'
 
 import { getCookie } from 'cookies-next'
 import { weekdayKeys } from './'
+import {
+  CLINICS_DATA,
+  CURRENT_CLINIC_DATA_INDEX,
+} from '@/utils/functions/constants'
 
 const hourRanges = z
   .object({
@@ -148,13 +152,20 @@ const clinicsIdsSchema = z
   .array(z.string())
   .optional()
   .transform((field) => {
-    const clinicsDataCookie = getCookie('clinicsData')
+    const clinicsDataCookie = getCookie(CLINICS_DATA)
+    const currentClinicDataIndexCookie = getCookie(CURRENT_CLINIC_DATA_INDEX)
+
     const clinicsData =
       typeof clinicsDataCookie !== 'undefined'
         ? JSON.parse(clinicsDataCookie as string)
         : ''
 
-    return clinicsData === '' ? [clinicsData] : [clinicsData[0].id]
+    const indexClinicData =
+      typeof currentClinicDataIndexCookie !== 'undefined'
+        ? JSON.parse(currentClinicDataIndexCookie as string)
+        : ''
+
+    return [clinicsData[indexClinicData]?.id]
   })
 
 export const professionalFormSchema = z.object({
