@@ -19,8 +19,6 @@ export function Toolbar(props: any) {
     openAndCloseLeftContentSidebar(!leftContentSidebarIsOpen)
   }
 
-  console.log('######### toolbar Props', props)
-
   return (
     <Calendar.Header
       openLeftContentSidebarButton={

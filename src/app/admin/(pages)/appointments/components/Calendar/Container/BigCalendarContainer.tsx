@@ -270,8 +270,6 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
         }
       })
 
-      console.log('###### newData.length', newData.length)
-
       if (!isEqual(newData, appointments) && newData) {
         setAppointments(newData)
         if (filterButtonStatusAppointment === 'clicked') {
