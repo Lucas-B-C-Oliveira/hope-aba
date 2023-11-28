@@ -111,7 +111,6 @@ export function useSignIn() {
   } = signInForm
 
   async function handleSignIn(data: SignInData) {
-    console.log('data', data)
     signInMutate(data)
   }
 
@@ -123,9 +122,6 @@ export function useSignIn() {
     router.replace('/signup')
   }
 
-  console.log('signInStatus', signInStatus)
-  console.log('getClinicsDataStatus', getClinicsDataStatus)
-
   useEffect(() => {
     if (signInStatus === 'success') {
       const token = (signInData?.token as any) ?? ''
@@ -133,7 +129,6 @@ export function useSignIn() {
       const tokenData = tokenDecode(token as string)
       const expDefault = tokenData?.exp ?? 1 * 60 * 60 * 24 * 15
       const expDate = new Date(expDefault * 1000)
-      console.log('Setou o token')
       const accessToken = getCookie(ACCESS_TOKEN)
       if (typeof accessToken === 'string') {
         deleteCookie(ACCESS_TOKEN)
@@ -141,7 +136,6 @@ export function useSignIn() {
       setCookie(ACCESS_TOKEN, value, {
         expires: expDate,
       })
-      console.log('token value', value)
       getClinicsDataRefetch()
     }
   }, [signInStatus])
