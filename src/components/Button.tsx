@@ -47,7 +47,7 @@ export const Button = memo(function Button({
       className="flex h-fit w-fit gap-2 rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
       {...rest}
     >
-      {!isFetching && children}
+      {!isFetching && mutationStatus !== 'loading' && children}
       {isFetching && <span>Loading...</span>}
       {isMutationAction && mutationStatus === 'loading' && (
         <span>Loading...</span>
