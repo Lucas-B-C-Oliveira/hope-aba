@@ -1,4 +1,5 @@
 import { CSFetch } from '@/utils/api/clientFetch'
+import { dateAdapter } from '@/utils/dateAdapter'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -11,11 +12,13 @@ function returnFormatedData(appointmentData: any) {
   const professionalId = appointmentData?.professional?.id
   const roomId = appointmentData?.room?.id
   const patientId = appointmentData?.patient?.id
+  const daySchedule = appointmentData?.schedule?.day
 
   return {
     professionalId,
     roomId,
     patientId,
+    daySchedule,
   }
 }
 
@@ -35,11 +38,11 @@ export function useCancelModal({ appointmentData }: Props) {
     queryKey: ['get/appointments/useCancelModal'],
     queryFn: async () => {
       try {
-        const { patientId, professionalId, roomId } =
+        const { patientId, professionalId, roomId, daySchedule } =
           returnFormatedData(appointmentData)
 
         const response = await CSFetch<any>(
-          `appointments?professionalId=${professionalId}&roomId=${roomId}&patientId=${patientId}`,
+          `appointments?professionalId=${professionalId}&roomId=${roomId}&patientId=${patientId}&from-scheduleDate=${daySchedule}`,
         )
         return response?.data
       } catch (error: unknown) {
@@ -48,7 +51,7 @@ export function useCancelModal({ appointmentData }: Props) {
     },
   })
 
-  const { mutateAsync, status } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationKey: ['cancel/allAppointment/useCancelModal'],
     mutationFn: async (data: any) => {
       try {
