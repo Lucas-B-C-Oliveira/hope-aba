@@ -1,7 +1,7 @@
 import { AppointmentEventCard } from './AppointmentEventCard'
-import { AppointmentEventObservationModal } from './AppointmentEventObservationModal'
+import { CancelModal } from './CancelModal'
 
 export const AppointmentEvent = {
   Card: AppointmentEventCard,
-  ObsModal: AppointmentEventObservationModal,
+  CancelModal,
 }
