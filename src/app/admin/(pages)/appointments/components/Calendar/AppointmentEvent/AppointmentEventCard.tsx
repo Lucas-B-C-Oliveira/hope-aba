@@ -17,7 +17,6 @@ export const AppointmentEventCard = memo(function AppointmentEventCard({
   classNameToMerge,
   ...rest
 }: Props) {
-  console.log('patientNameLabel', patientNameLabel)
   return (
     <div
       {...rest}
