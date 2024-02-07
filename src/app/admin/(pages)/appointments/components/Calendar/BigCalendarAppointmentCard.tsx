@@ -39,6 +39,7 @@ interface Data {
 export const BigCalendarAppointmentCard = memo(
   function BigCalendarAppointmentCard({ dataAppointment }: Props) {
     const appointmentId = dataAppointment?.id
+    const appointmentStatus = dataAppointment?.status
     const [loading, setLoading] = useState(false)
     const [openModal, setOpenModal] = useState(false)
 
@@ -50,7 +51,7 @@ export const BigCalendarAppointmentCard = memo(
     )
 
     const { data: appointmentData } = useQuery({
-      queryKey: ['getAppointmentData', appointmentId],
+      queryKey: ['getAppointmentData', appointmentId, appointmentStatus],
       queryFn: async () => {
         const response = (await CSFetch<Data>(
           `appointments/${appointmentId}`,
@@ -78,11 +79,6 @@ export const BigCalendarAppointmentCard = memo(
             body,
           },
         )
-
-        // const newData = {
-        //   ...response?.data,
-        //   labelStatus: getStatusName(response?.data?.status),
-        // }
 
         setOpenModalCallback(false)
         router.refresh()
@@ -256,8 +252,8 @@ export const BigCalendarAppointmentCard = memo(
                 </Form.Field>
 
                 <div className="flex flex-col gap-2">
-                  <AppointmentEvent.ObsModal
-                    patchFn={handleChangeStatus}
+                  <AppointmentEvent.CancelModal
+                    appointmentData={dataAppointment}
                     openModalButton={
                       <ActionButton
                         disabled={
