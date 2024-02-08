@@ -48,7 +48,6 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
   function handleCalendar(date: any) {
     const dateFormated = dateAdapter(date).format(DATE_FORMAT)
 
-    console.log('observedProfessionalField', observedProfessionalField)
     console.log('errors', errors)
 
     if (!observedProfessionalField) {
