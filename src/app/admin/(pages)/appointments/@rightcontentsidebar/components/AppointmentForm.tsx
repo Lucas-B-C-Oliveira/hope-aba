@@ -169,7 +169,6 @@ export const AppointmentForm = memo(function AppointmentForm({
 
   async function schedule(data: AppointmentData) {
     // console.log('data', data)
-    console.log('Tentei fazer um POST no schedule')
     const result = (await doFetch('appointments', {
       method: 'POST',
       body: JSON.stringify(data),
