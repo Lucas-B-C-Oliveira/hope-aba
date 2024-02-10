@@ -168,15 +168,12 @@ export const AppointmentForm = memo(function AppointmentForm({
   } = createAppointmentForm
 
   async function schedule(data: AppointmentData) {
-    // console.log('data', data)
     const result = (await doFetch('appointments', {
       method: 'POST',
       body: JSON.stringify(data),
     })) as Result
 
     const errors = result?.data?.errors || {}
-
-    // const errors = (result && result?.data && result?.data?.errors) || {}
 
     console.log('errors', errors)
     console.log('!isEmptyObject(errors)', !isEmptyObject(errors))
@@ -190,7 +187,6 @@ export const AppointmentForm = memo(function AppointmentForm({
       console.log('translatedErrors', translatedErrors)
       setFeedbackErrors(translatedErrors)
     }
-    //! TODO: Se não tiver erro => Chamar um popup de sucesso e fechar o modal de agendamento
 
     console.log('AppointmentForm Resultado do agendamento => result', result)
 
@@ -205,8 +201,6 @@ export const AppointmentForm = memo(function AppointmentForm({
       theme: 'light',
       onClose: () => router.refresh(),
     })
-
-    // refetch()
   }
 
   return (
