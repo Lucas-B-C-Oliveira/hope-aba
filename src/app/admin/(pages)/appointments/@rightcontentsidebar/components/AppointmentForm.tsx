@@ -176,7 +176,6 @@ export const AppointmentForm = memo(function AppointmentForm({
     const errors = result?.data?.errors || {}
 
     console.log('errors', errors)
-    console.log('!isEmptyObject(errors)', !isEmptyObject(errors))
 
     if (!isEmptyObject(errors)) {
       const translatedErrors = Object.entries(errors).map(([date, message]) => [
