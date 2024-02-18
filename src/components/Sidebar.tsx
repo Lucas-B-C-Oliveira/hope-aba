@@ -20,8 +20,6 @@ const navigation = [
 export function Sidebar() {
   const { sidebarIsOpen, openAndCloseSidebar } = useMainLayoutStore()
 
-  // console.log('sidebarIsOpen', sidebarIsOpen)
-
   return (
     <div
       id="main-sidebar"
