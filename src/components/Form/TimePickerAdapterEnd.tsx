@@ -72,9 +72,6 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
     //   obj[currentKey]?.
     // })
 
-    // console.log('###### +____ ### value', value)
-    // console.log('###### +____ ### selectedTime', selectedTime)
-
     // console.log(
     //   '################################# fieldDateToObserve',
     //   observedField,
