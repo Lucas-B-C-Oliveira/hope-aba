@@ -63,27 +63,6 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
     const selectedTime = value.format(HOUR_MIN_FORMAT)
 
     const timeWithDuration = dateAdapter(startTimeField, 'HH:mm')
-    //! TODO: Implement end result by professional schedule availability end
-    // const currentDate = dateAdapter(fieldDateToObserve)
-    // const dayOfWeek = currentDate.day()
-    // const currentKey = getDayNumber(String(dayOfWeek))
-
-    // observedProfessionalField?.scheduleAvailability?.map((obj: any) => {
-    //   obj[currentKey]?.
-    // })
-
-    // console.log(
-    //   '################################# fieldDateToObserve',
-    //   observedField,
-    // )
-    // console.log(
-    //   '################################# startTimeField',
-    //   startTimeField,
-    // )
-    // console.log(
-    //   '################################# observedProfessionalField',
-    //   observedProfessionalField,
-    // )
 
     const formattedTime = timeWithDuration.format('HH:mm')
 
@@ -93,13 +72,6 @@ export const TimePickerAdapterEnd = memo(function TimePickerAdapterEnd({
 
     return isTimeDisabled
   }
-
-  //   function shouldDisableTime(value: any) {
-  //   const selectedTime = dateAdapter(value, 'HH:mm') // supondo que o value seja uma string. Se já for um objeto dateAdapter, isso não é necessário
-  //   const startTime = dateAdapter(startTimeField, 'HH:mm')
-
-  //   return !selectedTime.isAfter(startTime, 'minute')
-  // }
 
   function handleTimePicker(date: any) {
     const dateFormated = dateAdapter(date).format('HH:mm')
