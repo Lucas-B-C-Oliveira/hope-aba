@@ -31,14 +31,6 @@ export const Table = memo(function Table({
         <table className="min-w-full divide-y divide-gray-300 ">
           <thead className="bg-gray-50">
             <tr>
-              {/* <th scope="col" className="relative px-7 sm:w-12 sm:px-6">
-                <input
-                  type="checkbox"
-                  className={`absolute left-4 top-1/2 -mt-2 h-4 w-4 ${CHECKBOX_INPUT_CLASSNAME}`}
-                />
-
-              </th> */}
-
               {tableHeaders?.length > 0 &&
                 tableHeaders.map((header) => (
                   <th
