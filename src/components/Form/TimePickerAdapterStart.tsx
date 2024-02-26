@@ -9,7 +9,6 @@ import { TimePicker } from '@mui/x-date-pickers'
 import { Form } from '.'
 import { dateAdapter } from '@/utils/dateAdapter'
 import { HOUR_MIN_FORMAT } from '@/utils/globalConstants'
-import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 
 interface Props {
   name?: string
