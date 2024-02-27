@@ -55,12 +55,6 @@ export const Table = memo(function Table({
                   className="divide-x divide-gray-200 even:bg-gray-50 "
                   key={register.id}
                 >
-                  {/* <td scope="col" className="relative px-7 sm:w-12 sm:px-6">
-                    <input
-                      type="checkbox"
-                      className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                  </td> */}
 
                   {tableHeaders.length > 0 &&
                     tableHeaders.map((header) => {
