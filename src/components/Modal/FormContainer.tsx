@@ -8,25 +8,6 @@ import {
   TEXT_LABEL_OF_TEXT_INPUT_CLASSNAME,
 } from '@/style/consts'
 
-// interface Props {
-//   useFormReturn: UseFormReturn
-//   handleSubmit: <T extends FieldValues>(
-//     onValid: SubmitHandler<T> | any,
-//     onInvalid?: SubmitErrorHandler<T> | undefined,
-//   ) => (e?: BaseSyntheticEvent<T> | undefined) => Promise<T>
-//   handleSubmitData: (data: any) => void
-//   formFields: any[]
-//   ActionButton: ReactElement
-//   SpecialFields: ReactElement
-//   TherapiesFields: ReactElement
-//   titleForm: string
-//   therapiesFieldsClassNameGrid?: string
-//   therapiesFieldsGridRowEnd?: string
-//   mainFieldsGridRowGap?: string
-//   mainFieldsGridTemplateRows?: string
-//   mainFieldsGridTemplateColumns?: string
-// }
-
 interface Props {
   useFormReturn: any
   handleSubmit: any
