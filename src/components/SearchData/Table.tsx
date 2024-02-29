@@ -1,6 +1,5 @@
 'use client'
 
-import { CHECKBOX_INPUT_CLASSNAME } from '@/style/consts'
 import { ReactElement, cloneElement, memo } from 'react'
 import { Button } from '../Button'
 import { TrashIcon, PencilSquareIcon } from '@heroicons/react/20/solid'
@@ -55,7 +54,6 @@ export const Table = memo(function Table({
                   className="divide-x divide-gray-200 even:bg-gray-50 "
                   key={register.id}
                 >
-
                   {tableHeaders.length > 0 &&
                     tableHeaders.map((header) => {
                       const value = register[header?.key]
