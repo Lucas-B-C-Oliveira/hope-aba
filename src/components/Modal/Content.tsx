@@ -46,9 +46,6 @@ export const Content = memo(function Content({
 
   const [sizeClass, setSizeClass] = useState<Size | undefined>(undefined)
 
-  // const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  // const [windowHeight, setWindowHeight] = useState(window.innerHeight)
-
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const refMainElement = document?.getElementById('main')
