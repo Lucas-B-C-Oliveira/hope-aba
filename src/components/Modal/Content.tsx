@@ -57,21 +57,7 @@ export const Content = memo(function Content({
     }
   }, [sidebarIsOpen])
 
-  // useEffect(() => {
-  //   // Função a ser executada quando a janela for redimensionada
-  //   const handleResize = () => {
-  //     setWindowWidth(window.innerWidth)
-  //     setWindowHeight(window.innerHeight)
-  //   }
 
-  //   // Adicione um ouvinte de evento de redimensionamento quando o componente for montado
-  //   window.addEventListener('resize', handleResize)
-
-  //   // Remova o ouvinte de evento quando o componente for desmontado para evitar vazamentos de memória
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize)
-  //   }
-  // }, [])
 
   return (
     <Transition.Root show={open} as={Fragment}>
