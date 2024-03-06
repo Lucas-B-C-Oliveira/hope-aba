@@ -18,7 +18,6 @@ import { SpinnerLoading } from '../SpinnerLoading'
 
 export const SignIn = memo(function SignIn() {
   const {
-    handleGoToSignup,
     isError,
     error,
     handleSignIn,
