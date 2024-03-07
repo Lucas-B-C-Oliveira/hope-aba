@@ -18,8 +18,6 @@ export function Header() {
         <Bars3Icon className="h-6 w-6" aria-hidden="true" />
       </button>
 
-      {/* <div className="h-6 w-px bg-red-500 lg:hidden" aria-hidden="true" /> //! TODO: Remove that => Separator */}
-
       <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
         <form className="relative flex flex-1" action="#" method="GET">
           <label htmlFor="search-field" className="sr-only">
