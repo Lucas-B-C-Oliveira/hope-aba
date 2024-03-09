@@ -21,14 +21,6 @@ export async function CSFetch<T = unknown>(
   const regex = /(clinics|sign-in)/
   const isSignOrClinicsEndPoint = String(input).match(regex)
 
-  // if (
-  //   (typeof accessToken === 'undefined' ||
-  //     typeof clinicsData === 'undefined') &&
-  //   !isSignOrClinicsEndPoint
-  // ) {
-  //   redirect('/login') //! TODO: O Certo é chamar um modal de login e não redirecionar -> Como chamar um modal de login aqui?
-  // }
-
   let clinicsDataParsed
 
   if (typeof clinicsData !== 'undefined' && typeof clinicsData === 'string') {
