@@ -5,7 +5,6 @@ import {
   CLINICS_DATA,
   CURRENT_CLINIC_DATA_INDEX,
 } from '../functions/constants'
-// import { redirect } from 'next/navigation'
 
 export async function CSFetch<T = unknown>(
   input: RequestInfo | URL,
