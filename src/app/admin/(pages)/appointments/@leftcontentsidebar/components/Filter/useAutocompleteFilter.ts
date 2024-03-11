@@ -3,7 +3,7 @@ import { FilterKey, TokenData } from '@/types'
 import { CSFetch } from '@/utils/api/clientFetch'
 import { useQuery } from '@tanstack/react-query'
 import { isEqual } from 'lodash'
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 export function useAutocompleteFilter(
   filterKey?: FilterKey,
