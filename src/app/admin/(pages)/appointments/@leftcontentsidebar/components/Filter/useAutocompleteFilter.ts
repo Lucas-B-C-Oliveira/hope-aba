@@ -12,7 +12,7 @@ export function useAutocompleteFilter(
   tokenData: TokenData | undefined = undefined,
 ) {
   const [selected, setSelected] = useState<any>(null)
-  const [currentOptions, setCurrentOptions] = useState<any>([]) //! TODO: Trocar o tipo para o tipo correto
+  const [currentOptions, setCurrentOptions] = useState<any>([]) 
   const [loading, setLoading] = useState(false)
   const {
     addFilter,
