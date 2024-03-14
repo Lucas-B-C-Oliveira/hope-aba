@@ -21,7 +21,7 @@ export function useCheckboxesRoomsFilters(
   const [checkboxes, setCheckboxes] = useState<any[] | []>([])
   const { addFilter, removeFilter } = useAppointmentFilterStore()
 
-  const { setValue, getValues, control } = useFormContext()
+  const { getValues, control } = useFormContext()
 
   const formValues = getValues()
 
