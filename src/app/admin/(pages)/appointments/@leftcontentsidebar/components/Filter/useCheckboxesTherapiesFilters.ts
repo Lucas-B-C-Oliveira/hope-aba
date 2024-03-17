@@ -25,10 +25,6 @@ export function useCheckboxesTherapiesFilters(
 
   const formValues = getValues()
 
-  // const observedField = useWatch({
-  //   name: `${fieldToGetValue}`,
-  //   control,
-  // })
 
   const queryEnabledTherapies = endPoint === 'therapies'
   const queryEnabledRooms =
