@@ -16,7 +16,7 @@ interface AppointmentFilterStore {
   setButtonStatusAppointment: (newStatus: 'clicked' | 'idle') => void
 
   filterButtonStatusAvailable: 'clicked' | 'idle'
-  setButtonStatusAvailable: (newStatus: 'clicked' | 'idle') => void //! TODO: Remover o estado do botão de Available, eu acho
+  setButtonStatusAvailable: (newStatus: 'clicked' | 'idle') => void //! TODO: Remover o estado do botão de Available
 }
 
 export const useAppointmentFilterStore = create<AppointmentFilterStore>()(
