@@ -9,7 +9,7 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { isEqual } from 'lodash'
 import { useEffect, useState } from 'react'
-import { useFormContext, useWatch } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 
 export function useCheckboxesTherapiesFilters(
   endPoint?: string,
@@ -24,7 +24,6 @@ export function useCheckboxesTherapiesFilters(
   const { setValue, getValues } = useFormContext()
 
   const formValues = getValues()
-
 
   const queryEnabledTherapies = endPoint === 'therapies'
   const queryEnabledRooms =
