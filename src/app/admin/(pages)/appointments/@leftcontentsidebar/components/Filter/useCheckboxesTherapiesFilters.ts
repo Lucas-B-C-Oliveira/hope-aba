@@ -4,7 +4,6 @@ import { CSFetch } from '@/utils/api/clientFetch'
 import {
   makeQueryByArray,
   removeFirstCharacter,
-  removeSpacesOfString,
 } from '@/utils/functions/helpers'
 import { useQuery } from '@tanstack/react-query'
 import { isEqual } from 'lodash'
