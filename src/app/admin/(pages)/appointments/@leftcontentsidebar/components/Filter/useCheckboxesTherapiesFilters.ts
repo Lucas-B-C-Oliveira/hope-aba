@@ -1,7 +1,6 @@
 import { useAppointmentFilterStore } from '@/store/appointmentFilterStore'
 import { FilterKey, TokenData } from '@/types'
 import { CSFetch } from '@/utils/api/clientFetch'
-import { makeQueryByArray } from '@/utils/functions/helpers'
 import { useQuery } from '@tanstack/react-query'
 import { isEqual } from 'lodash'
 import { useEffect, useState } from 'react'
