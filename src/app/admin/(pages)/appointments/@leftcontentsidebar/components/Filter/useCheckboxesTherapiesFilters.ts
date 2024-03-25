@@ -20,7 +20,6 @@ export function useCheckboxesTherapiesFilters(
 
   const formValues = getValues()
 
-  const queryEnabledTherapies = endPoint === 'therapies'
   const queryEnabledRooms =
     tokenData?.role === 'professional' && endPoint === 'rooms'
   const therapiesIds: string[] = formValues[`${fieldToGetValue}`]
