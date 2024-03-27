@@ -27,7 +27,6 @@ export function useCheckboxesTherapiesFilters(
   const {
     data: responseTherapiesData,
     status: responseTherapiesStatus,
-    refetch: therapiesRefetch,
     fetchStatus: therapiesFetchStatus,
   } = useQuery({
     queryKey: ['get/useCheckboxesTherapiesFilters/therapies'],
