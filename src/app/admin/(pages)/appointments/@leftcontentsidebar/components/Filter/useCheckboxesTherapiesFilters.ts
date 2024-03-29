@@ -22,7 +22,7 @@ export function useCheckboxesTherapiesFilters(
 
   const queryEnabledRooms =
     tokenData?.role === 'professional' && endPoint === 'rooms'
-  // const therapiesIds: string[] = formValues[`${fieldToGetValue}`]
+  const therapiesIds: string[] = formValues[`${fieldToGetValue}`]
 
   const {
     data: responseTherapiesData,
