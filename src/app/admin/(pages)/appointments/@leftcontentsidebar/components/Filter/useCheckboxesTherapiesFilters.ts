@@ -9,7 +9,6 @@ import { useFormContext } from 'react-hook-form'
 export function useCheckboxesTherapiesFilters(
   endPoint?: string,
   tokenData?: TokenData,
-  fieldToGetValue?: string,
   filterKey?: FilterKey,
 ) {
   const [loading, setLoading] = useState(false)
