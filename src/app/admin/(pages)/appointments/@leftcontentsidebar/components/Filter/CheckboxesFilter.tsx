@@ -26,7 +26,7 @@ export const CheckboxesFilter = memo(function CheckboxesFilter({
   labelText,
   useCheckboxFilterLogic,
 }: Props) {
-  const { checkboxHandle, loading, responseData } = useCheckboxFilterLogic()
+  const { checkboxHandle, responseData } = useCheckboxFilterLogic()
 
   return (
     <Form.Field className="flex flex-col gap-1">
