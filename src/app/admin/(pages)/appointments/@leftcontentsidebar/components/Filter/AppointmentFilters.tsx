@@ -32,7 +32,6 @@ export const AppointmentFilters = memo(function AppointmentFilters({
   })
 
   const {
-    handleSubmit,
     formState: { isSubmitting },
   } = createTherapiesSchema
 
