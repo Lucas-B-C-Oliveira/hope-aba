@@ -55,7 +55,6 @@ export const AppointmentFilters = memo(function AppointmentFilters({
     useCheckboxesTherapiesFilters(
       'therapies',
       tokenData,
-      'therapies',
       'therapiesAppointment',
     )
   const useRoomsLogic = () =>
