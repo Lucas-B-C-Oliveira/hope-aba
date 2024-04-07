@@ -31,9 +31,7 @@ export const AppointmentFilters = memo(function AppointmentFilters({
     resolver: zodResolver(therapiesSchema),
   })
 
-  const {
-    formState: { isSubmitting },
-  } = createTherapiesSchema
+  const { formState } = createTherapiesSchema
 
   const { setButtonStatusAppointment } = useAppointmentFilterStore()
   function handleClick() {
