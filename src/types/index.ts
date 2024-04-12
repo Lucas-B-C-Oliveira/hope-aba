@@ -34,7 +34,6 @@ export type Filter = {
   id: string
 }
 
-// export type FilterKey = 'patients' | 'professionals' | 'rooms' | 'therapies'
 export type FilterKey =
   | 'patientsAppointment'
   | 'professionalsAppointment'
