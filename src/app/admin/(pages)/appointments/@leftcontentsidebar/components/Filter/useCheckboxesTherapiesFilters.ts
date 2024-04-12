@@ -17,7 +17,7 @@ export function useCheckboxesTherapiesFilters(
 
   const { setValue, getValues } = useFormContext()
 
-  const formValues = getValues()
+  // const formValues = getValues()
 
   // const queryEnabledRooms =
   //   tokenData?.role === 'professional' && endPoint === 'rooms'
