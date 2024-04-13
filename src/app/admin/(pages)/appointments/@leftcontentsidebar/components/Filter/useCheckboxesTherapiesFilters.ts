@@ -15,7 +15,7 @@ export function useCheckboxesTherapiesFilters(
   const [checkboxes, setCheckboxes] = useState<any[] | []>([])
   const { addFilter, removeFilter } = useAppointmentFilterStore()
 
-  const { setValue, getValues } = useFormContext()
+  const { setValue } = useFormContext()
 
   // const formValues = getValues()
 
