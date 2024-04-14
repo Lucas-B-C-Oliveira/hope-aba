@@ -20,7 +20,6 @@ export function useAutocompleteLogic(endPoint?: string, fieldName?: string) {
   const {
     data: optionsData,
     refetch: optionsRefetch,
-    error,
     fetchStatus,
     status,
     isError,
