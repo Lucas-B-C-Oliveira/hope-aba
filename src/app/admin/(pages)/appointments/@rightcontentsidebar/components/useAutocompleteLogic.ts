@@ -22,7 +22,6 @@ export function useAutocompleteLogic(endPoint?: string, fieldName?: string) {
     refetch: optionsRefetch,
     fetchStatus,
     status,
-    isError,
     isFetching,
   } = useQuery({
     queryKey: [`get/useAutocompleteLogic/${endPoint}`],
