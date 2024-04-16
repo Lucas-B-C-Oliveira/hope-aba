@@ -3,7 +3,7 @@ import { Form } from '@/components/Form'
 import { Modal } from '@/components/Modal'
 import { Content } from '@/components/Modal/Content'
 import { MAGIC_LABEL_CLASSNAME, TEXT_INPUT_CLASSNAME } from '@/style/consts'
-import { ReactElement, cloneElement, memo, useState } from 'react'
+import { ReactElement, cloneElement, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { useCancelModal } from './useCancelModal'
 
