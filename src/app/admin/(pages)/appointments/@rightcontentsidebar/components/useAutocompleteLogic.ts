@@ -7,7 +7,7 @@ import { useFormContext } from 'react-hook-form'
 
 export function useAutocompleteLogic(endPoint?: string, fieldName?: string) {
   const [selected, setSelected] = useState<any>(null)
-  const [currentOptions, setCurrentOptions] = useState<any>([]) //! TODO: Trocar o tipo para o tipo correto
+  const [currentOptions, setCurrentOptions] = useState<any>([]) 
 
   const searchValue = useRef<undefined | string>(undefined)
 
