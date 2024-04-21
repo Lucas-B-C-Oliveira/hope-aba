@@ -28,7 +28,7 @@ export const DatePickerAdapter = memo(function DatePickerAdapter({
     setError,
     clearErrors,
     getValues,
-    formState: { errors }, //! TODO: Tirar o que não está usando
+    formState: { errors },
     control,
   } = useFormContext()
 
