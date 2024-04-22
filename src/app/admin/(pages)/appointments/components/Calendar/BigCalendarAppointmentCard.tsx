@@ -72,13 +72,10 @@ export const BigCalendarAppointmentCard = memo(
         setLoading(true)
 
         const body = obs !== '' ? JSON.stringify({ obs }) : JSON.stringify({})
-        const response = await doFetch<any>(
-          `appointments/${appointmentData?.id}/${newStatus}`,
-          {
-            method: 'PATCH',
-            body,
-          },
-        )
+        await doFetch<any>(`appointments/${appointmentData?.id}/${newStatus}`, {
+          method: 'PATCH',
+          body,
+        })
 
         setOpenModalCallback(false)
         router.refresh()
