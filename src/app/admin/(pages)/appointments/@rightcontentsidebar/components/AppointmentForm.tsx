@@ -85,17 +85,6 @@ const appointmentSchema = z
 //! TODO: => que vai ser do horário disponível do profissional, e passar pra esse campo os dados, para jogar um erro pro usuário de que o horário
 //! q ele selecionou, não está dentro dos horários disponíveis do profissional | Pelo menos por enquanto, no futuro será colocado no form de escolher o horario
 //! TODO: Somente os horários disponíveis, ai o usuário não vai conseguir escolher um horário errado
-//   (fields) => {
-//     // const startDate = new Date(`1970-01-01T${val.start}:00`)
-//     // const endDate = new Date(`1970-01-01T${val.end}:00`)
-//     // return startDate < endDate
-//     return true
-//   },
-//   {
-//     message: 'O valor de início tem que ser menor do que o valor de fim',
-//     path: ['start'],
-//   },
-// )
 
 export type AppointmentData = z.infer<typeof appointmentSchema>
 
