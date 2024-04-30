@@ -33,7 +33,6 @@ export function useCancelModal({ appointmentData }: Props) {
     refetch: appointmentsRefetch,
     status: appointmentsStatus,
     error: appointmentsError,
-    fetchStatus,
   } = useQuery({
     queryKey: ['get/appointments/useCancelModal'],
     queryFn: async () => {
