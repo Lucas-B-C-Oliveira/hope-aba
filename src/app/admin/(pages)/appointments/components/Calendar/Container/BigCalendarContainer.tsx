@@ -337,7 +337,7 @@ export const BigCalendarContainer = memo(function BigCalendarContainer() {
         backgroundEvents={professionalScheduleAvailable}
         min={new Date('2023-07-30T07:00:00')}
         max={new Date('2023-07-30T18:00:00')}
-        onView={(onViewData) => {
+        onView={() => {
           // console.log('onViewData', onViewData)
         }}
         onNavigate={(currentWeekDate, a, b) => {
