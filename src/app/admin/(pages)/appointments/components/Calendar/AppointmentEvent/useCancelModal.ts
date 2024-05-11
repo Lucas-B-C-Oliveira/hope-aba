@@ -2,7 +2,7 @@ import { CSFetch } from '@/utils/api/clientFetch'
 import { dateAdapter } from '@/utils/dateAdapter'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 interface Props {
   appointmentData: any
