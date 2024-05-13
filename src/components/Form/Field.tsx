@@ -10,10 +10,6 @@ interface FieldProps {
   as?: string
 }
 
-// export const Field = memo(function Field<T = HTMLDivElement | HTMLLabelElement>(
-//   props: FieldProps<T>,
-// ) {
-
 export const Field = memo(function Field(props: FieldProps) {
   if (props?.as === 'label') {
     return <label {...props} />
