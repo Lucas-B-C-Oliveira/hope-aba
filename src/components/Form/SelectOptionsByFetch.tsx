@@ -57,12 +57,7 @@ export const SelectOptionsByFetch = memo(function SelectOptionsByFetch({
             {labelText}
           </Listbox.Label>
 
-          <div className="absolute right-0">
-            {/* <Form.ErrorMessage
-              field={`${name}`}
-              specificStyle="z-40 absolute -top-[0.65rem] right-0 animate-pulse bg-white"
-            /> */}
-          </div>
+          <div className="absolute right-0" />
 
           <Listbox.Button
             onClick={handleOnClickSelect}
