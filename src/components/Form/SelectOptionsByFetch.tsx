@@ -44,7 +44,6 @@ export const SelectOptionsByFetch = memo(function SelectOptionsByFetch({
     handleSelectOnChange,
     responseData,
     selected,
-    error,
     isError,
     isFetching,
   } = useLogic()
